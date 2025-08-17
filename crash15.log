@@ -1,0 +1,880 @@
+--------- beginning of main
+08-17 15:15:50.731 V/NativeGlue(14253): Pause: 0xb4000071fa07c990
+08-17 15:15:50.811 E/reader.launche(14654): Not starting debugger since process cannot load the jdwp agent.
+08-17 15:15:50.813 D/ProcessState(14654): Binder ioctl to enable oneway spam detection failed: Invalid argument
+08-17 15:15:50.872 D/CompatibilityChangeReporter(14654): Compat change id reported: 171979766; UID 10179; state: DISABLED
+08-17 15:15:50.894 I/Perf    (14654): Connecting to perf service.
+08-17 15:15:50.897 V/GraphicsEnvironment(14654): ANGLE Developer option for 'org.koreader.launcher' set to: 'default'
+08-17 15:15:50.898 V/GraphicsEnvironment(14654): ANGLE GameManagerService for org.koreader.launcher: false
+08-17 15:15:50.898 V/GraphicsEnvironment(14654): Neither updatable production driver nor prerelease driver is supported.
+08-17 15:15:50.898 D/NetworkSecurityConfig(14654): No Network Security Config specified, using platform default
+08-17 15:15:50.899 D/NetworkSecurityConfig(14654): No Network Security Config specified, using platform default
+08-17 15:15:50.938 D/CompatibilityChangeReporter(14654): Compat change id reported: 171228096; UID 10179; state: ENABLED
+08-17 15:15:50.942 I/SystemUIConfig(14654): the context is null, init mAppContext from ActivityThread::org.koreader.launcher.MainApp@45f97d5
+--------- beginning of system
+08-17 15:15:50.964 V/ActivityThread(14654): reportTopResumedActivityChanged - > onActivityTopResumed
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): QUALCOMM build                   : ec028f8cac, Ic8928a1631
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): Build Date                       : 08/23/22
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): OpenGL ES Shader Compiler Version: EV031.32.02.17
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): Local Branch                     : 
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): Remote Branch                    : 
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): Remote Branch                    : 
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): Reconstruct Branch               : 
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): Build Config                     : S P 10.0.7 AArch64
+08-17 15:15:50.997 I/AdrenoGLES-0(14654): Driver Path                      : /vendor/lib64/egl/libGLESv2_adreno.so
+08-17 15:15:51.010 I/AdrenoGLES-0(14654): PFP: 0x016ee197, ME: 0x00000000
+08-17 15:15:51.033 D/hw-ProcessState(14654): Binder ioctl to enable oneway spam detection failed: Invalid argument
+08-17 15:16:09.745 I/MainActivity(14654): loading libluajit
+08-17 15:16:09.759 V/NativeGlue(14654): User FIFO already exists at `/data/user/0/org.koreader.launcher/files/alooper.fifo`
+08-17 15:16:09.759 V/NativeThread(14654): waiting for activity
+08-17 15:16:09.760 I/Assets  (14654): loading koreader-monolibtic
+08-17 15:16:09.766 I/DeviceInfo(14654): MANUFACTURER: qualcomm
+08-17 15:16:09.766 I/DeviceInfo(14654): BRAND       : onyx
+08-17 15:16:09.766 I/DeviceInfo(14654): MODEL       : gocolor7
+08-17 15:16:09.766 I/DeviceInfo(14654): DEVICE      : gocolor7
+08-17 15:16:09.766 I/DeviceInfo(14654): PRODUCT     : gocolor7
+08-17 15:16:09.766 I/DeviceInfo(14654): HARDWARE    : qcom
+08-17 15:16:09.768 I/Lights  (14654): Using Onyx Adb driver
+08-17 15:16:09.771 V/Surface (14654): Using Native Content implementation
+08-17 15:16:09.771 V/MainActivity(14654): native orientation: portrait
+08-17 15:16:09.771 V/EventReceiver(14654): Filtering 3 events: 
+08-17 15:16:09.771 V/EventReceiver(14654): android.intent.action.ACTION_POWER_CONNECTED
+08-17 15:16:09.771 V/EventReceiver(14654): android.intent.action.ACTION_POWER_DISCONNECTED
+08-17 15:16:09.771 V/EventReceiver(14654): android.intent.action.DOWNLOAD_COMPLETE
+08-17 15:16:09.774 V/NativeGlue(14654): Start: 0xb4000071fa080b90
+08-17 15:16:09.775 V/NativeGlue(14654): Resume: 0xb4000071fa080b90
+08-17 15:16:09.776 V/Timeout (14654): onResume: updating system timeout: 35791
+08-17 15:16:09.776 V/Timeout (14654): onResume
+08-17 15:16:09.779 V/NativeGlue(14654): InputQueueCreated: 0xb4000071fa080b90 -- 0xb40000721a05dbb0
+08-17 15:16:09.781 V/ActivityThread(14654): reportTopResumedActivityChanged - > onActivityTopResumed
+08-17 15:16:09.795 D/Surface (14654): onAttachedToWindow()
+08-17 15:16:09.808 V/NativeGlue(14654): NativeWindowCreated: 0xb4000071fa080b90 -- 0xb4000072ba04f2b0
+08-17 15:16:09.809 V/NativeThread(14654): Activity window ready.
+08-17 15:16:09.818 V/Surface (14654): surface changed {
+08-17 15:16:09.818 V/Surface (14654):   width:  1264
+08-17 15:16:09.818 V/Surface (14654):   height: 1680
+08-17 15:16:09.818 V/Surface (14654):   format: RGB_565
+08-17 15:16:09.818 V/Surface (14654): }
+08-17 15:16:09.818 V/NativeGlue(14654): NativeWindowResized: 0xb4000071fa080b90 -- 0xb4000072ba04f2b0
+08-17 15:16:09.826 V/NativeGlue(14654): ContentRectChanged: l=0,t=0,r=1264,b=1680
+08-17 15:16:09.826 V/NativeGlue(14654): NativeWindowRedrawNeeded: 0xb4000071fa080b90 -- 0xb4000072ba04f2b0
+08-17 15:16:09.892 V/NativeGlue(14654): WindowFocusChanged: 0xb4000071fa080b90 -- 1
+08-17 15:16:09.894 V/NativeThread(14654): Activity gained focus.
+08-17 15:16:09.896 V/NativeThread(14654): Launching LuaJIT assets
+08-17 15:16:09.907 I/Assets  (14654): Skip installation for revision v2025.08
+08-17 15:16:09.908 I/KOReader(14654): has monolibtic? yes
+08-17 15:16:09.908 I/KOReader(14654): lib_search_path: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/?
+08-17 15:16:09.908 I/KOReader(14654): lib_basic_format: lib%s.so
+08-17 15:16:09.908 I/KOReader(14654): lib_version_format: lib%s.so
+08-17 15:16:09.908 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [libs/libkoreader-lfs]
+08-17 15:16:09.909 I/KOReader(14654): ffi.load: rt.so.1 (RTLD_GLOBAL)
+08-17 15:16:09.911 I/MainActivity(14654): New intent: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=org.koreader.launcher/.MainActivity }.action
+08-17 15:16:09.926 I/KOReader(14654): ffi.findlib: utf8proc [3]
+08-17 15:16:09.926 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:09.959 I/KOReader(14654): ffi.findlib: blitbuffer
+08-17 15:16:09.959 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:09.963 I/KOReader(14654): ffi.findlib: archive [13]
+08-17 15:16:09.963 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:09.964 V/KOReader(14654): fts: Preferred MONOTONIC clock source is CLOCK_MONOTONIC
+08-17 15:16:09.964 V/KOReader(14654): fts: Preferred REALTIME clock source is CLOCK_REALTIME
+08-17 15:16:09.964 V/KOReader(14654): fts: BOOTTIME clock source is supported
+08-17 15:16:09.970 I/KOReader(14654): Android 12 - S (API 32) - flavor: rocks
+08-17 15:16:10.004 I/KOReader(14654): initializing for device gocolor7
+08-17 15:16:10.005 I/KOReader(14654): framebuffer resolution: {
+08-17 15:16:10.005 I/KOReader(14654):   h = 1680,
+08-17 15:16:10.005 I/KOReader(14654):   w = 1264
+08-17 15:16:10.005 I/KOReader(14654): } --[[table: 0x711e8ffae8]]
+08-17 15:16:10.007 I/KOReader(14654): ffi.findlib: wrap-mupdf
+08-17 15:16:10.007 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:10.010 I/KOReader(14654): ffi.findlib: sqlite3 [0]
+08-17 15:16:10.010 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:10.012 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [libs/libkoreader-xtext]
+08-17 15:16:10.019 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-browser-folder-cover-3.lua
+08-17 15:16:10.030 I/KOReader(14654): ffi.findlib: freetype [6]
+08-17 15:16:10.030 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:10.036 I/KOReader(14654): ffi.findlib: harfbuzz [0]
+08-17 15:16:10.036 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:10.040 I/KOReader(14654): ffi.findlib: zstd [1]
+08-17 15:16:10.040 I/KOReader(14654): ffi.load: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Noto Sans
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Source Serif 4
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Source Sans 3
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Noto Sans Bengali UI
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Standard Symbols L
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Droid Sans Mono
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Noto Serif
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Nimbus Sans L
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Nimbus Mono
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Nimbus Roman No9 L
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Noto Naskh Arabic
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Noto Sans CJK SC
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Noto Sans Devanagari UI
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Noto Sans Arabic UI
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: FreeSerif
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: FreeSans
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: Dingbats
+08-17 15:16:10.048 V/KOReader(14654): FontList registered: New York Medium
+08-17 15:16:10.049 V/KOReader(14654): FontList registered: NotoSans Nerd Font
+08-17 15:16:10.061 V/KOReader(14654): Found font: NotoSans-Regular.ttf in ./fonts/noto/NotoSans-Regular.ttf
+08-17 15:16:10.064 V/KOReader(14654): Found font: NotoSans-Bold.ttf in ./fonts/noto/NotoSans-Bold.ttf
+08-17 15:16:10.065 V/KOReader(14654): Found font: NotoSans-Bold.ttf in ./fonts/noto/NotoSans-Bold.ttf
+08-17 15:16:10.065 V/KOReader(14654): Found font: NotoSans-Regular.ttf in ./fonts/noto/NotoSans-Regular.ttf
+08-17 15:16:10.070 V/KOReader(14654): Allocating a 477MB budget for the global document cache
+08-17 15:16:10.078 V/KOReader(14654): Found font: NotoSans-Regular.ttf in ./fonts/noto/NotoSans-Regular.ttf
+08-17 15:16:10.079 V/KOReader(14654): Found font: NotoSans-Regular.ttf in ./fonts/noto/NotoSans-Regular.ttf
+08-17 15:16:10.088 V/KOReader(14654): Found font: DroidSansMono.ttf in ./fonts/droid/DroidSansMono.ttf
+08-17 15:16:10.090 V/KOReader(14654): ReadCollection: reading from collection file
+08-17 15:16:10.091 V/KOReader(14654): userpatch registered for plugin coverbrowser
+08-17 15:16:10.091 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-browser-folder-cover.lua
+08-17 15:16:10.092 V/KOReader(14654): userpatch registered for plugin coverbrowser
+08-17 15:16:10.093 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-change-status-bar-color.lua
+08-17 15:16:10.099 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-footer-info-progress.lua
+08-17 15:16:10.104 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-header-manga.lua
+08-17 15:16:10.106 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-hide-folder-up.lua
+08-17 15:16:10.141 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [lpeg]
+08-17 15:16:10.247 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-menutext-overrides.lua
+08-17 15:16:10.248 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-statusbar-better-compact.lua
+08-17 15:16:10.249 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-statusbar-thin-chapter.lua
+08-17 15:16:10.252 I/KOReader(14654): Applying patch: /storage/emulated/0/koreader/patches/2-update-patches.lua
+08-17 15:16:10.254 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [patches/guard]
+08-17 15:16:10.255 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [socket.score]
+08-17 15:16:10.256 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [mime.mcore]
+08-17 15:16:10.325 V/KOReader(14654): show reader ui
+08-17 15:16:10.328 V/KOReader(14654): DocSettings: data is read from /storage/emulated/0/epubs/fiktion/dag solstad - elfte romanen, artonde boken och 17_e romanen.sdr/metadata.epub.lua
+08-17 15:16:10.332 V/KOReader(14654): Found font: NotoSansCJKsc-Regular.otf in ./fonts/noto/NotoSansCJKsc-Regular.otf
+08-17 15:16:10.347 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/notice-info.svg 73 73
+08-17 15:16:10.347 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [libs/libkoreader-nnsvg]
+08-17 15:16:10.348 V/KOReader(14654): renderSVG resources/icons/mdlight/notice-info.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:10.348 V/KOReader(14654): cache image|resources/icons/mdlight/notice-info.svg|73|73|alpha
+08-17 15:16:10.348 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:10.348 V/KOReader(14654): show widget: table: 0x710fe5c0f0
+08-17 15:16:10.348 V/KOReader(14654): setDirty nil from widget table: 0x710fe5c0f0 w/ NO region; dithering: nil
+08-17 15:16:10.348 V/KOReader(14654): setDirty via a func from widget table: 0x710fe5c0f0
+08-17 15:16:10.348 V/KOReader(14654): painting widget: table: 0x710fe5c0f0
+08-17 15:16:10.349 V/KOReader(14654): blitFrom 165 803 0 0 73 73
+08-17 15:16:10.350 V/KOReader(14654): _refresh: Enqueued ui update for region 152 711 960 257 dithering: false
+08-17 15:16:10.351 V/KOReader(14654): triggering refresh {
+08-17 15:16:10.351 V/KOReader(14654):   mode = "ui",
+08-17 15:16:10.351 V/KOReader(14654):   region = "960x257+152+711"
+08-17 15:16:10.351 V/KOReader(14654): } --[[table: 0x71105cb510]]
+08-17 15:16:10.368 V/KOReader(14654): close widget: table: 0x710fe5c0f0
+08-17 15:16:10.368 V/KOReader(14654): setDirty via a func from widget nil
+08-17 15:16:10.368 V/KOReader(14654): creating coroutine for showing reader
+08-17 15:16:10.368 I/KOReader(14654): opening file /storage/emulated/0/epubs/fiktion/dag solstad - elfte romanen, artonde boken och 17_e romanen.epub
+08-17 15:16:10.402 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [libs/libkoreader-cre]
+08-17 15:16:10.417 V/KOReader(14654): CreDocument: using cre call cache
+08-17 15:16:10.419 I/KOReader(14654): Inhibiting user input
+08-17 15:16:10.419 V/KOReader(14654): android.setIgnoreInput true
+08-17 15:16:10.423 V/KOReader(14654): DocSettings: data is read from /storage/emulated/0/epubs/fiktion/dag solstad - elfte romanen, artonde boken och 17_e romanen.sdr/metadata.epub.lua
+08-17 15:16:10.424 V/KOReader(14654): Found font: NotoSans-Regular.ttf in ./fonts/noto/NotoSans-Regular.ttf
+08-17 15:16:10.425 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/book.opened.svg 58 58
+08-17 15:16:10.425 V/KOReader(14654): renderSVG resources/icons/mdlight/book.opened.svg 1.2083333333333 48 48 > 58 58 0 0
+08-17 15:16:10.426 V/KOReader(14654): cache image|resources/icons/mdlight/book.opened.svg|58|58|flat
+08-17 15:16:10.426 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:10.429 V/KOReader(14654): Getting list of dictionaries
+08-17 15:16:10.429 V/KOReader(14654): found 0 dictionaries
+08-17 15:16:10.430 V/KOReader(14654): LuaData: data is read from /storage/emulated/0/koreader/settings/lookup_history.lua
+08-17 15:16:10.431 V/KOReader(14654): LuaData: data is read from /storage/emulated/0/koreader/settings/wikipedia_history.lua
+08-17 15:16:10.439 V/Surface (14654): surface changed {
+08-17 15:16:10.439 V/Surface (14654):   width:  1264
+08-17 15:16:10.439 V/Surface (14654):   height: 1680
+08-17 15:16:10.439 V/Surface (14654):   format: OPAQUE
+08-17 15:16:10.439 V/Surface (14654): }
+08-17 15:16:10.439 V/NativeGlue(14654): NativeWindowResized: 0xb4000071fa080b90 -- 0xb4000072ba04f2b0
+08-17 15:16:10.442 V/KOReader(14654): CreDocument: applied cr3.ini default settings.
+08-17 15:16:10.442 V/KOReader(14654): CreDocument: set fallback font faces: Noto Sans CJK SC|Noto Naskh Arabic|Noto Sans Devanagari UI|Noto Sans Bengali UI|FreeSans|FreeSerif|Noto Serif|Noto Sans
+08-17 15:16:10.442 V/KOReader(14654): CreDocument: set adjusted fallback font sizes true
+08-17 15:16:10.442 V/KOReader(14654): CreDocument: set monospace font scaling 100
+08-17 15:16:10.447 I/KOReader(14654): Looking for plugins in directory: plugins
+08-17 15:16:10.447 I/KOReader(14654): Looking for plugins in directory: /storage/emulated/0/koreader/plugins/
+08-17 15:16:10.456 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [ssl.core]
+08-17 15:16:10.457 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [ssl.context]
+08-17 15:16:10.457 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [ssl.x509]
+08-17 15:16:10.458 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [ssl.config]
+08-17 15:16:10.489 V/KOReader(14654): Plugin loaded hardcoverapp
+08-17 15:16:10.491 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [rapidjson]
+08-17 15:16:10.494 V/KOReader(14654): Plugin loaded iconschanger
+08-17 15:16:10.502 V/KOReader(14654): Plugin loaded koinsight
+08-17 15:16:10.511 I/KOReader(14654): Project: Title - Checking requirements in '/storage/emulated/0/koreader'
+08-17 15:16:10.514 I/KOReader(14654): Project: Title - All tests passed, loading into KOReader ver 202508000000
+08-17 15:16:10.516 V/KOReader(14654): Plugin loaded coverbrowser
+08-17 15:16:10.519 V/KOReader(14654): Plugin loaded readest
+08-17 15:16:10.520 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [ui/widget/numinput]
+08-17 15:16:10.520 W/KOReader(14654): Error when loading /storage/emulated/0/koreader/plugins//referencepages.koplugin/main.lua ...ted/0/koreader/plugins//referencepages.koplugin/main.lua:2: module 'ui/widget/numinput' not found:
+08-17 15:16:10.520 W/KOReader(14654): 	no field package.preload['ui/widget/numinput']
+08-17 15:16:10.520 W/KOReader(14654): 	no file 'ui/widget/numinput.lua' (checked with asset loader)
+08-17 15:16:10.520 W/KOReader(14654): 	no file '/storage/emulated/0/koreader/plugins//referencepages.koplugin/ui/widget/numinput.lua'
+08-17 15:16:10.520 W/KOReader(14654): 	no file 'common/ui/widget/numinput.lua'
+08-17 15:16:10.520 W/KOReader(14654): 	no file 'frontend/ui/widget/numinput.lua'
+08-17 15:16:10.520 W/KOReader(14654): 	no file 'plugins/exporter.koplugin/ui/widget/numinput.lua'
+08-17 15:16:10.520 W/KOReader(14654): 	no file 'ui/widget/numinput.lua'
+08-17 15:16:10.520 W/KOReader(14654): 	no file '/data/user/0/org.koreader.launcher/files/ui/widget/numinput.lua'
+08-17 15:16:10.520 W/KOReader(14654): 	no file '/storage/emulated/0/koreader/plugins//referencepages.koplugin/lib/ui/widget/numinput.so'
+08-17 15:16:10.520 W/KOReader(14654): 	no file 'common/ui/widget/numinput.so'
+08-17 15:16:10.520 W/KOReader(14654): 	no file 'common/ui/widget/numinput.dll'
+08-17 15:16:10.520 W/KOReader(14654): 	no file '/usr/lib/lua/ui/widget/numinput.so'
+08-17 15:16:10.520 W/KOReader(14654): 	no file './ui/widget/numinput.so'
+08-17 15:16:10.520 W/KOReader(14654): 	no file '/usr/local/lib/lua/5.1/ui/widget/numinput.so'
+08-17 15:16:10.520 W/KOReader(14654): 	no file '/usr/local/lib/lua/5.1/loadall.so'
+08-17 15:16:10.522 V/KOReader(14654): Plugin loaded archiveviewer
+08-17 15:16:10.523 V/KOReader(14654): Plugin loaded autodim
+08-17 15:16:10.524 V/KOReader(14654): Plugin loaded autoturn
+08-17 15:16:10.528 V/KOReader(14654): Plugin loaded autowarmth
+08-17 15:16:10.531 V/KOReader(14654): Plugin loaded batterystat
+08-17 15:16:10.532 V/KOReader(14654): Plugin loaded bookshortcuts
+08-17 15:16:10.536 V/KOReader(14654): Plugin loaded calibre
+08-17 15:16:10.538 V/KOReader(14654): Plugin loaded coverimage
+08-17 15:16:10.538 V/KOReader(14654): Plugin loaded docsettingtweak
+08-17 15:16:10.542 V/KOReader(14654): Plugin loaded exporter
+08-17 15:16:10.545 V/KOReader(14654): Plugin loaded gestures
+08-17 15:16:10.547 V/KOReader(14654): Plugin loaded httpinspector
+08-17 15:16:10.552 V/KOReader(14654): japanese.koplugin deinflector: loaded inflection table with 36 rules and 569 variants
+08-17 15:16:10.552 V/KOReader(14654): Plugin loaded japanese
+08-17 15:16:10.554 V/KOReader(14654): Plugin loaded kosync
+08-17 15:16:10.554 V/KOReader(14654): Plugin loaded movetoarchive
+08-17 15:16:10.560 V/KOReader(14654): CacheSQLite: /storage/emulated/0/koreader/cache/newsdownloader.sqlite current size: 16384
+08-17 15:16:10.561 V/KOReader(14654): Plugin loaded newsdownloader
+08-17 15:16:10.572 V/KOReader(14654): Plugin loaded opds
+08-17 15:16:10.573 V/KOReader(14654): Plugin loaded perceptionexpander
+08-17 15:16:10.575 V/KOReader(14654): Plugin loaded profiles
+08-17 15:16:10.576 V/KOReader(14654): Plugin loaded qrclipboard
+08-17 15:16:10.577 V/KOReader(14654): Plugin loaded readtimer
+08-17 15:16:10.584 V/KOReader(14654): Plugin loaded statistics
+08-17 15:16:10.586 V/KOReader(14654): Plugin loaded systemstat
+08-17 15:16:10.589 V/KOReader(14654): Plugin loaded terminal
+08-17 15:16:10.591 V/KOReader(14654): Plugin loaded texteditor
+08-17 15:16:10.789 V/KOReader(14654): Found font: NotoSans-Regular.ttf in ./fonts/noto/NotoSans-Regular.ttf
+08-17 15:16:10.789 V/KOReader(14654): Found font: NotoSans-Italic.ttf in ./fonts/noto/NotoSans-Italic.ttf
+08-17 15:16:10.791 V/KOReader(14654): Plugin loaded vocabbuilder
+08-17 15:16:10.794 V/KOReader(14654): Plugin loaded wallabag
+08-17 15:16:10.796 V/KOReader(14654): RD loaded plugin hardcoverapp at /storage/emulated/0/koreader/plugins//hardcoverapp.koplugin
+08-17 15:16:10.797 V/KOReader(14654): RD loaded plugin iconschanger at /storage/emulated/0/koreader/plugins//iconschanger.koplugin
+08-17 15:16:10.798 V/KOReader(14654): RD loaded plugin koinsight at /storage/emulated/0/koreader/plugins//koinsight.koplugin
+08-17 15:16:10.840 V/KOReader(14654): Project: Title - Setting FileManager display mode to: mosaic_image
+08-17 15:16:10.853 V/KOReader(14654): Project: Title - Setting display mode: history mosaic_image
+08-17 15:16:10.853 V/KOReader(14654): Project: Title - Setting display mode: collections list_image_meta
+08-17 15:16:10.854 I/KOReader(14654): Project: Title - Home directory is set to:  /storage/emulated/0/ePubs
+08-17 15:16:10.863 V/KOReader(14654): userpatch applied to plugin coverbrowser
+08-17 15:16:10.863 V/KOReader(14654): userpatch applied to plugin coverbrowser
+08-17 15:16:10.863 V/KOReader(14654): RD loaded plugin coverbrowser at /storage/emulated/0/koreader/plugins//projecttitle.koplugin
+08-17 15:16:10.863 V/KOReader(14654): RD loaded plugin readest at /storage/emulated/0/koreader/plugins//readest.koplugin
+08-17 15:16:10.863 V/KOReader(14654): RD loaded plugin archiveviewer at plugins/archiveviewer.koplugin
+08-17 15:16:10.863 V/KOReader(14654): RD loaded plugin autodim at plugins/autodim.koplugin
+08-17 15:16:10.863 V/KOReader(14654): RD loaded plugin autoturn at plugins/autoturn.koplugin
+08-17 15:16:10.864 V/KOReader(14654): AutoWarmth: scheduleMidnightUpdate
+08-17 15:16:10.864 V/KOReader(14654): RD loaded plugin autowarmth at plugins/autowarmth.koplugin
+08-17 15:16:10.865 V/KOReader(14654): RD loaded plugin batterystat at plugins/batterystat.koplugin
+08-17 15:16:10.865 V/KOReader(14654): RD loaded plugin bookshortcuts at plugins/bookshortcuts.koplugin
+08-17 15:16:10.865 V/KOReader(14654): RD loaded plugin calibre at plugins/calibre.koplugin
+08-17 15:16:10.866 V/KOReader(14654): RD loaded plugin coverimage at plugins/coverimage.koplugin
+08-17 15:16:10.867 V/KOReader(14654): RD loaded plugin docsettingtweak at plugins/docsettingtweak.koplugin
+08-17 15:16:10.867 V/KOReader(14654): RD loaded plugin exporter at plugins/exporter.koplugin
+08-17 15:16:10.900 V/KOReader(14654): RD loaded plugin gestures at plugins/gestures.koplugin
+08-17 15:16:10.900 V/KOReader(14654): RD loaded plugin httpinspector at plugins/httpinspector.koplugin
+08-17 15:16:10.900 V/KOReader(14654): language support: registering japanese plugin
+08-17 15:16:10.900 V/KOReader(14654): RD loaded plugin japanese at plugins/japanese.koplugin
+08-17 15:16:10.900 V/KOReader(14654): RD loaded plugin kosync at plugins/kosync.koplugin
+08-17 15:16:10.901 V/KOReader(14654): RD loaded plugin movetoarchive at plugins/movetoarchive.koplugin
+08-17 15:16:10.901 V/KOReader(14654): RD loaded plugin newsdownloader at plugins/newsdownloader.koplugin
+08-17 15:16:10.901 V/KOReader(14654): RD loaded plugin opds at plugins/opds.koplugin
+08-17 15:16:10.902 V/KOReader(14654): RD loaded plugin perceptionexpander at plugins/perceptionexpander.koplugin
+08-17 15:16:10.904 V/KOReader(14654): RD loaded plugin profiles at plugins/profiles.koplugin
+08-17 15:16:10.904 V/KOReader(14654): RD loaded plugin qrclipboard at plugins/qrclipboard.koplugin
+08-17 15:16:10.904 V/KOReader(14654): RD loaded plugin readtimer at plugins/readtimer.koplugin
+08-17 15:16:10.932 V/KOReader(14654): RD loaded plugin statistics at plugins/statistics.koplugin
+08-17 15:16:10.932 V/KOReader(14654): RD loaded plugin systemstat at plugins/systemstat.koplugin
+08-17 15:16:10.933 V/KOReader(14654): Terminal: default shell is sh
+08-17 15:16:10.933 V/KOReader(14654): RD loaded plugin terminal at plugins/terminal.koplugin
+08-17 15:16:10.933 V/KOReader(14654): RD loaded plugin texteditor at plugins/texteditor.koplugin
+08-17 15:16:10.933 V/KOReader(14654): RD loaded plugin vocabbuilder at plugins/vocabbuilder.koplugin
+08-17 15:16:10.934 V/KOReader(14654): RD loaded plugin wallabag at plugins/wallabag.koplugin
+08-17 15:16:10.938 V/KOReader(14654): CreDocument: set view mode page
+08-17 15:16:10.938 V/KOReader(14654): CreDocument: set page info 
+08-17 15:16:10.939 V/KOReader(14654): CreDocument: set status line property 1
+08-17 15:16:10.940 V/KOReader(14654): made tweak css:
+08-17 15:16:10.940 V/KOReader(14654): *[type~="note"],
+08-17 15:16:10.940 V/KOReader(14654): *[type~="endnote"],
+08-17 15:16:10.940 V/KOReader(14654): *[type~="footnote"],
+08-17 15:16:10.940 V/KOReader(14654): *[type~="rearnote"],
+08-17 15:16:10.940 V/KOReader(14654): *[role~="doc-note"],
+08-17 15:16:10.940 V/KOReader(14654): *[role~="doc-endnote"],
+08-17 15:16:10.940 V/KOReader(14654): *[role~="doc-footnote"],
+08-17 15:16:10.940 V/KOReader(14654): *[role~="doc-rearnote"]
+08-17 15:16:10.940 V/KOReader(14654): {
+08-17 15:16:10.940 V/KOReader(14654):     -cr-only-if: -fb2-document;
+08-17 15:16:10.940 V/KOReader(14654):         -cr-hint: footnote-inpage;
+08-17 15:16:10.940 V/KOReader(14654):         margin: 0 !important;
+08-17 15:16:10.940 V/KOReader(14654): }
+08-17 15:16:10.940 V/KOReader(14654): body[name="notes"] section {
+08-17 15:16:10.940 V/KOReader(14654):     -cr-only-if: fb2-document;
+08-17 15:16:10.940 V/KOReader(14654):         -cr-hint: footnote-inpage;
+08-17 15:16:10.940 V/KOReader(14654):         margin: 0 !important;
+08-17 15:16:10.940 V/KOReader(14654): }
+08-17 15:16:10.940 V/KOReader(14654): body[name="notes"] > section {
+08-17 15:16:10.940 V/KOReader(14654):     -cr-only-if: fb2-document;
+08-17 15:16:10.940 V/KOReader(14654):         font-size: 0.75rem;
+08-17 15:16:10.940 V/KOReader(14654): }
+08-17 15:16:10.940 V/KOReader(14654): body[name="notes"] > title {
+08-17 15:16:10.940 V/KOReader(14654):     -cr-only-if: fb2-document;
+08-17 15:16:10.940 V/KOReader(14654):         margin-bottom: 0;
+08-17 15:16:10.940 V/KOReader(14654):         padding-bottom: 0.5em;
+08-17 15:16:10.940 V/KOReader(14654): }
+08-17 15:16:10.940 V/KOReader(14654): *, autoBoxing {
+08-17 15:16:10.940 V/KOReader(14654):     -cr-hint: late;
+08-17 15:16:10.940 V/KOReader(14654):     -cr-only-if: -fb2-document inpage-footnote;
+08-17 15:16:10.940 V/KOReader(14654):         font-size: 0.8rem !important;
+08-17 15:16:10.940 V/KOReader(14654): }[END]
+08-17 15:16:10.940 V/KOReader(14654): CreDocument: set style sheet: ./data/epub.css and appended content (735 bytes)
+08-17 15:16:10.942 V/KOReader(14654): CreDocument: set embedded fonts 1
+08-17 15:16:10.942 V/KOReader(14654): CreDocument: set embedded style sheet 1
+08-17 15:16:10.943 V/KOReader(14654): CreDocument: set block rendering flags 0x7fffffff
+08-17 15:16:10.943 V/KOReader(14654): CreDocument: set render dpi 96
+08-17 15:16:10.943 V/KOReader(14654): CreDocument: set page margins 28 91 28 77
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set txt preformatted 1
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set smooth scaling false
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set nightmode images true
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set font face Noto Serif
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set header font Noto Sans
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set font size 40
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set font base weight 0 = 400
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set font hinting mode 2
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set font kerning mode 3
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set space width scale 95
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set space condensing 75
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set word expansion 0
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set cjk width scaling 100
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set interline space 100
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set gamma index 15
+08-17 15:16:10.944 V/KOReader(14654): CreDocument: set font-family font faces: ||||||FreeSerif||
+08-17 15:16:10.945 V/KOReader(14654): building font face menu table
+08-17 15:16:10.946 V/KOReader(14654): CreDocument: set textlang embedded langs true
+08-17 15:16:10.946 V/KOReader(14654): CreDocument: set textlang hyphenation enabled true
+08-17 15:16:10.946 V/KOReader(14654): CreDocument: set hyphenation trust soft hyphens 0
+08-17 15:16:10.946 V/KOReader(14654): CreDocument: set textlang hyphenation soft hyphens only false
+08-17 15:16:10.946 V/KOReader(14654): CreDocument: set textlang hyphenation force algorithmic false
+08-17 15:16:10.946 V/KOReader(14654): CreDocument: set hyphenation left hyphen min 0
+08-17 15:16:10.947 V/KOReader(14654): CreDocument: set hyphenation right hyphen min 0
+08-17 15:16:10.947 V/KOReader(14654): CreDocument: set floating punctuation 0
+08-17 15:16:10.947 V/KOReader(14654): Typography lang: using sv from doc settings
+08-17 15:16:10.947 V/KOReader(14654): CreDocument: set textlang main lang sv
+08-17 15:16:10.948 V/KOReader(14654): UserHyph: reset user hyphenation dict
+08-17 15:16:10.949 V/KOReader(14654): CreDocument: requesting DOM version: 20240114
+08-17 15:16:10.949 V/KOReader(14654): CreDocument: set visible page count 1
+08-17 15:16:10.950 V/KOReader(14654): CreDocument: loading document...
+08-17 15:16:11.100 V/KOReader(14654): CreDocument: loading done.
+08-17 15:16:11.100 V/KOReader(14654):   loading took 0.150 seconds
+08-17 15:16:11.102 V/KOReader(14654): Typography lang: not overriding sv with doc language: sv
+08-17 15:16:11.102 V/KOReader(14654): CreDocument: rendering document...
+08-17 15:16:11.107 V/KOReader(14654): CreDocument: rendering done.
+08-17 15:16:11.107 V/KOReader(14654):   rendering took 0.005 seconds
+08-17 15:16:11.122 V/KOReader(14654): CreDocument: set alt document prop authors Dag Solstad
+08-17 15:16:11.122 V/KOReader(14654): CreDocument: set alt document prop title Elfte romanen, artonde boken och 17:e romanen
+08-17 15:16:11.136 V/KOReader(14654): CreDocument: goto page 50 flow 0
+08-17 15:16:11.137 V/KOReader(14654): _refresh: Enqueued partial update for region 0 0 1264 1680 dithering: false
+08-17 15:16:11.137 V/KOReader(14654): setDirty partial from widget ReaderUI w/ NO region; dithering: nil
+08-17 15:16:11.138 V/KOReader(14654): CreDocument: set page info 
+08-17 15:16:11.139 V/KOReader(14654): CreDocument: goto xpointer /body/DocFragment[7]/body/div[1]/p[7]/st[5]/text().85
+08-17 15:16:11.141 V/KOReader(14654): CoverImage: onReaderReady
+08-17 15:16:11.198 V/KOReader(14654): _refresh: Enqueued partial update for region 0 0 1264 1680 dithering: false
+08-17 15:16:11.198 V/KOReader(14654): setDirty partial from widget ReaderUI w/ NO region; dithering: nil
+08-17 15:16:11.198 V/KOReader(14654): CreDocument: set bookmarks highlight and internal history false
+08-17 15:16:11.198 V/KOReader(14654): _refresh: Enqueued partial update for region 0 0 1264 1680 dithering: false
+08-17 15:16:11.198 V/KOReader(14654): setDirty partial from widget ReaderUI w/ NO region; dithering: nil
+08-17 15:16:11.205 V/KOReader(14654): CreDocument: set page info 
+08-17 15:16:11.206 V/KOReader(14654): ReaderStatistics: No timestamp for previous page 0
+08-17 15:16:11.206 V/KOReader(14654): android.setIgnoreInput false
+08-17 15:16:11.207 V/KOReader(14654): Spinning up new ReaderUI instance table: 0x710fecf580
+08-17 15:16:11.207 V/KOReader(14654): show widget: ReaderUI
+08-17 15:16:11.207 V/KOReader(14654): update_mode: Update refresh mode partial to full
+08-17 15:16:11.207 V/KOReader(14654): _refresh: Enqueued full update for region 0 0 1264 1680 dithering: false
+08-17 15:16:11.207 V/KOReader(14654): setDirty full from widget ReaderUI w/ NO region; dithering: nil
+08-17 15:16:11.208 V/KOReader(14654): painting widget: ReaderUI
+08-17 15:16:11.208 V/KOReader(14654): readerview painting "1264x1680+0+0" to 0 0
+08-17 15:16:11.208 V/KOReader(14654): CreDocument: goto page 50 flow 0
+08-17 15:16:11.228 V/Surface (14654): surface changed {
+08-17 15:16:11.228 V/Surface (14654):   width:  1264
+08-17 15:16:11.228 V/Surface (14654):   height: 1680
+08-17 15:16:11.228 V/Surface (14654):   format: OPAQUE
+08-17 15:16:11.228 V/Surface (14654): }
+08-17 15:16:11.228 V/NativeGlue(14654): NativeWindowResized: 0xb4000071fa080b90 -- 0xb4000072ba04f2b0
+08-17 15:16:11.235 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/dogear.alpha.svg 32 32
+08-17 15:16:11.235 V/KOReader(14654): renderSVG resources/icons/mdlight/dogear.alpha.svg 0.66666666666667 48 48 > 32 32 0 0
+08-17 15:16:11.235 V/KOReader(14654): cache image|resources/icons/mdlight/dogear.alpha.svg|32|32|alpha
+08-17 15:16:11.235 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:11.235 V/KOReader(14654): blitFrom 1232 0 0 0 32 32
+08-17 15:16:11.237 V/KOReader(14654): Found font: NotoSansCJKsc-Regular.otf in ./fonts/noto/NotoSansCJKsc-Regular.otf
+08-17 15:16:11.244 V/KOReader(14654): Found font: NotoSansArabicUI-Regular.ttf in ./fonts/noto/NotoSansArabicUI-Regular.ttf
+08-17 15:16:11.246 V/KOReader(14654): _refresh: Enqueued full update for region 0 0 1264 1680 dithering: false
+08-17 15:16:11.247 V/KOReader(14654): triggering refresh {
+08-17 15:16:11.247 V/KOReader(14654):   mode = "full",
+08-17 15:16:11.247 V/KOReader(14654):   region = "1264x1680+0+0"
+08-17 15:16:11.247 V/KOReader(14654): } --[[table: 0x70b16f6788]]
+08-17 15:16:11.525 I/KOReader(14654): package.loadlib: /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libkoreader-monolibtic.so [http.version]
+08-17 15:16:12.659 V/KOReader(14654): ReadestSync: Applying book config: {
+08-17 15:16:12.659 V/KOReader(14654):   book_hash = "aa94ea27e34a0a08bbb5a386c552b70d",
+08-17 15:16:12.659 V/KOReader(14654):   created_at = "2025-08-13T18:25:23.981637+00:00",
+08-17 15:16:12.659 V/KOReader(14654):   progress = "[50,317]",
+08-17 15:16:12.659 V/KOReader(14654):   updated_at = "2025-08-17T13:15:45+00:00",
+08-17 15:16:12.659 V/KOReader(14654):   user_id = "68318a32-843d-46a7-9801-fa31a21258cc",
+08-17 15:16:12.659 V/KOReader(14654):   xpointer = "/body/DocFragment[7]/body/div[1]/p[7]/st[5]/text().85"
+08-17 15:16:12.659 V/KOReader(14654): } --[[table: 0x70b16e40d0]]
+08-17 15:16:12.970 V/KOReader(14654): KOSync: [Pull] progress for /storage/emulated/0/epubs/fiktion/dag solstad - elfte romanen, artonde boken och 17_e romanen.epub
+08-17 15:16:12.973 V/KOReader(14654): KOSync: ok: true body: {
+08-17 15:16:12.973 V/KOReader(14654):   device = "gocolor7",
+08-17 15:16:12.973 V/KOReader(14654):   device_id = "AB01FB37FCF54B449E320511A5840E46",
+08-17 15:16:12.973 V/KOReader(14654):   document = "aa94ea27e34a0a08bbb5a386c552b70d",
+08-17 15:16:12.973 V/KOReader(14654):   percentage = 0.15770000000000001,
+08-17 15:16:12.973 V/KOReader(14654):   progress = "/body/DocFragment[7]/body/div[1]/p[7]/st[5]/text().85",
+08-17 15:16:12.973 V/KOReader(14654):   timestamp = 1755436533
+08-17 15:16:12.973 V/KOReader(14654): } --[[table: 0x70ab818ef0]]
+08-17 15:16:12.973 V/KOReader(14654): input event => type: 4 (EV_MSC), code: 3 (MSC_RAW), value: 1, time: 120393.639885
+08-17 15:16:12.973 V/KOReader(14654): Android application event 3
+08-17 15:16:12.973 V/KOReader(14654): input event => type: 4 (EV_MSC), code: 3 (MSC_RAW), value: 1, time: 120393.639920
+08-17 15:16:12.974 V/KOReader(14654): Android application event 3
+08-17 15:16:12.974 I/KOReader(14654): Restoring user input handling
+08-17 15:16:13.141 V/KOReader(14654): UIManager:preventStandby, counter increased to 1
+08-17 15:16:13.145 V/KOReader(14654): show widget: table: 0x70a14f4f18
+08-17 15:16:13.145 V/KOReader(14654): setDirty nil from widget table: 0x70a14f4f18 w/ NO region; dithering: nil
+08-17 15:16:13.157 V/KOReader(14654): UIManager:_standbyTransition -> PreventStandby
+08-17 15:16:13.282 V/KOReader(14654): subprocess_done: false  stuff_to_read: false
+08-17 15:16:13.282 V/KOReader(14654): process not yet done, will check again soon
+08-17 15:16:13.407 V/KOReader(14654): subprocess_done: false  stuff_to_read: false
+08-17 15:16:13.407 V/KOReader(14654): process not yet done, will check again soon
+08-17 15:16:13.533 V/KOReader(14654): subprocess_done: false  stuff_to_read: false
+08-17 15:16:13.533 V/KOReader(14654): process not yet done, will check again soon
+--------- beginning of crash
+08-17 15:16:13.561 F/libc    (15115): Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x746ed19000 in tid 15115 (Thread-118), pid 15115 (Thread-118)
+08-17 15:16:13.607 I/crash_dump64(15122): obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+08-17 15:16:13.608 I/crash_dump64(15122): performing dump of process 15115 (target tid = 15115)
+08-17 15:16:13.616 E/DEBUG   (15122): failed to read /proc/uptime: Permission denied
+08-17 15:16:13.658 V/KOReader(14654): subprocess_done: false  stuff_to_read: true
+08-17 15:16:13.658 V/KOReader(14654): close widget: table: 0x70a14f4f18
+08-17 15:16:13.658 V/KOReader(14654): Lower widget ReaderUI covers the full screen
+08-17 15:16:13.660 V/KOReader(14654): UIManager:allowStandby, counter decreased to 0
+08-17 15:16:13.660 V/KOReader(14654): UIManager:_standbyTransition -> AllowStandby
+08-17 15:16:13.760 F/DEBUG   (15122): *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+08-17 15:16:13.760 F/DEBUG   (15122): Build fingerprint: 'ONYX/BOOX_Tab_EEA/BOOX_Tab:12/SP1A.210812.016/2212291810:user/release-keys'
+08-17 15:16:13.760 F/DEBUG   (15122): Revision: '0'
+08-17 15:16:13.760 F/DEBUG   (15122): ABI: 'arm64'
+08-17 15:16:13.760 F/DEBUG   (15122): Timestamp: 2025-08-17 15:16:13.616480793+0200
+08-17 15:16:13.760 F/DEBUG   (15122): Process uptime: 0s
+08-17 15:16:13.760 F/DEBUG   (15122): Cmdline: org.koreader.launcher
+08-17 15:16:13.760 F/DEBUG   (15122): pid: 15115, tid: 15115, name: Thread-118  >>> org.koreader.launcher <<<
+08-17 15:16:13.760 F/DEBUG   (15122): uid: 10179
+08-17 15:16:13.760 F/DEBUG   (15122): signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x746ed19000
+08-17 15:16:13.760 F/DEBUG   (15122):     x0  000000746ed19000  x1  0000000070100001  x2  0000000000000000  x3  00000004010000c0
+08-17 15:16:13.760 F/DEBUG   (15122):     x4  0000000000000000  x5  b40000723a10b048  x6  0000000000000004  x7  0000000000000000
+08-17 15:16:13.760 F/DEBUG   (15122):     x8  0000000000000000  x9  0000000000000000  x10 0000000000000001  x11 0000000000001000
+08-17 15:16:13.760 F/DEBUG   (15122):     x12 000000746ed19000  x13 000000746ed19000  x14 0000000000000002  x15 b40000718a0522d0
+08-17 15:16:13.760 F/DEBUG   (15122):     x16 0000000000000036  x17 0000007458571c00  x18 00000070ae442000  x19 0000000000000004
+08-17 15:16:13.760 F/DEBUG   (15122):     x20 b40000721a05a1e0  x21 00000000000000f7  x22 0000000000000000  x23 0000000000000000
+08-17 15:16:13.760 F/DEBUG   (15122):     x24 0000000000000000  x25 0000000000000010  x26 b40000733a068040  x27 000000710acf8ba8
+08-17 15:16:13.760 F/DEBUG   (15122):     x28 b40000721a05a1e0  x29 000000711e8e52c0
+08-17 15:16:13.760 F/DEBUG   (15122):     lr  000000710acf2aec  sp  000000711e8e5290  pc  000000710acf2af4  pst 0000000020000000
+08-17 15:16:13.760 F/DEBUG   (15122): backtrace:
+08-17 15:16:13.760 F/DEBUG   (15122):       #00 pc 00000000000ebaf4  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!a0f1da254339e690ce8991d3084395!ec028f8cac!+2124) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #01 pc 00000000000ee990  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!d0051afa8fb0bb02a68e169738355f!ec028f8cac!+11048) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #02 pc 000000000012e7c4  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!11045d8ce79eba73325d58d94d4f1c!ec028f8cac!+60) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #03 pc 000000000024a384  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!725a9c1d1f28b77123f9592462a458!ec028f8cac!+84) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #04 pc 000000000024bbb4  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!338a077ceadc85ae2977b34e7893a1!ec028f8cac!+1972) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #05 pc 000000000024b3a8  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!29cb63825c794ea2379f848115fb69!ec028f8cac!+24) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #06 pc 000000000024b368  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!7bbfee685a9348f395f688e0e300eb!ec028f8cac!+296) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #07 pc 000000000024bf04  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!d908b6fd9e13f8636e66cac7839b28!ec028f8cac!+68) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #08 pc 00000000000d35dc  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!f0094bac55c5954b9bd246a1d3d77e!ec028f8cac!+20) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #09 pc 00000000000f1c38  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!c2e1dbc8d1c901a41f2f750a16909f!ec028f8cac!+80) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #10 pc 00000000000f1bc8  /vendor/lib64/egl/libGLESv2_adreno.so (!!!0000!14267ee3b59d824087eb30898505c6!ec028f8cac!+32) (BuildId: 48a93fe236f587a56597ea6eb2cee140)
+08-17 15:16:13.760 F/DEBUG   (15122):       #11 pc 00000000000ba42c  /apex/com.android.runtime/lib64/bionic/libc.so (__cxa_finalize+292) (BuildId: e4f5f00ed12a2fa6aa637429125b0b63)
+08-17 15:16:13.760 F/DEBUG   (15122):       #12 pc 00000000000ab290  /apex/com.android.runtime/lib64/bionic/libc.so (exit+28) (BuildId: e4f5f00ed12a2fa6aa637429125b0b63)
+08-17 15:16:13.760 F/DEBUG   (15122):       #13 pc 00000000000917bc  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #14 pc 000000000001c168  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #15 pc 000000000001cdac  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #16 pc 0000000000089cb4  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #17 pc 000000000001c168  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #18 pc 0000000000089cb4  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #19 pc 000000000001c168  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #20 pc 000000000002f4f0  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit.so (lua_pcall+144)
+08-17 15:16:13.760 F/DEBUG   (15122):       #21 pc 0000000000004580  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit-launcher.so (android_main+456)
+08-17 15:16:13.760 F/DEBUG   (15122):       #22 pc 000000000000403c  /data/app/~~8ZSGFcDZE6VxHdRVLEAGBg==/org.koreader.launcher-u0TmPxXEStABHvrp3a5BOg==/lib/arm64/libluajit-launcher.so
+08-17 15:16:13.760 F/DEBUG   (15122):       #23 pc 00000000000b6a24  /apex/com.android.runtime/lib64/bionic/libc.so (__pthread_start(void*)+264) (BuildId: e4f5f00ed12a2fa6aa637429125b0b63)
+08-17 15:16:13.760 F/DEBUG   (15122):       #24 pc 00000000000532bc  /apex/com.android.runtime/lib64/bionic/libc.so (__start_thread+68) (BuildId: e4f5f00ed12a2fa6aa637429125b0b63)
+08-17 15:16:13.777 E/crash_dump64(15122): AM data write failed: Broken pipe
+08-17 15:16:14.660 V/KOReader(14654): collected subprocess
+08-17 15:16:14.692 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120395.353968
+08-17 15:16:14.693 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: 0, time: 120395.353968
+08-17 15:16:14.693 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 786.37786865234, time: 120395.353968
+08-17 15:16:14.693 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 0.99940514564514, time: 120395.353968
+08-17 15:16:14.693 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120395.353968
+08-17 15:16:14.693 V/KOReader(14654): GestureDetector:probeClockSource: Touch event timestamps appear to use CLOCK_MONOTONIC
+08-17 15:16:14.693 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:14.693 V/KOReader(14654): set up hold timer
+08-17 15:16:14.693 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:14.743 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120395.407402
+08-17 15:16:14.743 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: -1, time: 120395.407402
+08-17 15:16:14.743 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 786.37786865234, time: 120395.407402
+08-17 15:16:14.743 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 0.99940514564514, time: 120395.407402
+08-17 15:16:14.743 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120395.407402
+08-17 15:16:14.743 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:14.744 V/KOReader(14654): Contact:handleDoubleTap: single tap detected @ 786.37786865234 0.99940514564514
+08-17 15:16:14.744 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:14.746 V/KOReader(14654): ReaderLink:getLinkFromPosition @ 786.37786865234 0.99940514564514 from a_xpointer: nil to link_xpointer: 
+08-17 15:16:14.748 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.rotation.svg 73 73
+08-17 15:16:14.748 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.rotation.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.749 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.rotation.svg|73|73|flat
+08-17 15:16:14.749 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.750 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.crop.svg 73 73
+08-17 15:16:14.750 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.crop.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.751 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.crop.svg|73|73|flat
+08-17 15:16:14.751 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.751 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.pageview.svg 73 73
+08-17 15:16:14.752 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.pageview.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.752 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.pageview.svg|73|73|flat
+08-17 15:16:14.752 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.752 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.textsize.svg 73 73
+08-17 15:16:14.753 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.textsize.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.753 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.textsize.svg|73|73|flat
+08-17 15:16:14.753 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.755 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.contrast.svg 73 73
+08-17 15:16:14.756 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.contrast.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.756 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.contrast.svg|73|73|flat
+08-17 15:16:14.756 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.757 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.settings.svg 73 73
+08-17 15:16:14.757 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.settings.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.757 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.settings.svg|73|73|flat
+08-17 15:16:14.758 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.762 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/rotation.P.90CCW.svg 73 73
+08-17 15:16:14.763 V/KOReader(14654): renderSVG resources/icons/mdlight/rotation.P.90CCW.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.763 V/KOReader(14654): cache image|resources/icons/mdlight/rotation.P.90CCW.svg|73|73|flat
+08-17 15:16:14.763 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.764 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/rotation.P.0UR.svg 73 73
+08-17 15:16:14.764 V/KOReader(14654): renderSVG resources/icons/mdlight/rotation.P.0UR.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.765 V/KOReader(14654): cache image|resources/icons/mdlight/rotation.P.0UR.svg|73|73|flat
+08-17 15:16:14.765 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.766 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/rotation.P.90CW.svg 73 73
+08-17 15:16:14.766 V/KOReader(14654): renderSVG resources/icons/mdlight/rotation.P.90CW.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.767 V/KOReader(14654): cache image|resources/icons/mdlight/rotation.P.90CW.svg|73|73|flat
+08-17 15:16:14.767 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.769 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/rotation.P.180UD.svg 73 73
+08-17 15:16:14.769 V/KOReader(14654): renderSVG resources/icons/mdlight/rotation.P.180UD.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.770 V/KOReader(14654): cache image|resources/icons/mdlight/rotation.P.180UD.svg|73|73|flat
+08-17 15:16:14.770 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.772 V/KOReader(14654): Found font: NotoSans-Regular.ttf in ./fonts/noto/NotoSans-Regular.ttf
+08-17 15:16:14.772 V/KOReader(14654): FocusManager: Move focus position to: 1 , 3
+08-17 15:16:14.775 V/KOReader(14654): FocusManager: Move focus position to: 1 , 1
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.rotation.svg 73 73
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.crop.svg 73 73
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.pageview.svg 73 73
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.textsize.svg 73 73
+08-17 15:16:14.775 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.776 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.contrast.svg 73 73
+08-17 15:16:14.776 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.776 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.settings.svg 73 73
+08-17 15:16:14.776 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.778 V/KOReader(14654): FocusManager: Move focus position to: 6 , 5
+08-17 15:16:14.778 V/KOReader(14654): setDirty via a func from widget ConfigDialog
+08-17 15:16:14.778 V/KOReader(14654): show widget: ConfigDialog
+08-17 15:16:14.778 V/KOReader(14654): setDirty nil from widget ConfigDialog w/ NO region; dithering: nil
+08-17 15:16:14.810 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.navigation.svg 73 73
+08-17 15:16:14.810 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.navigation.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.811 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.navigation.svg|73|73|flat
+08-17 15:16:14.811 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.811 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.typeset.svg 73 73
+08-17 15:16:14.811 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.typeset.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.812 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.typeset.svg|73|73|flat
+08-17 15:16:14.812 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.812 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.settings.svg 73 73
+08-17 15:16:14.813 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.813 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.tools.svg 73 73
+08-17 15:16:14.813 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.tools.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.813 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.tools.svg|73|73|flat
+08-17 15:16:14.814 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.814 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.search.svg 73 73
+08-17 15:16:14.814 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.search.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.814 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.search.svg|73|73|flat
+08-17 15:16:14.815 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.815 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.filebrowser.svg 73 73
+08-17 15:16:14.815 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.filebrowser.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.816 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.filebrowser.svg|73|73|flat
+08-17 15:16:14.816 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.816 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.menu.svg 73 73
+08-17 15:16:14.816 V/KOReader(14654): renderSVG resources/icons/mdlight/appbar.menu.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.816 V/KOReader(14654): cache image|resources/icons/mdlight/appbar.menu.svg|73|73|flat
+08-17 15:16:14.816 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.817 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.left.svg 73 73
+08-17 15:16:14.817 V/KOReader(14654): renderSVG resources/icons/mdlight/chevron.left.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.817 V/KOReader(14654): cache image|resources/icons/mdlight/chevron.left.svg|73|73|flat
+08-17 15:16:14.817 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.817 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.right.svg 73 73
+08-17 15:16:14.818 V/KOReader(14654): renderSVG resources/icons/mdlight/chevron.right.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.818 V/KOReader(14654): cache image|resources/icons/mdlight/chevron.right.svg|73|73|flat
+08-17 15:16:14.818 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.819 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.up.svg 73 73
+08-17 15:16:14.819 V/KOReader(14654): renderSVG resources/icons/mdlight/chevron.up.svg 1.5208333333333 48 48 > 73 73 0 0
+08-17 15:16:14.819 V/KOReader(14654): cache image|resources/icons/mdlight/chevron.up.svg|73|73|flat
+08-17 15:16:14.819 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:14.821 V/KOReader(14654): Found font: NotoSansCJKsc-Regular.otf in ./fonts/noto/NotoSansCJKsc-Regular.otf
+08-17 15:16:14.826 V/KOReader(14654): Found font: NotoSansArabicUI-Regular.ttf in ./fonts/noto/NotoSansArabicUI-Regular.ttf
+08-17 15:16:14.827 V/KOReader(14654): Found font: NotoSansDevanagariUI-Regular.ttf in ./fonts/noto/NotoSansDevanagariUI-Regular.ttf
+08-17 15:16:14.827 V/KOReader(14654): Found font: NotoSansBengaliUI-Regular.ttf in ./fonts/noto/NotoSansBengaliUI-Regular.ttf
+08-17 15:16:14.832 V/KOReader(14654): Found font: NotoSansCJKsc-Regular.otf in ./fonts/noto/NotoSansCJKsc-Regular.otf
+08-17 15:16:14.832 V/KOReader(14654): Found font: NotoSansArabicUI-Regular.ttf in ./fonts/noto/NotoSansArabicUI-Regular.ttf
+08-17 15:16:14.832 V/KOReader(14654): Found font: NotoSansDevanagariUI-Regular.ttf in ./fonts/noto/NotoSansDevanagariUI-Regular.ttf
+08-17 15:16:14.833 V/KOReader(14654): Found font: NotoSansBengaliUI-Regular.ttf in ./fonts/noto/NotoSansBengaliUI-Regular.ttf
+08-17 15:16:14.836 V/KOReader(14654): FocusManager: Move focus position to: 7 , 1
+08-17 15:16:14.836 V/KOReader(14654): setDirty via a func from widget table: 0x70a13c8e98
+08-17 15:16:14.836 V/KOReader(14654): show widget: table: 0x70a13c8e98
+08-17 15:16:14.836 V/KOReader(14654): setDirty nil from widget table: 0x70a13c8e98 w/ NO region; dithering: nil
+08-17 15:16:14.838 V/KOReader(14654): painting widget: ConfigDialog
+08-17 15:16:14.844 V/KOReader(14654): Found font: NotoSans-Bold.ttf in ./fonts/noto/NotoSans-Bold.ttf
+08-17 15:16:14.844 V/KOReader(14654): Found font: NotoSansCJKsc-Regular.otf in ./fonts/noto/NotoSansCJKsc-Regular.otf
+08-17 15:16:14.860 V/KOReader(14654): blitFrom 88 1594 0 0 73 73
+08-17 15:16:14.860 V/KOReader(14654): blitFrom 291 1594 0 0 73 73
+08-17 15:16:14.861 V/KOReader(14654): blitFrom 494 1594 0 0 73 73
+08-17 15:16:14.861 V/KOReader(14654): blitFrom 697 1594 0 0 73 73
+08-17 15:16:14.861 V/KOReader(14654): blitFrom 900 1594 0 0 73 73
+08-17 15:16:14.862 V/KOReader(14654): blitFrom 1103 1594 0 0 73 73
+08-17 15:16:14.862 V/KOReader(14654): painting widget: table: 0x70a13c8e98
+08-17 15:16:14.864 V/KOReader(14654): blitFrom 29 13 0 0 73 73
+08-17 15:16:14.864 V/KOReader(14654): blitFrom 164 13 0 0 73 73
+08-17 15:16:14.864 V/KOReader(14654): blitFrom 299 13 0 0 73 73
+08-17 15:16:14.864 V/KOReader(14654): blitFrom 434 13 0 0 73 73
+08-17 15:16:14.865 V/KOReader(14654): blitFrom 569 13 0 0 73 73
+08-17 15:16:14.865 V/KOReader(14654): blitFrom 704 13 0 0 73 73
+08-17 15:16:14.865 V/KOReader(14654): blitFrom 1162 13 0 0 73 73
+08-17 15:16:14.872 V/KOReader(14654): blitFrom 58 928 0 0 73 73
+08-17 15:16:14.873 V/KOReader(14654): _refresh: Enqueued ui update for region -23 1146 1310 534 dithering: false
+08-17 15:16:14.873 V/KOReader(14654): _refresh: Enqueued flashui update for region 0 0 1264 1016 dithering: false
+08-17 15:16:14.874 V/KOReader(14654): triggering refresh {
+08-17 15:16:14.874 V/KOReader(14654):   mode = "ui",
+08-17 15:16:14.874 V/KOReader(14654):   region = "1310x534+-23+1146"
+08-17 15:16:14.874 V/KOReader(14654): } --[[table: 0x70a171c790]]
+08-17 15:16:14.879 V/KOReader(14654): triggering refresh {
+08-17 15:16:14.879 V/KOReader(14654):   mode = "flashui",
+08-17 15:16:14.879 V/KOReader(14654):   region = "1264x1016+0+0"
+08-17 15:16:14.879 V/KOReader(14654): } --[[table: 0x70a171cdf0]]
+08-17 15:16:17.776 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120397.569408
+08-17 15:16:17.776 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: 0, time: 120397.569408
+08-17 15:16:17.776 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 381.69802856445, time: 120397.569408
+08-17 15:16:17.776 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 686.59130859375, time: 120397.569408
+08-17 15:16:17.776 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120397.569408
+08-17 15:16:17.776 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:17.777 V/KOReader(14654): set up hold timer
+08-17 15:16:17.777 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120397.668909
+08-17 15:16:17.777 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: -1, time: 120397.668909
+08-17 15:16:17.777 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 381.69802856445, time: 120397.668909
+08-17 15:16:17.777 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 686.59130859375, time: 120397.668909
+08-17 15:16:17.777 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120397.668909
+08-17 15:16:17.778 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:17.778 V/KOReader(14654): Contact:handleDoubleTap: single tap detected @ 381.69802856445 686.59130859375
+08-17 15:16:17.778 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:17.783 V/KOReader(14654): Explicit widgetInvert: table: 0x70a1671198 @ 10 651
+08-17 15:16:17.784 V/KOReader(14654): _refresh: Enqueued fast update for region 10 651 1244 83 dithering: false
+08-17 15:16:17.784 V/KOReader(14654): setDirty fast from widget nil w/ region 10 651 1244 83 dithering: nil
+08-17 15:16:17.785 V/KOReader(14654): triggering refresh {
+08-17 15:16:17.785 V/KOReader(14654):   mode = "fast",
+08-17 15:16:17.785 V/KOReader(14654):   region = "1244x83+10+651"
+08-17 15:16:17.785 V/KOReader(14654): } --[[table: 0x70a1733cb8]]
+08-17 15:16:17.797 V/KOReader(14654): close widget: ConfigDialog
+08-17 15:16:17.797 V/KOReader(14654): setDirty via a func from widget nil
+08-17 15:16:17.797 V/KOReader(14654): Lower widget ReaderUI covers the full screen
+08-17 15:16:17.797 V/KOReader(14654): setDirty nil from widget ReaderUI w/ NO region; dithering: nil
+08-17 15:16:17.797 V/KOReader(14654): setDirty nil from widget table: 0x70a13c8e98 w/ NO region; dithering: nil
+08-17 15:16:17.801 V/KOReader(14654): FocusManager: Move focus position to: 7 , 1
+08-17 15:16:17.801 V/KOReader(14654): setDirty via a func from widget all
+08-17 15:16:17.801 V/KOReader(14654): painting widget: ReaderUI
+08-17 15:16:17.801 V/KOReader(14654): readerview painting "1264x1680+0+0" to 0 0
+08-17 15:16:17.801 V/KOReader(14654): CreDocument: goto page 50 flow 0
+08-17 15:16:17.819 V/KOReader(14654): blitFrom 1232 0 0 0 32 32
+08-17 15:16:17.824 V/KOReader(14654): painting widget: table: 0x70a13c8e98
+08-17 15:16:17.825 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.navigation.svg 73 73
+08-17 15:16:17.825 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.825 V/KOReader(14654): blitFrom 29 13 0 0 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.typeset.svg 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.826 V/KOReader(14654): blitFrom 164 13 0 0 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.settings.svg 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.826 V/KOReader(14654): blitFrom 299 13 0 0 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.tools.svg 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.826 V/KOReader(14654): blitFrom 434 13 0 0 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.search.svg 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.826 V/KOReader(14654): blitFrom 569 13 0 0 73 73
+08-17 15:16:17.826 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.filebrowser.svg 73 73
+08-17 15:16:17.827 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.827 V/KOReader(14654): blitFrom 704 13 0 0 73 73
+08-17 15:16:17.827 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.menu.svg 73 73
+08-17 15:16:17.827 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.827 V/KOReader(14654): blitFrom 1162 13 0 0 73 73
+08-17 15:16:17.828 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.up.svg 73 73
+08-17 15:16:17.828 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.828 V/KOReader(14654): blitFrom 58 283 0 0 73 73
+08-17 15:16:17.829 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.left.svg 73 73
+08-17 15:16:17.829 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.829 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.right.svg 73 73
+08-17 15:16:17.829 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:17.831 V/KOReader(14654): _refresh: Enqueued partial update for region -23 1146 1310 534 dithering: false
+08-17 15:16:17.831 V/KOReader(14654): _refresh: Enqueued ui update for region 0 0 1264 1016 dithering: false
+08-17 15:16:17.831 V/KOReader(14654): triggering refresh {
+08-17 15:16:17.831 V/KOReader(14654):   mode = "partial",
+08-17 15:16:17.831 V/KOReader(14654):   region = "1310x534+-23+1146"
+08-17 15:16:17.831 V/KOReader(14654): } --[[table: 0x70a1791828]]
+08-17 15:16:17.839 V/KOReader(14654): triggering refresh {
+08-17 15:16:17.839 V/KOReader(14654):   mode = "ui",
+08-17 15:16:17.839 V/KOReader(14654):   region = "1264x1016+0+0"
+08-17 15:16:17.839 V/KOReader(14654): } --[[table: 0x70a1791d48]]
+08-17 15:16:19.567 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120400.230763
+08-17 15:16:19.567 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: 0, time: 120400.230763
+08-17 15:16:19.567 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 83.93359375, time: 120400.230763
+08-17 15:16:19.567 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 334.80072021484, time: 120400.230763
+08-17 15:16:19.567 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120400.230763
+08-17 15:16:19.567 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:19.567 V/KOReader(14654): set up hold timer
+08-17 15:16:19.567 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:19.656 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120400.320499
+08-17 15:16:19.656 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: -1, time: 120400.320499
+08-17 15:16:19.656 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 83.93359375, time: 120400.320499
+08-17 15:16:19.656 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 334.80072021484, time: 120400.320499
+08-17 15:16:19.656 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120400.320499
+08-17 15:16:19.656 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:19.656 V/KOReader(14654): Contact:handleDoubleTap: single tap detected @ 83.93359375 334.80072021484
+08-17 15:16:19.657 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:19.658 V/KOReader(14654): Explicit widgetInvert: table: 0x70a165fcb0 @ 58 283
+08-17 15:16:19.658 V/KOReader(14654): _refresh: Enqueued fast update for region 17 283 155 73 dithering: false
+08-17 15:16:19.658 V/KOReader(14654): setDirty fast from widget nil w/ region 17 283 155 73 dithering: nil
+08-17 15:16:19.659 V/KOReader(14654): triggering refresh {
+08-17 15:16:19.659 V/KOReader(14654):   mode = "fast",
+08-17 15:16:19.659 V/KOReader(14654):   region = "155x73+17+283"
+08-17 15:16:19.659 V/KOReader(14654): } --[[table: 0x70a179ab58]]
+08-17 15:16:19.669 V/KOReader(14654): Explicit widgetInvert: table: 0x70a165fcb0 @ 58 283
+08-17 15:16:19.676 V/KOReader(14654): FocusManager: Move focus position to: 7 , 1
+08-17 15:16:19.676 V/KOReader(14654): setDirty via a func from widget table: 0x70a13c8e98
+08-17 15:16:19.676 V/KOReader(14654): _refresh: Enqueued fast update for region 17 283 155 73 dithering: false
+08-17 15:16:19.676 V/KOReader(14654): setDirty fast from widget nil w/ region 17 283 155 73 dithering: nil
+08-17 15:16:19.676 V/KOReader(14654): painting widget: table: 0x70a13c8e98
+08-17 15:16:19.677 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.navigation.svg 73 73
+08-17 15:16:19.677 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.677 V/KOReader(14654): blitFrom 29 13 0 0 73 73
+08-17 15:16:19.677 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.typeset.svg 73 73
+08-17 15:16:19.677 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.677 V/KOReader(14654): blitFrom 164 13 0 0 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.settings.svg 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.678 V/KOReader(14654): blitFrom 299 13 0 0 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.tools.svg 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.678 V/KOReader(14654): blitFrom 434 13 0 0 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.search.svg 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.678 V/KOReader(14654): blitFrom 569 13 0 0 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.filebrowser.svg 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.678 V/KOReader(14654): blitFrom 704 13 0 0 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.menu.svg 73 73
+08-17 15:16:19.678 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.678 V/KOReader(14654): blitFrom 1162 13 0 0 73 73
+08-17 15:16:19.682 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.up.svg 73 73
+08-17 15:16:19.682 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.682 V/KOReader(14654): blitFrom 58 928 0 0 73 73
+08-17 15:16:19.683 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.left.svg 73 73
+08-17 15:16:19.683 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.683 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.right.svg 73 73
+08-17 15:16:19.683 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:19.684 V/KOReader(14654): update_mode: Update refresh mode fast to ui
+08-17 15:16:19.684 V/KOReader(14654): _refresh: Enqueued ui update for region 0 0 1264 1016 dithering: false
+08-17 15:16:19.685 V/KOReader(14654): triggering refresh {
+08-17 15:16:19.685 V/KOReader(14654):   mode = "ui",
+08-17 15:16:19.685 V/KOReader(14654):   region = "1264x1016+0+0"
+08-17 15:16:19.685 V/KOReader(14654): } --[[table: 0x70a173fa88]]
+08-17 15:16:21.493 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120402.156689
+08-17 15:16:21.494 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: 0, time: 120402.156689
+08-17 15:16:21.494 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 285.77389526367, time: 120402.156689
+08-17 15:16:21.494 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 761.54669189453, time: 120402.156689
+08-17 15:16:21.494 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120402.156689
+08-17 15:16:21.494 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:21.494 V/KOReader(14654): set up hold timer
+08-17 15:16:21.494 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:21.619 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120402.283783
+08-17 15:16:21.619 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: -1, time: 120402.283783
+08-17 15:16:21.619 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 285.77389526367, time: 120402.283783
+08-17 15:16:21.619 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 761.54669189453, time: 120402.283783
+08-17 15:16:21.619 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120402.283783
+08-17 15:16:21.620 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:21.620 V/KOReader(14654): Contact:handleDoubleTap: single tap detected @ 285.77389526367 761.54669189453
+08-17 15:16:21.620 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:21.620 V/KOReader(14654): Explicit widgetInvert: table: 0x70a16d64c8 @ 10 742
+08-17 15:16:21.621 V/KOReader(14654): _refresh: Enqueued fast update for region 10 742 1244 83 dithering: false
+08-17 15:16:21.621 V/KOReader(14654): setDirty fast from widget nil w/ region 10 742 1244 83 dithering: nil
+08-17 15:16:21.622 V/KOReader(14654): triggering refresh {
+08-17 15:16:21.622 V/KOReader(14654):   mode = "fast",
+08-17 15:16:21.622 V/KOReader(14654):   region = "1244x83+10+742"
+08-17 15:16:21.622 V/KOReader(14654): } --[[table: 0x70a1744ec0]]
+08-17 15:16:21.640 V/KOReader(14654): FocusManager: Move focus position to: 7 , 1
+08-17 15:16:21.641 V/KOReader(14654): setDirty via a func from widget all
+08-17 15:16:21.641 V/KOReader(14654): painting widget: ReaderUI
+08-17 15:16:21.641 V/KOReader(14654): readerview painting "1264x1680+0+0" to 0 0
+08-17 15:16:21.641 V/KOReader(14654): CreDocument: goto page 50 flow 0
+08-17 15:16:21.646 V/KOReader(14654): blitFrom 1232 0 0 0 32 32
+08-17 15:16:21.650 V/KOReader(14654): painting widget: table: 0x70a13c8e98
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.navigation.svg 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.652 V/KOReader(14654): blitFrom 29 13 0 0 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.typeset.svg 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.652 V/KOReader(14654): blitFrom 164 13 0 0 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.settings.svg 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.652 V/KOReader(14654): blitFrom 299 13 0 0 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.tools.svg 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.652 V/KOReader(14654): blitFrom 434 13 0 0 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.search.svg 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.652 V/KOReader(14654): blitFrom 569 13 0 0 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.filebrowser.svg 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.652 V/KOReader(14654): blitFrom 704 13 0 0 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/appbar.menu.svg 73 73
+08-17 15:16:21.652 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.652 V/KOReader(14654): blitFrom 1162 13 0 0 73 73
+08-17 15:16:21.657 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.up.svg 73 73
+08-17 15:16:21.657 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.657 V/KOReader(14654): blitFrom 58 653 0 0 73 73
+08-17 15:16:21.657 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.left.svg 73 73
+08-17 15:16:21.657 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.657 V/KOReader(14654): ImageWidget: _render'ing resources/icons/mdlight/chevron.right.svg 73 73
+08-17 15:16:21.657 V/KOReader(14654): ImageWidget: initial offsets 0 0
+08-17 15:16:21.658 V/KOReader(14654): _refresh: Enqueued ui update for region 0 0 1264 1016 dithering: false
+08-17 15:16:21.658 V/KOReader(14654): triggering refresh {
+08-17 15:16:21.658 V/KOReader(14654):   mode = "ui",
+08-17 15:16:21.658 V/KOReader(14654):   region = "1264x1016+0+0"
+08-17 15:16:21.658 V/KOReader(14654): } --[[table: 0x70a17caea0]]
+08-17 15:16:22.574 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120403.237851
+08-17 15:16:22.574 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: 0, time: 120403.237851
+08-17 15:16:22.574 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 494.6086730957, time: 120403.237851
+08-17 15:16:22.574 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 305.81796264648, time: 120403.237851
+08-17 15:16:22.574 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120403.237851
+08-17 15:16:22.574 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:22.574 V/KOReader(14654): set up hold timer
+08-17 15:16:22.575 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:22.655 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 47 (ABS_MT_SLOT), value: 0, time: 120403.319568
+08-17 15:16:22.655 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 57 (ABS_MT_TRACKING_ID), value: -1, time: 120403.319568
+08-17 15:16:22.655 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 53 (ABS_MT_POSITION_X), value: 494.6086730957, time: 120403.319568
+08-17 15:16:22.655 V/KOReader(14654): input event => type: 3 (EV_ABS), code: 54 (ABS_MT_POSITION_Y), value: 305.81796264648, time: 120403.319568
+08-17 15:16:22.655 V/KOReader(14654): input event => type: 0 (EV_SYN), code: 0 (SYN_REPORT), value: 0, time: 120403.319568
+08-17 15:16:22.655 V/KOReader(14654): slot 0 in tap state...
+08-17 15:16:22.655 V/KOReader(14654): Contact:handleDoubleTap: single tap detected @ 494.6086730957 305.81796264648
+08-17 15:16:22.655 V/KOReader(14654): AutoTurn: onInputEvent
+08-17 15:16:22.656 V/KOReader(14654): Explicit widgetInvert: table: 0x70a174fb60 @ 10 285
+08-17 15:16:22.656 V/KOReader(14654): _refresh: Enqueued fast update for region 10 285 1244 83 dithering: false
+08-17 15:16:22.656 V/KOReader(14654): setDirty fast from widget nil w/ region 10 285 1244 83 dithering: nil
+08-17 15:16:22.657 V/KOReader(14654): triggering refresh {
+08-17 15:16:22.657 V/KOReader(14654):   mode = "fast",
+08-17 15:16:22.657 V/KOReader(14654):   region = "1244x83+10+285"
+08-17 15:16:22.657 V/KOReader(14654): } --[[table: 0x70a17cfd28]]
+08-17 15:16:22.670 V/KOReader(14654): Explicit widgetInvert: table: 0x70a174fb60 @ 10 285
+08-17 15:16:22.670 V/KOReader(14654): _refresh: Enqueued ui update for region 10 285 1244 83 dithering: false
+08-17 15:16:22.670 V/KOReader(14654): setDirty ui from widget nil w/ region 10 285 1244 83 dithering: nil
