@@ -8,6 +8,9 @@ local datetime = require("datetime")
 local T = require("ffi/util").template
 local ReaderView = require("apps/reader/modules/readerview")
 local LineWidget = require("ui/widget/linewidget")
+local UIManager = require("ui/uimanager")
+local Event = require("ui/event")
+
 local ReaderView_paintTo_orig = ReaderView.paintTo
 local header_settings = G_reader_settings:readSetting("footer") or {}
 
@@ -86,6 +89,66 @@ local function getPagesLeftInBook(ui)
     end
 end
 
+-- Store original onCloseWidget if it exists
+local ReaderView_onCloseWidget_orig = ReaderView.onCloseWidget
+
+-- Setup event handlers for power events
+ReaderView.onCloseWidget = function(self)
+    -- Clean up event handlers
+    if self._manga_header_charge_event_handler then
+        UIManager:unschedule(self._manga_header_charge_event_handler)
+        self._manga_header_charge_event_handler = nil
+    end
+    
+    -- Call original if it exists
+    if ReaderView_onCloseWidget_orig then
+        ReaderView_onCloseWidget_orig(self)
+    end
+end
+
+-- Add handlers for charging events
+ReaderView.onCharging = function(self)
+    -- Force a partial refresh of the header area
+    if self.ui and self.ui.view then
+        UIManager:setDirty(self.ui, "partial")
+    end
+end
+
+ReaderView.onNotCharging = function(self)
+    -- Force a partial refresh of the header area
+    if self.ui and self.ui.view then
+        UIManager:setDirty(self.ui, "partial")
+    end
+end
+
+-- Alternative: Poll for charging status changes
+local function setupChargingMonitor(self)
+    if not Device:hasBattery() then return end
+    
+    local powerd = Device:getPowerDevice()
+    if not powerd or not powerd.isCharging then return end
+    
+    -- Store last charging state
+    if self._manga_last_charging_state == nil then
+        self._manga_last_charging_state = powerd:isCharging()
+    end
+    
+    -- Check periodically for charging state changes
+    self._manga_header_charge_event_handler = function()
+        local current_charging = powerd:isCharging()
+        if current_charging ~= self._manga_last_charging_state then
+            self._manga_last_charging_state = current_charging
+            -- Trigger refresh
+            UIManager:setDirty(self.ui, "partial")
+        end
+        -- Re-schedule check (every 2 seconds)
+        UIManager:scheduleIn(2, self._manga_header_charge_event_handler)
+    end
+    
+    -- Start monitoring
+    UIManager:scheduleIn(2, self._manga_header_charge_event_handler)
+end
+
 ReaderView.paintTo = function(self, bb, x, y)
     ReaderView_paintTo_orig(self, bb, x, y)
     
@@ -95,6 +158,11 @@ ReaderView.paintTo = function(self, bb, x, y)
     local book_path = self.ui and self.ui.document and self.ui.document.file
     if not isMangaOrSerier(book_path) then
         return -- Don't show header for other books
+    end
+    
+    -- Setup charging monitor on first paint if not already done
+    if not self._manga_header_charge_event_handler and self.ui then
+        setupChargingMonitor(self)
     end
     
     -- Wrap everything in pcall for safety
@@ -114,7 +182,12 @@ ReaderView.paintTo = function(self, bb, x, y)
             if powerdev and powerdev.getCapacity then
                 local lvl = powerdev:getCapacity()
                 if lvl then 
-                    battery_text = tostring(lvl) .. " % batteri"
+                    -- Check if device is charging
+                    local charging_icon = ""
+                    if powerdev.isCharging and powerdev:isCharging() then
+                        charging_icon = " ⚡"  -- Lightning bolt icon for charging
+                    end
+                    battery_text = tostring(lvl) .. " % batteri" .. charging_icon
                 end
             elseif Device.getBatteryStatus then
                 local status = Device:getBatteryStatus()
