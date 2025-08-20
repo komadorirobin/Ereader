@@ -1,4 +1,4 @@
-# Ereader
+# KOReader patches
 KOReader patches, likely not useful for anybody else.
 
 # [2-custom-reader-header.lua](https://github.com/komadorirobin/Ereader/blob/main/2-custom-reader-header.lua)
