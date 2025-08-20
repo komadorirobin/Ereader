@@ -12,3 +12,7 @@ Same as the above, but smaller font and with "current page/total pages" and "pag
 # [2-footer-margin.lua](https://github.com/komadorirobin/Ereader/blob/main/2-footer-margin.lua)
 
 Makes the manga/comic fill the entire screen beneath the header. Meant to be combined with [2-header-manga.lua](https://github.com/komadorirobin/Ereader/blob/main/2-header-manga.lua). Also meant for screen size 1264 x 1680.
+
+# [2-footer-info-progress.lua](https://github.com/komadorirobin/Ereader/blob/main/2-footer-info-progress.lua)
+
+Custom footer with "Chapter name" in left corner, "Current page/total pages", "Pages left in chapter", "Pages left in book", and "Percentage read" in right corner. Also a thin progress bar beneath.
