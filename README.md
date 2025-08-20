@@ -7,4 +7,4 @@ Adds a custom header with "Author – Title" in left corner and "Battery % | Clo
 
 # [2-header-manga.lua](https://github.com/komadorirobin/Ereader/blob/main/2-header-manga.lua)
 
-Same as the above, but smaller and with "current page/total pages" and "pages left", as well as an added thin line beneath 
+Same as the above, but smaller font and with "current page/total pages" and "pages left", as well as an added thin line beneath 
