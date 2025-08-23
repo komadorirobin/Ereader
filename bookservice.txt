@@ -1,0 +1,465 @@
+import Foundation
+import UIKit
+
+public struct BookService {
+    // MARK: - API Response Models
+    private struct GraphQLEditionsResponse: Codable {
+        let data: EditionsData?
+    }
+    
+    private struct EditionsData: Codable {
+        let book_editions: [APIBookEdition]?
+    }
+    
+    private struct APIBookEdition: Codable {
+        let id: Int
+        let title: String?
+        let language_code: String?
+        let language: APILanguage?
+        let publisher: APIPublisher?
+        let release_date: String?
+        let pages: Int?
+        let cached_image: String?
+        let reading_format_id: Int?
+    }
+    
+    private struct APILanguage: Codable {
+        let name: String?
+    }
+    
+    private struct APIPublisher: Codable {
+        let name: String?
+    }
+    
+    private struct GraphQLUpdateResponse: Codable {
+        let data: UpdateData?
+    }
+    
+    private struct UpdateData: Codable {
+        let update_user_books: UpdateResult?
+    }
+    
+    private struct UpdateResult: Codable {
+        let affected_rows: Int
+    }
+    
+    // MARK: - Public Methods
+    public static func fetchEditions(for bookId: Int, userId: Int, apiKey: String) async -> [BookEdition] {
+        guard !apiKey.isEmpty else { return [] }
+        
+        let query = """
+        {
+            "query": "{ book_editions(where: {book_id: {_eq: \(bookId)}}) { id title language_code language { name } publisher { name } release_date pages cached_image reading_format_id } }"
+        }
+        """
+        
+        guard let url = URL(string: "https://api.hardcover.app/v1/graphql") else { return [] }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.httpBody = query.data(using: .utf8)
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let response = try JSONDecoder().decode(GraphQLEditionsResponse.self, from: data)
+            
+            guard let editions = response.data?.book_editions else { return [] }
+            
+            return editions.map { edition in
+                BookEdition(
+                    id: edition.id,
+                    title: edition.title ?? "Unknown Edition",
+                    languageCode: edition.language_code ?? "",
+                    languageName: edition.language?.name ?? "",
+                    publisher: edition.publisher?.name ?? "",
+                    releaseDate: edition.release_date ?? "",
+                    pages: edition.pages ?? 0,
+                    cachedImage: edition.cached_image ?? "",
+                    readingFormatId: edition.reading_format_id ?? 0
+                )
+            }
+        } catch {
+            print("❌ Error fetching editions: \(error)")
+            return []
+        }
+    }
+    
+    public static func updateBookEdition(userBookId: Int, newEditionId: Int, apiKey: String) async -> Bool {
+        guard !apiKey.isEmpty else { return false }
+        
+        let mutation = """
+        {
+            "query": "mutation { update_user_books(where: {id: {_eq: \(userBookId)}}, _set: {edition_id: \(newEditionId)}) { affected_rows } }"
+        }
+        """
+        
+        guard let url = URL(string: "https://api.hardcover.app/v1/graphql") else { return false }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.httpBody = mutation.data(using: .utf8)
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let response = try JSONDecoder().decode(GraphQLUpdateResponse.self, from: data)
+            
+            if let affectedRows = response.data?.update_user_books?.affected_rows {
+                return affectedRows > 0
+            }
+            return false
+        } catch {
+            print("❌ Error updating edition: \(error)")
+            return false
+        }
+    }
+    
+    public static func fetchUserId(apiKey: String) async -> Int? {
+        // Use the implementation from HardcoverService
+        return await HardcoverService.fetchUserId(apiKey: apiKey)
+    }
+    
+    public static func fetchCurrentlyReading() async -> [BookProgress] {
+        // Use the implementation from HardcoverService
+        let books = await HardcoverService.fetchCurrentlyReading()
+        
+        // Convert from HardcoverService's BookProgress to our app's BookProgress
+        return books.map { book in
+            BookProgress(
+                id: book.id,
+                title: book.title,
+                author: book.author,
+                coverImageData: book.coverImageData,
+                progress: book.progress,
+                totalPages: book.totalPages,
+                currentPage: book.currentPage,
+                bookId: book.bookId,
+                editionId: book.editionId,
+                userBookId: book.userBookId
+            )
+        }
+    }
+}
+
+// MARK: - HardcoverService (copied from your existing implementation)
+class HardcoverService {
+    // Configuration
+    struct HardcoverConfig {
+        static let username = "KomadoriRobin"
+        static var apiKey: String {
+            // Try to get from UserDefaults first (for runtime configuration)
+            if let storedKey = UserDefaults.standard.string(forKey: "HardcoverAPIKey"),
+               !storedKey.isEmpty {
+                return storedKey
+            }
+            // Fallback to plist or hardcoded value
+            return "YOUR_API_KEY_HERE"
+        }
+    }
+    
+    // API Models
+    struct APIResponse: Codable {
+        let books: [BookEntry]
+    }
+    
+    struct BookEntry: Codable {
+        let book: BookInfo
+    }
+    
+    struct BookInfo: Codable {
+        let title: String
+        let image: ImageInfo
+    }
+    
+    struct ImageInfo: Codable {
+        let url: String
+    }
+    
+    // GraphQL Models
+    struct GraphQLMeResponse: Codable {
+        let data: MeData?
+        let errors: [GraphQLError]?
+    }
+    
+    struct GraphQLUserBooksResponse: Codable {
+        let data: UserBooksData?
+        let errors: [GraphQLError]?
+    }
+    
+    struct GraphQLError: Codable {
+        let message: String
+    }
+    
+    struct MeData: Codable {
+        let me: [MeUser]?
+    }
+    
+    struct MeUser: Codable {
+        let id: Int
+        let username: String
+    }
+    
+    struct UserBooksData: Codable {
+        let user_books: [UserBook]?
+    }
+    
+    struct UserBook: Codable {
+        let id: Int?
+        let bookId: Int?
+        let editionId: Int?
+        let statusId: Int?
+        let userBookReads: [UserBookRead]?
+        let book: UserBookBook?
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case bookId = "book_id"
+            case editionId = "edition_id"
+            case statusId = "status_id"
+            case userBookReads = "user_book_reads"
+            case book
+        }
+    }
+    
+    struct UserBookRead: Codable {
+        let progressPages: Int?
+        let editionId: Int?
+        
+        enum CodingKeys: String, CodingKey {
+            case progressPages = "progress_pages"
+            case editionId = "edition_id"
+        }
+    }
+    
+    struct UserBookBook: Codable {
+        let id: Int?
+        let title: String
+        let contributions: [BookContribution]?
+    }
+    
+    struct BookContribution: Codable {
+        let author: BookAuthor?
+    }
+    
+    struct BookAuthor: Codable {
+        let name: String?
+    }
+    
+    // Local BookProgress model for HardcoverService
+    struct BookProgress {
+        let id: String
+        var title: String
+        var author: String
+        var coverImageData: Data?
+        var progress: Double = 0.0
+        var totalPages: Int = 0
+        var currentPage: Int = 0
+        var bookId: Int?
+        var editionId: Int?
+        var userBookId: Int?
+    }
+    
+    // MARK: - Image Cache
+    class ImageCache {
+        static let shared = ImageCache()
+        private let cache = NSCache<NSString, NSData>()
+        private init() {}
+        
+        func setImageData(_ data: Data, forKey key: String) {
+            cache.setObject(data as NSData, forKey: key as NSString)
+        }
+        
+        func imageData(forKey key: String) -> Data? {
+            return cache.object(forKey: key as NSString) as Data?
+        }
+        
+        func clearCache() {
+            cache.removeAllObjects()
+        }
+    }
+    
+    // MARK: - Main Methods
+    static func fetchCurrentlyReading() async -> [BookProgress] {
+        let booksWithImages = await fetchBooksWithImages()
+        guard !HardcoverConfig.apiKey.isEmpty, !booksWithImages.isEmpty else {
+            ImageCache.shared.clearCache()
+            return booksWithImages
+        }
+        
+        let detailedBooks = await fetchDetailedBookInfoForAll(
+            apiKey: HardcoverConfig.apiKey,
+            books: booksWithImages
+        )
+        ImageCache.shared.clearCache()
+        return detailedBooks
+    }
+    
+    private static func fetchBooksWithImages() async -> [BookProgress] {
+        let urlString = "https://hardcoverembed.gouthamve.dev/api/books/currently-reading/\(HardcoverConfig.username)"
+        guard let url = URL(string: urlString) else { return [] }
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let apiResponse = try JSONDecoder().decode(APIResponse.self, from: data)
+            
+            if apiResponse.books.isEmpty { return [] }
+            
+            let bookEntries = apiResponse.books.prefix(5)
+            var bookResults: [BookProgress] = []
+            
+            for entry in bookEntries {
+                var book = BookProgress(
+                    id: entry.book.title,
+                    title: entry.book.title,
+                    author: "Unknown Author"
+                )
+                
+                if let imageData = await fetchAndResizeImage(from: entry.book.image.url) {
+                    book.coverImageData = imageData
+                }
+                
+                bookResults.append(book)
+            }
+            
+            return bookResults
+        } catch {
+            print("❌ Embed API Error: \(error)")
+            return []
+        }
+    }
+    
+    private static func fetchAndResizeImage(from urlString: String) async -> Data? {
+        guard let url = URL(string: urlString) else { return nil }
+        
+        if let cachedData = ImageCache.shared.imageData(forKey: urlString) {
+            return cachedData
+        }
+        
+        if let (data, _) = try? await URLSession.shared.data(from: url) {
+            ImageCache.shared.setImageData(data, forKey: urlString)
+            return data
+        }
+        
+        return nil
+    }
+    
+    private static func fetchDetailedBookInfoForAll(apiKey: String, books: [BookProgress]) async -> [BookProgress] {
+        guard let userId = await fetchUserId(apiKey: apiKey) else { return books }
+        guard let url = URL(string: "https://api.hardcover.app/v1/graphql") else { return books }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        
+        let booksQuery = """
+        { "query": "{ user_books(where: {user_id: {_eq: \(userId)}, status_id: {_eq: 2}}, limit: 10) { id book_id edition_id status_id user_book_reads(order_by: {id: asc}) { progress_pages edition_id } book { id title contributions { author { name } } } } }" }
+        """
+        
+        request.httpBody = booksQuery.data(using: .utf8)
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let gqlResponse = try JSONDecoder().decode(GraphQLUserBooksResponse.self, from: data)
+            
+            guard let userBooks = gqlResponse.data?.user_books else {
+                print("❌ GraphQL API: No user books data returned")
+                return books
+            }
+            
+            var updatedBooks = books
+            
+            for i in 0..<updatedBooks.count {
+                let bookTitle = updatedBooks[i].title
+                
+                if let matchingBook = userBooks.first(where: {
+                    guard let gqlTitle = $0.book?.title else { return false }
+                    return titlesMatch(gqlTitle, bookTitle)
+                }) {
+                    // Update author
+                    if let authorName = matchingBook.book?.contributions?.first?.author?.name,
+                       !authorName.isEmpty {
+                        updatedBooks[i].author = authorName
+                    }
+                    
+                    // Update IDs
+                    if let bookId = matchingBook.book?.id {
+                        updatedBooks[i].bookId = bookId
+                    }
+                    if let editionId = matchingBook.editionId {
+                        updatedBooks[i].editionId = editionId
+                    }
+                    if let userBookId = matchingBook.id {
+                        updatedBooks[i].userBookId = userBookId
+                    }
+                    
+                    // Update progress
+                    if let userBookReads = matchingBook.userBookReads, !userBookReads.isEmpty {
+                        if let latestRead = userBookReads.last {
+                            if let progressPages = latestRead.progressPages {
+                                updatedBooks[i].currentPage = progressPages
+                                
+                                if updatedBooks[i].totalPages == 0 {
+                                    updatedBooks[i].totalPages = 300
+                                }
+                                
+                                if updatedBooks[i].totalPages > 0 {
+                                    updatedBooks[i].progress = Double(progressPages) / Double(updatedBooks[i].totalPages)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return updatedBooks
+        } catch {
+            print("❌ GraphQL Books API Error: \(error)")
+            return books
+        }
+    }
+    
+    private static func titlesMatch(_ a: String, _ b: String) -> Bool {
+        let normalize = { (str: String) in
+            str.trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased()
+                .replacingOccurrences(of: "'", with: "'")
+                .replacingOccurrences(of: """, with: "\"")
+                .replacingOccurrences(of: """, with: "\"")
+        }
+        
+        return normalize(a) == normalize(b)
+    }
+    
+    static func fetchUserId(apiKey: String) async -> Int? {
+        guard let url = URL(string: "https://api.hardcover.app/v1/graphql") else { return nil }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        
+        let query = """
+        { "query": "{ me { id username } }" }
+        """
+        
+        request.httpBody = query.data(using: .utf8)
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let gqlResponse = try JSONDecoder().decode(GraphQLMeResponse.self, from: data)
+            
+            guard let meUsers = gqlResponse.data?.me, let currentUser = meUsers.first else {
+                return nil
+            }
+            
+            return currentUser.id
+        } catch {
+            print("❌ Error fetching user ID: \(error)")
+            return nil
+        }
+    }
+}
