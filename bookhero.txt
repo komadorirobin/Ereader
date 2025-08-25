@@ -1,0 +1,97 @@
+struct SmallWidgetView: View {
+    let book: BookProgress?
+
+    var body: some View {
+        if let book = book {
+            GeometryReader { geometry in
+                ZStack {
+                    // Bakgrund med blur-effekt av omslaget
+                    if let imageData = book.coverImageData, 
+                       let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .blur(radius: 25)
+                            .overlay(Color.black.opacity(0.4))
+                            .clipped()
+                    }
+                    
+                    VStack(spacing: 0) {
+                        // Hero omslagsbild (60% av ytan)
+                        if let imageData = book.coverImageData, 
+                           let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(maxHeight: geometry.size.height * 0.55)
+                                .cornerRadius(6)
+                                .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
+                                .padding(.top, 8)
+                        } else {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(height: geometry.size.height * 0.55)
+                                .overlay(
+                                    Image(systemName: "book.closed")
+                                        .font(.title2)
+                                        .foregroundColor(.gray.opacity(0.5))
+                                )
+                                .padding(.top, 8)
+                        }
+                        
+                        Spacer()
+                        
+                        // Glassmorphism info-sektion
+                        VStack(spacing: 2) {
+                            // Progress - stort och centralt
+                            if book.progress > 0 {
+                                HStack(spacing: 2) {
+                                    Text("\(Int(book.progress * 100))")
+                                        .font(.system(size: 26, weight: .bold, design: .rounded))
+                                        .foregroundColor(.white)
+                                    Text("%")
+                                        .font(.system(size: 16, weight: .medium, design: .rounded))
+                                        .foregroundColor(.white.opacity(0.8))
+                                }
+                            }
+                            
+                            // Titel med smart truncation
+                            Text(book.title)
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.95))
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                                .padding(.horizontal, 4)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 8)
+                        .background(
+                            // Glassmorphism effekt
+                            Capsule()
+                                .fill(.ultraThinMaterial)
+                                .background(
+                                    Capsule()
+                                        .fill(
+                                            LinearGradient(
+                                                colors: [
+                                                    progressTint.opacity(0.3),
+                                                    progressTint.opacity(0.1)
+                                                ],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                )
+                        )
+                        .padding(.horizontal, 12)
+                        .padding(.bottom, 10)
+                    }
+                }
+            }
+        } else {
+            NoBooksView()
+        }
+    }
+}
