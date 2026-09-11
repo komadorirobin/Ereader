@@ -10,6 +10,7 @@ local ReaderView = require("apps/reader/modules/readerview")
 local LineWidget = require("ui/widget/linewidget")
 local UIManager = require("ui/uimanager")
 local Event = require("ui/event")
+local Blitbuffer = require("ffi/blitbuffer")
 
 local ReaderView_paintTo_orig = ReaderView.paintTo
 local header_settings = G_reader_settings:readSetting("footer") or {}
@@ -20,6 +21,9 @@ local header_font_size = (header_settings.text_font_size or 14) - 2
 local header_font_bold = header_settings.text_font_bold or false
 local header_margin = 20
 local header_top_margin = 8
+local header_line_gap = 2
+local header_bottom_padding = 5
+local header_line_thickness = 1
 local separator = "│"
 
 -- Function to check if book is manga or serier
@@ -260,16 +264,28 @@ ReaderView.paintTo = function(self, bb, x, y)
         local left_x = page_x + side_margin_extra
         local right_x = page_x + page_w - side_margin_extra - right_widget:getSize().w
         local header_y = y + header_top_margin
-        
+
+        -- The page is painted before this custom header. Cover the complete
+        -- header area so black or full-bleed pages cannot hide the dark text.
+        local text_height = math.max(left_widget:getSize().h, right_widget:getSize().h)
+        local line_y = header_y + text_height + header_line_gap
+        local header_bottom = line_y + header_line_thickness + header_bottom_padding
+        bb:paintRect(
+            x + page_x,
+            y,
+            page_w,
+            header_bottom - y,
+            Blitbuffer.COLOR_WHITE
+        )
+
         left_widget:paintTo(bb, x + left_x, header_y)
         right_widget:paintTo(bb, x + right_x, header_y)
-        
+
         -- Add horizontal line under the header text
-        local line_y = header_y + left_widget:getSize().h + 2  -- 2px spacing below text
         local line_widget = LineWidget:new{
             dimen = Geom:new{
                 w = page_w,
-                h = 1,  -- 1px line thickness
+                h = header_line_thickness,
             }
         }
         line_widget:paintTo(bb, x + page_x, line_y)
