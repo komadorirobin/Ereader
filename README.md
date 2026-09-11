@@ -1,6 +1,10 @@
 # KOReader patches
 KOReader patches, likely not useful for anybody else.
 
+## Automatic installation and updates
+
+Install [Ereader Patch Manager](https://github.com/komadorirobin/ereader-patch-manager.koplugin/releases/latest) to automatically discover, install, and update the numbered patches in this repository. The plugin preserves each patch's enabled or disabled state and creates a backup before replacing an existing file.
+
 # [2-custom-reader-header.lua](https://github.com/komadorirobin/Ereader/blob/main/2-custom-reader-header.lua)
 
 Adds a custom header with "Author – Title" in left corner and "Battery % | Clock" in right corner. Needs localization if you're not Swedish. It also comes with a few folder rules which, again, is (likely) not useful for anybody else.
