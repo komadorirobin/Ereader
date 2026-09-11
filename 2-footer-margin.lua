@@ -19,8 +19,8 @@ ReaderView.paintTo = function(self, bb, x, y)
     local book_path = self.ui and self.ui.document and self.ui.document.file
     
     if isMangaOrSerier(book_path) then
-        -- Shift content down by 7 pixels to reduce bottom margin
-        ReaderView_paintTo_orig(self, bb, x, y + 7)
+        -- Bigme B7 Pro (1264 x 1680): use the final bottom pixel as well.
+        ReaderView_paintTo_orig(self, bb, x, y + 8)
     else
         -- Call original paintTo function for other books
         ReaderView_paintTo_orig(self, bb, x, y)
