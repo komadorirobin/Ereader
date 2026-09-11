@@ -22,7 +22,6 @@ local header_font_bold = header_settings.text_font_bold or false
 local header_margin = 20
 local header_top_margin = 8
 local header_line_gap = 2
-local header_bottom_padding = 5
 local header_line_thickness = 1
 local separator = "│"
 
@@ -269,7 +268,7 @@ ReaderView.paintTo = function(self, bb, x, y)
         -- header area so black or full-bleed pages cannot hide the dark text.
         local text_height = math.max(left_widget:getSize().h, right_widget:getSize().h)
         local line_y = header_y + text_height + header_line_gap
-        local header_bottom = line_y + header_line_thickness + header_bottom_padding
+        local header_bottom = line_y + header_line_thickness
         bb:paintRect(
             x + page_x,
             y,
