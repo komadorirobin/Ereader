@@ -44,9 +44,9 @@ local function getBookmarkRibbonGeometry(right_edge, top, header_bottom, text_he
     }
 end
 
-local function getBookmarkRibbonColor(bb, geometry)
+local function getBookmarkRibbonColors(bb, geometry)
     if not bb or type(bb.getPixel) ~= "function" then
-        return Blitbuffer.COLOR_BLACK
+        return Blitbuffer.COLOR_BLACK, Blitbuffer.COLOR_WHITE
     end
 
     local x_samples = { 0.2, 0.5, 0.8 }
@@ -70,14 +70,12 @@ local function getBookmarkRibbonColor(bb, geometry)
     end
 
     if sample_count > 0 and luminance / sample_count < 128 then
-        return Blitbuffer.COLOR_WHITE
+        return Blitbuffer.COLOR_WHITE, Blitbuffer.COLOR_BLACK
     end
-    return Blitbuffer.COLOR_BLACK
+    return Blitbuffer.COLOR_BLACK, Blitbuffer.COLOR_WHITE
 end
 
-local function paintBookmarkRibbon(bb, geometry, color)
-    -- A solid ribbon through the header, followed by two tapered tails. The
-    -- expanding notch gives the classic forked bookmark shape.
+local function paintBookmarkRibbonShape(bb, geometry, color)
     bb:paintRect(
         geometry.x,
         geometry.y,
@@ -103,6 +101,26 @@ local function paintBookmarkRibbon(bb, geometry, color)
             color
         )
     end
+end
+
+local function paintBookmarkRibbon(bb, geometry, fill_color, outline_color)
+    -- Draw a contrasting outer shape first. With no top border, the bookmark
+    -- still appears to emerge directly from the header edge.
+    paintBookmarkRibbonShape(bb, geometry, outline_color)
+
+    local border = math.max(1, math.floor(geometry.w * 0.1 + 0.5))
+    local inner_height = math.max(4, geometry.h - border)
+    local inner_notch_depth = math.max(2, geometry.notch_depth - border)
+    local inner_bottom = geometry.y + inner_height
+    local inner = {
+        x = geometry.x + border,
+        y = geometry.y,
+        w = geometry.w - border * 2,
+        h = inner_height,
+        notch_depth = inner_notch_depth,
+        notch_top = inner_bottom - inner_notch_depth,
+    }
+    paintBookmarkRibbonShape(bb, inner, fill_color)
 end
 
 -- Function to check if book is manga or serier
@@ -401,10 +419,15 @@ ReaderView.paintTo = function(self, bb, x, y)
         )
         self._manga_bookmark_ribbon_region = bookmark_ribbon
         if self.dogear_visible then
+            local fill_color, outline_color = getBookmarkRibbonColors(
+                bb,
+                bookmark_ribbon
+            )
             paintBookmarkRibbon(
                 bb,
                 bookmark_ribbon,
-                getBookmarkRibbonColor(bb, bookmark_ribbon)
+                fill_color,
+                outline_color
             )
         end
     end)
