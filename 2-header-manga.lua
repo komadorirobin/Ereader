@@ -362,9 +362,13 @@ ReaderView.paintTo = function(self, bb, x, y)
 
         -- Keep KOReader's bookmark state and gesture, but replace the native
         -- corner dogear with a small ribbon hanging from the manga header.
+        local ribbon_anchor_depth = math.max(
+            4,
+            math.floor(text_height * 0.2 + 0.5)
+        )
         local bookmark_ribbon = getBookmarkRibbonGeometry(
             x + page_x + page_w,
-            y,
+            header_bottom - ribbon_anchor_depth,
             header_bottom,
             text_height
         )
