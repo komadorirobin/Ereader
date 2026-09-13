@@ -288,6 +288,12 @@ ReaderView.paintTo = function(self, bb, x, y)
             }
         }
         line_widget:paintTo(bb, x + page_x, line_y)
+
+        -- ReaderView paints the native bookmark dogear before this custom
+        -- header. Restore it last so the opaque background cannot cover it.
+        if self.dogear_visible and self.dogear and self.dogear.paintTo then
+            self.dogear:paintTo(bb, x, y)
+        end
     end)
     
     -- If there's an error, silently fail (don't crash KOReader)
