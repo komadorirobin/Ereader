@@ -6,6 +6,7 @@ local Font = require("ui/font")
 local util = require("util")
 local datetime = require("datetime")
 local T = require("ffi/util").template
+local ReaderDogear = require("apps/reader/modules/readerdogear")
 local ReaderView = require("apps/reader/modules/readerview")
 local LineWidget = require("ui/widget/linewidget")
 local UIManager = require("ui/uimanager")
@@ -25,6 +26,54 @@ local header_line_gap = 2
 local header_line_thickness = 1
 local separator = "│"
 
+local function getBookmarkRibbonGeometry(right_edge, top, header_bottom, text_height)
+    local width = math.max(20, math.floor(text_height * 0.75 + 0.5))
+    local drop = math.max(12, math.floor(text_height * 0.55 + 0.5))
+    local notch_depth = math.max(5, math.floor(drop * 0.5 + 0.5))
+    local right_inset = math.max(8, math.floor(width * 0.4 + 0.5))
+    local ribbon_x = right_edge - right_inset - width
+    local ribbon_bottom = header_bottom + drop
+
+    return {
+        x = ribbon_x,
+        y = top,
+        w = width,
+        h = ribbon_bottom - top,
+        notch_depth = notch_depth,
+        notch_top = ribbon_bottom - notch_depth,
+    }
+end
+
+local function paintBookmarkRibbon(bb, geometry)
+    -- A solid ribbon through the header, followed by two tapered tails. The
+    -- expanding white notch gives the classic forked bookmark shape.
+    bb:paintRect(
+        geometry.x,
+        geometry.y,
+        geometry.w,
+        geometry.notch_top - geometry.y,
+        Blitbuffer.COLOR_BLACK
+    )
+    local half_width = math.floor(geometry.w / 2)
+    for row = 0, geometry.notch_depth - 1 do
+        local tail_width = math.max(
+            1,
+            math.floor(
+                half_width * (geometry.notch_depth - row) / geometry.notch_depth
+            )
+        )
+        local row_y = geometry.notch_top + row
+        bb:paintRect(geometry.x, row_y, tail_width, 1, Blitbuffer.COLOR_BLACK)
+        bb:paintRect(
+            geometry.x + geometry.w - tail_width,
+            row_y,
+            tail_width,
+            1,
+            Blitbuffer.COLOR_BLACK
+        )
+    end
+end
+
 -- Function to check if book is manga or serier
 local function isMangaOrSerier(file_path)
     if not file_path then return false end
@@ -33,6 +82,28 @@ local function isMangaOrSerier(file_path)
     
     -- Check if path contains manga or serier folders
     return string.find(normalized_path, "epubs/manga") or string.find(normalized_path, "epubs/serier")
+end
+
+local ReaderDogear_getRefreshRegion_orig = ReaderDogear.getRefreshRegion
+ReaderDogear.getRefreshRegion = function(self)
+    local region = ReaderDogear_getRefreshRegion_orig(self)
+    local ribbon = self.view and self.view._manga_bookmark_ribbon_region
+    if not region or not ribbon then
+        return region
+    end
+
+    -- KOReader normally refreshes only the square dogear. Include the ribbon's
+    -- lower tip as well so removing a bookmark cannot leave stale pixels.
+    local left = math.min(region.x, ribbon.x)
+    local top = math.min(region.y, ribbon.y)
+    local right = math.max(region.x + region.w, ribbon.x + ribbon.w)
+    local bottom = math.max(region.y + region.h, ribbon.y + ribbon.h)
+    return Geom:new {
+        x = left,
+        y = top,
+        w = right - left,
+        h = bottom - top,
+    }
 end
 
 -- Function to safely get current page
@@ -289,10 +360,17 @@ ReaderView.paintTo = function(self, bb, x, y)
         }
         line_widget:paintTo(bb, x + page_x, line_y)
 
-        -- ReaderView paints the native bookmark dogear before this custom
-        -- header. Restore it last so the opaque background cannot cover it.
-        if self.dogear_visible and self.dogear and self.dogear.paintTo then
-            self.dogear:paintTo(bb, x, y)
+        -- Keep KOReader's bookmark state and gesture, but replace the native
+        -- corner dogear with a small ribbon hanging from the manga header.
+        local bookmark_ribbon = getBookmarkRibbonGeometry(
+            x + page_x + page_w,
+            y,
+            header_bottom,
+            text_height
+        )
+        self._manga_bookmark_ribbon_region = bookmark_ribbon
+        if self.dogear_visible then
+            paintBookmarkRibbon(bb, bookmark_ribbon)
         end
     end)
     
