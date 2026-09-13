@@ -44,15 +44,46 @@ local function getBookmarkRibbonGeometry(right_edge, top, header_bottom, text_he
     }
 end
 
-local function paintBookmarkRibbon(bb, geometry)
+local function getBookmarkRibbonColor(bb, geometry)
+    if not bb or type(bb.getPixel) ~= "function" then
+        return Blitbuffer.COLOR_BLACK
+    end
+
+    local x_samples = { 0.2, 0.5, 0.8 }
+    local y_samples = { 0.15, 0.45, 0.75 }
+    local luminance = 0
+    local sample_count = 0
+    for _, x_ratio in ipairs(x_samples) do
+        for _, y_ratio in ipairs(y_samples) do
+            local sample_x = geometry.x + math.floor((geometry.w - 1) * x_ratio)
+            local sample_y = geometry.y + math.floor((geometry.h - 1) * y_ratio)
+            local ok, pixel = pcall(bb.getPixel, bb, sample_x, sample_y)
+            if ok and pixel and pixel.getColor8 then
+                local color_ok, color = pcall(pixel.getColor8, pixel)
+                local value = color_ok and color and tonumber(color.a) or nil
+                if value then
+                    luminance = luminance + value
+                    sample_count = sample_count + 1
+                end
+            end
+        end
+    end
+
+    if sample_count > 0 and luminance / sample_count < 128 then
+        return Blitbuffer.COLOR_WHITE
+    end
+    return Blitbuffer.COLOR_BLACK
+end
+
+local function paintBookmarkRibbon(bb, geometry, color)
     -- A solid ribbon through the header, followed by two tapered tails. The
-    -- expanding white notch gives the classic forked bookmark shape.
+    -- expanding notch gives the classic forked bookmark shape.
     bb:paintRect(
         geometry.x,
         geometry.y,
         geometry.w,
         geometry.notch_top - geometry.y,
-        Blitbuffer.COLOR_BLACK
+        color
     )
     local half_width = math.floor(geometry.w / 2)
     for row = 0, geometry.notch_depth - 1 do
@@ -63,13 +94,13 @@ local function paintBookmarkRibbon(bb, geometry)
             )
         )
         local row_y = geometry.notch_top + row
-        bb:paintRect(geometry.x, row_y, tail_width, 1, Blitbuffer.COLOR_BLACK)
+        bb:paintRect(geometry.x, row_y, tail_width, 1, color)
         bb:paintRect(
             geometry.x + geometry.w - tail_width,
             row_y,
             tail_width,
             1,
-            Blitbuffer.COLOR_BLACK
+            color
         )
     end
 end
@@ -370,7 +401,11 @@ ReaderView.paintTo = function(self, bb, x, y)
         )
         self._manga_bookmark_ribbon_region = bookmark_ribbon
         if self.dogear_visible then
-            paintBookmarkRibbon(bb, bookmark_ribbon)
+            paintBookmarkRibbon(
+                bb,
+                bookmark_ribbon,
+                getBookmarkRibbonColor(bb, bookmark_ribbon)
+            )
         end
     end)
     
