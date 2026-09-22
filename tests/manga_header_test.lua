@@ -37,6 +37,7 @@ function TextWidget:paintTo(bb, x, y)
     state.text[#state.text + 1] = { widget = self, x = x, y = y, w = size.w, h = size.h }
     state.order[#state.order + 1] = "text"
 end
+function TextWidget:free() self.freed = true end
 preload("ui/widget/textwidget", TextWidget)
 preload("ui/geometry", object())
 preload("ui/bidi", { auto = function(text) return text end })
@@ -138,6 +139,7 @@ local function assertLayout(result, truncated)
     assert(left.widget.maxWidth == nil, "unsupported maxWidth field")
     assert(left.x + left.w < right.x, "title must leave a gap before status")
     assert(right.widget.max_width == nil, "status must remain untruncated")
+    assert(left.widget.freed and right.widget.freed, "release temporary text widgets after painting")
     assert(right.x + right.w == (result.x or 0) + (result.page_x or 0) + result.width - 40)
     assert((left.w < left.widget.full_width) == truncated, "unexpected title truncation")
     assert(left.widget.truncate_with_ellipsis ~= false, "keep native ellipsis behavior")
@@ -176,11 +178,81 @@ test("offset and fallback page geometry preserve alignment", function()
 end)
 test("no space for a title still paints the status and header", function()
     local normal = render()
-    local status_width = normal.text[2].w
+    local status = normal.text[#normal.text]
+    local status_width = status.w
     local result = render({ width = status_width + 80 })
     assert(result.line, "header must not abort when title space runs out")
     assert(#result.text == 1, "omit title when no positive space remains")
-    assert(result.text[1].widget.text == normal.text[2].widget.text)
+    assert(result.text[1].widget.text == status.widget.text)
+end)
+
+local function assertVolumeLayout(result, volume_text, truncated)
+    assert(result.line, "header must finish painting")
+    assert(#result.text == 3, "volume must have its own reserved text block")
+    local prefix, volume, status = result.text[1], result.text[2], result.text[3]
+    assert(volume.widget.text == " " .. volume_text, "keep the original volume label and number")
+    assert(volume.w == volume.widget.full_width, "volume must not be truncated")
+    assert(prefix.widget.max_width and prefix.widget.truncate_with_ellipsis ~= false)
+    assert((prefix.w < prefix.widget.full_width) == truncated, "unexpected prefix truncation")
+    assert(prefix.x + prefix.w == volume.x, "volume must follow the rendered prefix, not the full budget")
+    assert(volume.x + volume.w < status.x, "keep the gap before status")
+    assert(status.widget.max_width == nil, "do not truncate the status block")
+    assert(prefix.widget.freed and volume.widget.freed and status.widget.freed)
+    assert(status.x + status.w == (result.x or 0) + (result.page_x or 0) + result.width - 40)
+end
+
+test("Fragrant Flower's volume survives title truncation", function()
+    local result = render({
+        author = "Saka Mikami",
+        title = "The Fragrant Flower Blooms With Dignity, Vol. 5",
+    })
+    assertVolumeLayout(result, "Vol. 5", true)
+    assert(result.text[1].widget.text:find("The Fragrant Flower Blooms With Dignity,", 1, true))
+    assert(not result.text[1].widget.text:find("Vol. 5", 1, true), "do not show the volume twice")
+end)
+test("short volume titles retain their original text and spacing", function()
+    local result = render({ title = "Akira, Vol. 1", author = "Otomo" })
+    assertVolumeLayout(result, "Vol. 1", false)
+    assert(result.text[1].widget.text:match("Akira,$"), "preserve the title's comma")
+end)
+test("volume labels support case, multiple digits, zero, ranges and fractional numbers", function()
+    for _, volume in ipairs({ "Vol. 123", "vol. 0", "VOL 12", "Vol.12", "Volume 10", "volume 3", "Vol. 1-3", "Vol. 2.5" }) do
+        assertVolumeLayout(render({ title = string.rep("Long title ", 10) .. volume .. "  " }), volume, true)
+    end
+end)
+test("large fonts, a long author and wider status still reserve volume space", function()
+    for _, width in ipairs({ 1264, 1680 }) do
+        assertVolumeLayout(render({ width = width, font_scale = 2.25,
+            title = "Title, Vol. 123", author = string.rep("Long Author ", 10),
+            battery = 100, charging = true, page = 1234, total = 5678, clock = "11:59 PM",
+            page_x = 17, x = 11, y = 23,
+        }), "Vol. 123", true)
+    end
+end)
+test("only the volume is shown when the prefix no longer fits", function()
+    local normal = render({ title = "Title, Vol. 12" })
+    assertVolumeLayout(normal, "Vol. 12", false)
+    local volume, status = normal.text[2], normal.text[3]
+    local result = render({ title = "Title, Vol. 12", width = status.w + 80 + 12 + volume.w })
+    assert(result.line and #result.text == 2)
+    assert(result.text[1].widget.text == " Vol. 12")
+    assert(result.text[1].w == volume.w, "keep the full volume before dropping it")
+    assert(result.text[1].x + result.text[1].w < result.text[2].x)
+end)
+test("very narrow title area cannot let the volume overlap status", function()
+    local normal = render({ title = "Title, Vol. 123" })
+    assertVolumeLayout(normal, "Vol. 123", false)
+    local result = render({ title = "Title, Vol. 123", width = normal.text[3].w + 80 + 12 + 10 })
+    assert(result.line and #result.text == 2)
+    assert(result.text[1].widget.text == " Vol. 123")
+    assert(result.text[1].widget.truncate_left, "prefer the number if even the label cannot fit")
+    assert(result.text[1].w <= 10)
+    assert(result.text[1].x + result.text[1].w < result.text[2].x)
+end)
+test("ordinary numbers and words containing vol are not mistaken for a volume", function()
+    for _, title in ipairs({ "1984", "A Story of 2026", "Revol. 5", "Volcano 2", "Volume of Silence", "ReVolume 3" }) do
+        assertLayout(render({ title = title, author = "Author" }), false)
+    end
 end)
 test("opaque background, rule and contrast ribbon remain intact", function()
     for _, dark in ipairs({ false, true }) do

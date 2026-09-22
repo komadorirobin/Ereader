@@ -41,8 +41,11 @@ Adds a custom header with "Author – Title" in left corner and "Battery % | Clo
 Same as the above, but smaller font and with "current page/total pages" and "pages left", as well as an added thin line beneath 
 
 Long author/title text is truncated with an ellipsis to fit the space left by the
-status information, with a gap between the two blocks. If no title space remains,
-only the status is shown. The white background and bookmark ribbon are unchanged.
+status information, with a gap between the two blocks. A trailing volume label
+(such as `Vol. 5` or `Volume 12`) has priority over the author/title: its measured
+width is reserved first, so it remains visible when the title is truncated.
+If the whole left-hand area runs out of space, only the status is shown. The white
+background and bookmark ribbon are unchanged.
 
 Header regression tests (mocked KOReader APIs, no device required):
 

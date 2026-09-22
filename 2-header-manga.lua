@@ -27,6 +27,17 @@ local header_line_gap = 2
 local header_line_thickness = 1
 local separator = "│"
 
+local function splitVolumeSuffix(title)
+    local prefix, volume = title:match("^(.-)%f[%a]([Vv][Oo][Ll]%.?%s*%d+[%d%.%-]*)%s*$")
+    if not volume then
+        prefix, volume = title:match("^(.-)%f[%a]([Vv][Oo][Ll][Uu][Mm][Ee]%.?%s*%d+[%d%.%-]*)%s*$")
+    end
+    if volume then
+        return prefix:gsub("%s+$", ""), volume
+    end
+    return title
+end
+
 local function getBookmarkRibbonGeometry(right_edge, top, header_bottom, text_height)
     local width = math.max(20, math.floor(text_height * 0.75 + 0.5))
     local drop = math.max(12, math.floor(text_height * 0.55 + 0.5))
@@ -350,7 +361,8 @@ ReaderView.paintTo = function(self, bb, x, y)
         local page_w = page_geom and page_geom.w or (Device.screen and Device.screen:getWidth()) or 1072
         
         -- Widgets (add current/total pages before pages left)
-        local left_text = BD.auto(string.format("%s – %s", book_author, book_title))
+        local title_prefix, volume_text = splitVolumeSuffix(book_title)
+        local left_text = BD.auto(string.format("%s – %s", book_author, title_prefix))
         local right_text = string.format("%s/%s %s %s kvar %s %s %s %s %s %s", 
                                        current_page or "?",
                                        total_pages or "?",
@@ -374,6 +386,19 @@ ReaderView.paintTo = function(self, bb, x, y)
         local right_size = right_widget:getSize()
         local max_left_width = page_w - right_size.w - side_margin_extra * 2 - header_text_gap
         local left_widget
+        local volume_widget
+        -- Reserve the volume's measured width before truncating author/title.
+        if volume_text and max_left_width > 0 then
+            volume_widget = TextWidget:new {
+                text = BD.auto(" " .. volume_text),
+                face = Font:getFace(header_font_face, header_font_size),
+                bold = header_font_bold,
+                padding = 0,
+                max_width = max_left_width,
+                truncate_left = true,
+            }
+            max_left_width = max_left_width - volume_widget:getSize().w
+        end
         -- TextWidget truncates with an ellipsis using max_width, not maxWidth.
         -- Omit the title rather than passing a nonpositive width to text shaping.
         if max_left_width > 0 then
@@ -385,6 +410,7 @@ ReaderView.paintTo = function(self, bb, x, y)
                 max_width = max_left_width,
             }
         end
+        local left_size = left_widget and left_widget:getSize() or { w = 0, h = 0 }
         
         -- Positions (same as original header)
         local left_x = page_x + side_margin_extra
@@ -393,7 +419,7 @@ ReaderView.paintTo = function(self, bb, x, y)
 
         -- The page is painted before this custom header. Cover the complete
         -- header area so black or full-bleed pages cannot hide the dark text.
-        local text_height = math.max(left_widget and left_widget:getSize().h or 0, right_size.h)
+        local text_height = math.max(left_size.h, right_size.h, volume_widget and volume_widget:getSize().h or 0)
         local line_y = header_y + text_height + header_line_gap
         local header_bottom = line_y + header_line_thickness
         bb:paintRect(
@@ -406,8 +432,14 @@ ReaderView.paintTo = function(self, bb, x, y)
 
         if left_widget then
             left_widget:paintTo(bb, x + left_x, header_y)
+            left_widget:free()
+        end
+        if volume_widget then
+            volume_widget:paintTo(bb, x + left_x + left_size.w, header_y)
+            volume_widget:free()
         end
         right_widget:paintTo(bb, x + right_x, header_y)
+        right_widget:free()
 
         -- Add horizontal line under the header text
         local line_widget = LineWidget:new{
