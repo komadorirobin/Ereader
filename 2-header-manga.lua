@@ -22,6 +22,7 @@ local header_font_size = (header_settings.text_font_size or 14) - 2
 local header_font_bold = header_settings.text_font_bold or false
 local header_margin = 20
 local header_top_margin = 8
+local header_text_gap = 12
 local header_line_gap = 2
 local header_line_thickness = 1
 local separator = "│"
@@ -370,23 +371,29 @@ ReaderView.paintTo = function(self, bb, x, y)
         }
         
         local side_margin_extra = header_margin * 2  -- Extra margin for symmetry and bookmark icon
-        local max_left_width = page_w - right_widget:getSize().w - side_margin_extra - side_margin_extra
-        local left_widget = TextWidget:new {
-            text = left_text,
-            face = Font:getFace(header_font_face, header_font_size),
-            bold = header_font_bold,
-            padding = 0,
-            maxWidth = max_left_width,
-        }
+        local right_size = right_widget:getSize()
+        local max_left_width = page_w - right_size.w - side_margin_extra * 2 - header_text_gap
+        local left_widget
+        -- TextWidget truncates with an ellipsis using max_width, not maxWidth.
+        -- Omit the title rather than passing a nonpositive width to text shaping.
+        if max_left_width > 0 then
+            left_widget = TextWidget:new {
+                text = left_text,
+                face = Font:getFace(header_font_face, header_font_size),
+                bold = header_font_bold,
+                padding = 0,
+                max_width = max_left_width,
+            }
+        end
         
         -- Positions (same as original header)
         local left_x = page_x + side_margin_extra
-        local right_x = page_x + page_w - side_margin_extra - right_widget:getSize().w
+        local right_x = page_x + page_w - side_margin_extra - right_size.w
         local header_y = y + header_top_margin
 
         -- The page is painted before this custom header. Cover the complete
         -- header area so black or full-bleed pages cannot hide the dark text.
-        local text_height = math.max(left_widget:getSize().h, right_widget:getSize().h)
+        local text_height = math.max(left_widget and left_widget:getSize().h or 0, right_size.h)
         local line_y = header_y + text_height + header_line_gap
         local header_bottom = line_y + header_line_thickness
         bb:paintRect(
@@ -397,7 +404,9 @@ ReaderView.paintTo = function(self, bb, x, y)
             Blitbuffer.COLOR_WHITE
         )
 
-        left_widget:paintTo(bb, x + left_x, header_y)
+        if left_widget then
+            left_widget:paintTo(bb, x + left_x, header_y)
+        end
         right_widget:paintTo(bb, x + right_x, header_y)
 
         -- Add horizontal line under the header text

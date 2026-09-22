@@ -40,6 +40,16 @@ Adds a custom header with "Author – Title" in left corner and "Battery % | Clo
 
 Same as the above, but smaller font and with "current page/total pages" and "pages left", as well as an added thin line beneath 
 
+Long author/title text is truncated with an ellipsis to fit the space left by the
+status information, with a gap between the two blocks. If no title space remains,
+only the status is shown. The white background and bookmark ribbon are unchanged.
+
+Header regression tests (mocked KOReader APIs, no device required):
+
+```sh
+luajit tests/manga_header_test.lua
+```
+
 # [2-footer-margin.lua](https://github.com/komadorirobin/Ereader/blob/main/2-footer-margin.lua)
 
 Makes the manga/comic fill the entire screen beneath the header. Meant to be combined with [2-header-manga.lua](https://github.com/komadorirobin/Ereader/blob/main/2-header-manga.lua). Also meant for screen size 1264 x 1680.
