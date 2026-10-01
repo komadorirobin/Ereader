@@ -5,6 +5,80 @@ KOReader patches, likely not useful for anybody else.
 
 Install [Ereader Patch Manager](https://github.com/komadorirobin/ereader-patch-manager.koplugin/releases/latest) to automatically discover, install, and update the numbered patches in this repository. The plugin preserves each patch's enabled or disabled state and creates a backup before replacing an existing file.
 
+## [2-bookorbit-undo-opening.lua](2-bookorbit-undo-opening.lua)
+
+Undo a newly opened, unread book before the first page turn (within 24 hours),
+including its provisional BookOrbit reading and the specific Hardcover reading
+created for that opening. Existing readings, progress and annotations are not
+eligible for reset. Ratings, reviews, metadata and edition links are preserved.
+
+This is a standalone user patch, **not a fork of `bookorbit.koplugin`**. It wraps
+the stock plugin's lifecycle and API methods in memory; it neither replaces its
+files nor copies its sync engine. It also works when the book was opened from
+Bookshelf or SimpleUI because it observes KOReader's reader lifecycle.
+
+### Requirements and use
+
+1. Deploy the [BookOrbit server support](server-support/bookorbit-undo-opening/README.md)
+   first: migration `0101_undo_reading_opening`
+   and the authenticated `/api/v1/koreader/plugin/openings`, `/commit` and `/undo`
+   endpoints. This is separate server work, not something a device patch installs.
+2. Keep the official BookOrbit plugin enabled and configured for automatic sync.
+   Keep BookOrbit as the only automatic Hardcover writer, using the Hardcover
+   sync patch below if the separate Hardcover plugin is installed.
+3. Sync patches in Patch Manager, enable this patch if necessary, and restart
+   KOReader. Alternatively, install this file in `koreader/patches/` manually.
+4. Use **Tools > BookOrbit > Undo accidental opening** while eligible. It is also
+   in BookOrbit's dashboard menu and available as the gesture action
+   **BookOrbit: undo accidental opening**. It does not add a Bookshelf-only menu.
+
+The client holds automatic uploads for the provisional opening until you turn a
+page or explicitly sync that book. A whole-library sweep waits while an opening
+is held; sync for other individual books is unaffected. After a successful undo,
+the book returns to its previous unread state/history position. KOReader's local
+statistics database is not erased, but the accidental time interval is excluded
+from future BookOrbit uploads, including full sweeps.
+
+An unsent offline opening can be undone locally. If a request may already have
+reached the server, it must be reconciled before local data is reset. A pending
+undo can be retried explicitly after reconnecting. If Hardcover is unavailable,
+the server keeps the owned reading ID for retry; it never guesses which reading
+to delete. Older readings or later edits from another device prevent remote
+undo. The server does not create a first-ever Hardcover library entry just for
+a provisional opening; normal sync can do that after reading continues.
+
+### Updates and safety
+
+Tested against stock BookOrbit plugin **1.5.5**, repository commit
+`2855dbb8a39d20bf711f01772e2678ef0625dd63`. Compatibility checks fingerprint the
+nine source files involved in lifecycle, queues and API acknowledgement. The
+version literal is ignored: a version-only bump or changes outside those files
+need no patch update. Changes inside them require review and regression tests;
+even a harmless edit may conservatively trigger the guard. Never just regenerate
+the fingerprints to silence the warning.
+
+The guard runs **before plugin initialization**, before startup uploads can run.
+For unknown code with no protected state, ordinary BookOrbit sync still works
+but undo is unavailable. If a pending opening or excluded statistics exist,
+BookOrbit is paused instead; KOReader and other plugins remain usable. Update
+the patch with Patch Manager and restart once compatibility has been verified.
+
+**Do not delete the `bookorbit_openings` setting or disable/remove this patch
+without reconciling its state.** Its per-account excluded intervals must survive
+plugin updates and sync-state rebuilds to prevent old accidental statistics
+being uploaded again. Unreadable state also pauses BookOrbit rather than ignoring
+the protection. Against a server without the new endpoints, the client releases
+its provisional hold and falls back to ordinary sync; remote undo is unavailable.
+
+Tests run without network, credentials, or user data. The adapter test loads real,
+unmodified upstream source and verifies hashes, callable event handlers, menus,
+queue completion, upload filtering, offline recovery and compatibility gating:
+
+```sh
+luajit tests/bookorbit_undo_state_test.lua
+luajit tests/bookorbit_undo_patch_test.lua /path/to/bookorbit.koplugin
+```
+
 ## [2-hardcover-bookorbit-sync.lua](https://github.com/komadorirobin/Ereader/blob/main/2-hardcover-bookorbit-sync.lua)
 
 Use BookOrbit as the only automatic reading-sync source for Hardcover. Keep
