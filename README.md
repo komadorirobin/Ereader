@@ -110,6 +110,21 @@ luajit tests/hardcover_bookorbit_sync_test.lua /path/to/hardcoverapp.koplugin
 
 Adds a custom header with "Author – Title" in left corner and "Battery % | Clock" in right corner. Needs localization if you're not Swedish. It also comes with a few folder rules which, again, is (likely) not useful for anybody else.
 
+Both this patch and the manga header below draw only to KOReader's current screen
+buffer. Page Scrubber and KOReader's native Page browser use a separate buffer
+to generate page thumbnails, even when it has the same dimensions as the screen
+and no special `render_mode` is set. Those previews still render the book page
+but skip custom header drawing, battery queries and charging-monitor setup.
+This avoids calling device power APIs from the thumbnail-rendering subprocess.
+Normal reading, folder filters and header settings are unchanged.
+
+First update Ereader Patch Manager to **1.1.2 or newer** and restart KOReader;
+that release fixes the crash when enabling/disabling patches or opening details.
+If you disabled the header to use Page Scrubber, synchronize the updated patches
+in **Ereader Patch Manager > Synchronize patches now**, re-enable the header under
+**Repository patches**, then restart KOReader. Synchronization preserves disabled
+state, so it will not re-enable the patch for you.
+
 # [2-header-manga.lua](https://github.com/komadorirobin/Ereader/blob/main/2-header-manga.lua)
 
 Same as the above, but smaller font and with "current page/total pages" and "pages left", as well as an added thin line beneath 
@@ -125,7 +140,12 @@ Header regression tests (mocked KOReader APIs, no device required):
 
 ```sh
 luajit tests/manga_header_test.lua
+luajit tests/header_thumbnail_test.lua
 ```
+
+The thumbnail tests cover each patch on its own and both load orders, cold and
+already-active readers, screen-buffer replacement and return to normal reading.
+They use mocked KOReader APIs; physical-device verification is still required.
 
 # [2-footer-margin.lua](https://github.com/komadorirobin/Ereader/blob/main/2-footer-margin.lua)
 

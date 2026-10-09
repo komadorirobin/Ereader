@@ -102,6 +102,10 @@ end
 
 ReaderView.paintTo = function(self, bb, x, y)
     ReaderView_paintTo_orig(self, bb, x, y)
+
+    -- Thumbnails use an off-screen buffer (also in Page Scrubber). Do not
+    -- draw headers or query device power APIs in their rendering subprocess.
+    if bb ~= Device.screen.bb then return end
     
     if self.render_mode ~= nil then return end
     

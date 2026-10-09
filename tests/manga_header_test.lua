@@ -116,6 +116,7 @@ local function render(options)
             return { getColor8 = function() return { a = state.dark and 0 or 255 } end }
         end,
     }
+    require("device").screen.bb = bb
     view:paintTo(bb, state.x or 0, state.y or 0)
     return state, view
 end
