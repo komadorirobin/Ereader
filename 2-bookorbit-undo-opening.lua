@@ -14,18 +14,37 @@ end
 
 -- Only the files involved in lifecycle, queues, and upload acknowledgement are
 -- pinned. MD5 is a compatibility fingerprint, not a download security check.
--- Tested against BookOrbit 2855dbb8a39d20bf711f01772e2678ef0625dd63 (plugin 1.5.5).
+-- Each profile is a complete tested source set, never a mix of releases.
 -- Ignore only the release literal; unrelated updates need no new fingerprint.
-local TESTED_FILES = {
-    ["main.lua"] = "0fb0dcfe30ce494812c8d692498649a2",
-    ["bookorbit_api.lua"] = "bdeaeb095543878e2902e3ea8e7f9522",
-    ["bookorbit_book_sync.lua"] = "a796ae57941a69c80a9b2d7578e3c858",
-    ["bookorbit_sweep.lua"] = "c3bd9f40996b4aa1b4beaeb439b9da19",
-    ["bookorbit_main_menu.lua"] = "40392af3dab84f329cdd8065b2fa765e",
-    ["bookorbit_sync_coordinator.lua"] = "2494dc3c629a693957597c98ca3457cd",
-    ["bookorbit_sync_job_runner.lua"] = "c6b54c96b1c1514f85ae74cb42bcb7b9",
-    ["bookorbit_lifecycle_outbox.lua"] = "8ed7c3d6910e05d0d6533441d1a7c353",
-    ["bookorbit_progress_sync.lua"] = "7609f401e37b2aabb7d42aa424595b8f",
+local TESTED_PROFILES = {
+    { -- 2855dbb8a39d20bf711f01772e2678ef0625dd63 (plugin 1.5.5)
+        files = {
+            ["main.lua"] = "0fb0dcfe30ce494812c8d692498649a2",
+            ["bookorbit_api.lua"] = "bdeaeb095543878e2902e3ea8e7f9522",
+            ["bookorbit_book_sync.lua"] = "a796ae57941a69c80a9b2d7578e3c858",
+            ["bookorbit_sweep.lua"] = "c3bd9f40996b4aa1b4beaeb439b9da19",
+            ["bookorbit_main_menu.lua"] = "40392af3dab84f329cdd8065b2fa765e",
+            ["bookorbit_sync_coordinator.lua"] = "2494dc3c629a693957597c98ca3457cd",
+            ["bookorbit_sync_job_runner.lua"] = "c6b54c96b1c1514f85ae74cb42bcb7b9",
+            ["bookorbit_lifecycle_outbox.lua"] = "8ed7c3d6910e05d0d6533441d1a7c353",
+            ["bookorbit_progress_sync.lua"] = "7609f401e37b2aabb7d42aa424595b8f",
+        },
+    },
+    { -- c59dd0118fd0d5d0ecbd716d1d7fde2c97f8e2ea (plugin 2.0.0)
+        menu_sheet = true,
+        files = {
+            ["main.lua"] = "6c79fc50f6dfd6c6510f23c3d2355a51",
+            ["bookorbit_api.lua"] = "f6177967c71277b6467148cf567c0694",
+            ["bookorbit_book_sync.lua"] = "baa7f06387bde4d5ad09c2121efee36d",
+            ["bookorbit_sweep.lua"] = "8bd472821092263b62639032681656a5",
+            ["bookorbit_main_menu.lua"] = "94a453099b6446740bfce9944155e484",
+            ["bookorbit_sync_coordinator.lua"] = "2494dc3c629a693957597c98ca3457cd",
+            ["bookorbit_sync_job_runner.lua"] = "c6b54c96b1c1514f85ae74cb42bcb7b9",
+            ["bookorbit_lifecycle_outbox.lua"] = "0e08df00d6271be1736660e00fcbf6cc",
+            ["bookorbit_progress_sync.lua"] = "36f075d7e7ea3153d86a232d70005e1f",
+            ["bookorbit_menu_sheet.lua"] = "541ce1b61f000f105f24a12312647414",
+        },
+    },
 }
 
 function Opening.account(client, create)
@@ -360,15 +379,24 @@ end
 function Opening.checkCompatibility(plugin)
     if type(plugin.path) ~= "string" then return false, "missing plugin path" end
     local md5 = require("ffi/sha2").md5
-    for filename, expected in pairs(TESTED_FILES) do
+    local function fingerprint(filename)
         local file = io.open(plugin.path .. "/" .. filename, "rb")
-        if not file then return false, "missing " .. filename end
+        if not file then return nil end
         local source = file:read("*a")
         file:close()
         if source and filename == "main.lua" then
             source = source:gsub('(local PLUGIN_VERSION = )"[^"\n]+"', '%1"<release>"', 1)
         end
-        if not source or md5(source) ~= expected then return false, "untested " .. filename end
+        return source and md5(source)
+    end
+    local main_hash = fingerprint("main.lua")
+    local profile
+    for _, candidate in ipairs(TESTED_PROFILES) do
+        if candidate.files["main.lua"] == main_hash then profile = candidate; break end
+    end
+    if not profile then return false, "untested main.lua" end
+    for filename, expected in pairs(profile.files) do
+        if filename ~= "main.lua" and fingerprint(filename) ~= expected then return false, "untested " .. filename end
     end
     for _, name in ipairs({
         "onReaderReady", "onBookOrbitSyncBook", "onBookOrbitPushProgress", "onDispatcherRegisterActions",
@@ -378,6 +406,9 @@ function Opening.checkCompatibility(plugin)
         if not callable(plugin[name]) then return false, "missing method " .. name end
     end
     if plugin.onDocSettingsLoad or plugin.onBookOrbitUndoOpening then return false, "another undo implementation is installed" end
+    if profile.menu_sheet and (not callable(plugin.openMenuSheet) or not callable(plugin.onMenuSheetAction)) then
+        return false, "missing menu sheet methods"
+    end
     for module, methods in pairs({
         bookorbit_api = { "request", "uploadPageStats" },
         bookorbit_book_sync = { "capture" },
@@ -388,7 +419,7 @@ function Opening.checkCompatibility(plugin)
             if type(value) ~= "table" or type(value[method]) ~= "function" then return false, "missing " .. module .. "." .. method end
         end
     end
-    return true
+    return true, nil, profile
 end
 
 function Opening.hasProtectedData()
@@ -499,7 +530,39 @@ local function before(plugin, name, hook)
 end
 
 local WRITE_JOBS = { lifecycle_outbox = true, progress_push = true, sweep = true, book_snapshot = true, annotation_exchange = true }
-local function apply(plugin)
+local menu_sheet_installed = false
+local function installMenuSheet()
+    if menu_sheet_installed then return end
+    -- Load lazily, like the stock plugin. Keep its layout and action dispatcher;
+    -- only supply an extra row while this particular opening is eligible.
+    local Sheet = require("bookorbit_menu_sheet")
+    local data, body = Sheet.data, Sheet.body
+    function Sheet.data(plugin, catalog)
+        local d = data(plugin, catalog)
+        if plugin._ereader_undo_installed and plugin:isLoggedIn() and Opening.available(plugin) then
+            local row = Opening.record(plugin)
+            d.ereader_undo = { id = row.id, title = row.title }
+        end
+        return d
+    end
+    function Sheet.body(d, width, opts)
+        local widgets = body(d, width, opts)
+        if d.ereader_undo then
+            local MenuUI = require("bookorbit_menu_ui")
+            table.insert(widgets, 3, MenuUI.group(width, {
+                MenuUI.row(MenuUI.rowsIn(width), {
+                    icon = "rotate-ccw", label = require("gettext")("Undo accidental opening"),
+                    sub = d.ereader_undo.title, sub_data = true,
+                    action = { kind = "ereader-undo-opening", opening_id = d.ereader_undo.id },
+                }),
+            }))
+        end
+        return widgets
+    end
+    menu_sheet_installed = true
+end
+
+local function apply(plugin, profile)
     Opening.install(plugin)
     installSharedHooks()
     before(plugin, "onReaderReady", Opening.capture)
@@ -547,6 +610,21 @@ local function apply(plugin)
             })
         end
     end
+    if profile.menu_sheet then
+        before(plugin, "openMenuSheet", installMenuSheet)
+        local action = plugin.onMenuSheetAction
+        function plugin:onMenuSheetAction(page, catalog, item)
+            if item.kind ~= "ereader-undo-opening" then return action(self, page, catalog, item) end
+            -- A sheet can outlive a book or account change. Never act on a
+            -- different opening from the one whose title the user tapped.
+            local row = Opening.record(self)
+            if self:isLoggedIn() and row and row.id == item.opening_id and Opening.available(self) then
+                page:close()
+                self:onBookOrbitUndoOpening()
+            end
+            return true
+        end
+    end
     plugin._ereader_undo_installed = true
 end
 
@@ -563,7 +641,7 @@ function PluginLoader:createPluginInstance(plugin, attr)
         return false, "BookOrbit undo state hold"
     end
     if not plugin._ereader_undo_installed then
-        local ok, compatible, reason = pcall(Opening.checkCompatibility, plugin)
+        local ok, compatible, reason, profile = pcall(Opening.checkCompatibility, plugin)
         if not ok then compatible, reason = false, "compatibility check failed" end
         if not compatible then
             notice("BookOrbit undo patch: " .. tostring(reason) .. ".\n\n" .. (protected
@@ -572,7 +650,7 @@ function PluginLoader:createPluginInstance(plugin, attr)
             if protected then return false, "BookOrbit undo compatibility hold" end
             return create(self, plugin, attr)
         end
-        apply(plugin)
+        apply(plugin, profile)
     end
     local ok, instance = create(self, plugin, attr)
     if ok then

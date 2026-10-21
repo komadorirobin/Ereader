@@ -32,27 +32,33 @@ local function dump(value)
 end
 
 -- Real hashes of real source, rather than accepting any source in the mock.
-local digests, tampered = {}, false
+local digests, source_by_file, tampered = {}, {}, false
 for _, filename in ipairs({ "main", "bookorbit_api", "bookorbit_book_sync", "bookorbit_sweep",
         "bookorbit_main_menu", "bookorbit_sync_coordinator", "bookorbit_sync_job_runner",
-        "bookorbit_lifecycle_outbox", "bookorbit_progress_sync" }) do
+        "bookorbit_lifecycle_outbox", "bookorbit_progress_sync", "bookorbit_menu_sheet" }) do
     local path = plugin_dir .. "/" .. filename .. ".lua"
-    local f = assert(io.open(path, "rb"))
-    local source = f:read("*a"); f:close()
-    local quoted_path = "'" .. path:gsub("'", "'\\''") .. "'"
-    local command = "openssl dgst -md5 " .. quoted_path
-    if filename == "main" then
-        source = source:gsub('(local PLUGIN_VERSION = )"[^"\n]+"', '%1"<release>"', 1)
-        command = [[sed -E 's/(local PLUGIN_VERSION = )"[^"]+"/\1"<release>"/' ]] .. quoted_path .. " | openssl dgst -md5"
+    local f = io.open(path, "rb")
+    if f then
+        local source = f:read("*a"); f:close()
+        local quoted_path = "'" .. path:gsub("'", "'\\''") .. "'"
+        local command = "openssl dgst -md5 " .. quoted_path
+        if filename == "main" then
+            source = source:gsub('(local PLUGIN_VERSION = )"[^"\n]+"', '%1"<release>"', 1)
+            command = [[sed -E 's/(local PLUGIN_VERSION = )"[^"]+"/\1"<release>"/' ]] .. quoted_path .. " | openssl dgst -md5"
+        end
+        local pipe = assert(io.popen(command))
+        digests[source] = assert(pipe:read("*a"):match("= (%x+)"))
+        source_by_file[filename] = source
+        assert(pipe:close())
+    else
+        assert(filename == "bookorbit_menu_sheet", "missing " .. path)
     end
-    local pipe = assert(io.popen(command))
-    digests[source] = assert(pipe:read("*a"):match("= (%x+)"))
-    assert(pipe:close())
 end
 preload("ffi/sha2", { md5 = function(source) return not tampered and digests[source] or "changed" end })
 local now, tasks, messages, errors, actions = 1800000000, {}, {}, {}, {}
 os.time = function() return now end
 local UIManager = {
+    getElapsedTimeSinceBoot = function() return now end,
     scheduleIn = function(self, delay, fn) tasks[#tasks + 1] = { delay = delay, fn = fn } end,
     nextTick = function(self, fn) self:scheduleIn(0, fn) end,
     unschedule = noop, setDirty = noop, broadcastEvent = noop,
@@ -60,6 +66,10 @@ local UIManager = {
 }
 local connected = true
 preload("ui/uimanager", UIManager)
+preload("bookorbit_toast", {
+    show = function(text) UIManager:show({ text = text }) end,
+    error = function(text) UIManager:show({ text = text }) end,
+})
 preload("ui/network/manager", {
     isConnected = function() return connected end,
     willRerunWhenConnected = function() return not connected end,
@@ -89,11 +99,15 @@ for _, name in ipairs({ "socket", "socket.http", "socketutil", "ltn12", "rapidjs
     preload(name, {})
 end
 local outbox_enqueues = 0
-local outbox = { nextEntry = noop, enqueue = function() outbox_enqueues = outbox_enqueues + 1; return {} end }
+local outbox = { nextEntry = noop, nextRetryAt = noop, diagnostics = function() return { count = 0 } end,
+    enqueue = function() outbox_enqueues = outbox_enqueues + 1; return {} end }
 preload("bookorbit_lifecycle_outbox", { open = function() return outbox end })
 preload("bookorbit_stats_reader", { cachedIdentity = function() return {}, true end, primeIdentity = noop })
 preload("bookorbit_state", { isMatchFresh = function() return true end })
-preload("bookorbit_state_manager", { session = function() return { getBook = function() return {} end } end })
+preload("bookorbit_state_manager", { setAccount = noop, session = function() return { getBook = function() return {} end } end })
+preload("bookorbit_board_metrics", { setUserScale = function(scale) return scale or 1.05 end })
+local menuActions
+if source_by_file.bookorbit_menu_sheet then menuActions = dofile("tests/bookorbit_undo_menu_mocks.lua") end
 local ds
 preload("docsettings", { open = function() return ds end, getSidecarDir = function() return "/mock" end, findSidecarFile = noop })
 local history = { hist = {}, getIndexByFile = noop, removeItemByPath = noop, addItem = noop }
@@ -166,6 +180,30 @@ local function open()
 end
 
 assert(Opening.checkCompatibility(cls))
+-- Every pinned file is checked, not only the version string or main module.
+for filename, source in pairs(source_by_file) do
+    local hash = digests[source]
+    digests[source] = "changed"
+    local compatible, reason = Opening.checkCompatibility(cls)
+    assert(not compatible, "must reject changes to " .. filename)
+    equal(reason, "untested " .. filename .. ".lua")
+    digests[source] = hash
+end
+local api_source = source_by_file.bookorbit_api
+local api_hash = digests[api_source]
+digests[api_source] = source_by_file.bookorbit_menu_sheet and "bdeaeb095543878e2902e3ea8e7f9522" or "f6177967c71277b6467148cf567c0694"
+assert(not Opening.checkCompatibility(cls), "must reject mixed files from otherwise tested releases")
+digests[api_source] = api_hash
+local io_open = io.open
+io.open = function(path, mode)
+    if path == plugin_dir .. "/main.lua" then
+        return { read = function() return source_by_file.main:gsub('<release>', '99.0.0') end, close = noop }
+    end
+    return io_open(path, mode)
+end
+local version_only_ok = Opening.checkCompatibility(cls)
+io.open = io_open
+assert(version_only_ok, "version literal alone must not affect source fingerprints")
 cls.PLUGIN_VERSION = "1.5.6"
 assert(Opening.checkCompatibility(cls), "a release number alone must not disable a compatible plugin")
 cls.PLUGIN_VERSION = "1.5.5"
@@ -192,9 +230,68 @@ equal(Api.request, request_hook, "fresh class must not stack shared API wrappers
 local menu = {}
 app:addToMainMenu(menu)
 equal(menu.bookorbit.sub_item_table[1].id, "undo_opening")
-local undo_items = 0
-for _, item in ipairs(app:dashboardMenuItems()) do if item.id == "undo_opening" then undo_items = undo_items + 1 end end
-equal(undo_items, 1, "dashboard exposes the same undo action")
+if app.dashboardMenuItems then
+    local undo_items = 0
+    for _, item in ipairs(app:dashboardMenuItems()) do if item.id == "undo_opening" then undo_items = undo_items + 1 end end
+    equal(undo_items, 1, "dashboard exposes the same undo action")
+end
+if menuActions then
+    assert(not package.loaded.bookorbit_menu_sheet, "new menu remains lazy until opened")
+    local catalog = { current_context = {} }
+    local sheet = app:openMenuSheet(catalog)
+    local Sheet = require("bookorbit_menu_sheet")
+    equal(sheet.sheet_data.ereader_undo.id, row.id)
+    equal(sheet.sheet_data.ereader_undo.title, row.title)
+    local function undoAction(d)
+        local found, count = nil, 0
+        for _, action in ipairs(menuActions(Sheet.body(d, 600))) do
+            if action.kind == "ereader-undo-opening" then found, count = action, count + 1 end
+        end
+        equal(count, d.ereader_undo and 1 or 0, "only one eligible undo row")
+        return found
+    end
+    local action = assert(undoAction(sheet.sheet_data))
+    local popover_undo = 0
+    for _, item in ipairs(menuActions(Sheet.body(sheet.sheet_data, 600, { popover = true, cols = 3 }))) do
+        if item.kind == "ereader-undo-opening" then popover_undo = popover_undo + 1 end
+    end
+    equal(popover_undo, 1, "tablet and landscape popover also exposes undo")
+    local data_hook = Sheet.data
+    local fresh = newInstance(loadPlugin(), app.ui)
+    fresh:openMenuSheet(catalog)
+    equal(Sheet.data, data_hook, "new instances do not stack menu wrappers")
+    undoAction(Sheet.data(app, catalog))
+    local phase = row.phase
+    row.phase = "done"
+    equal(undoAction(Sheet.data(app, catalog)), nil, "committed opening has no undo row")
+    local nmessages = #messages
+    sheet.on_action(sheet, action)
+    equal(#messages, nmessages, "stale eligibility cannot launch undo")
+    assert(not sheet.closed)
+    row.phase = phase
+    local original_id = row.id
+    row.id = "another-opening"
+    sheet.on_action(sheet, action)
+    equal(#messages, nmessages, "stale sheet never targets another opening")
+    row.id = original_id
+    local username = app.settings.username
+    app.settings.username = "other-account"
+    equal(Sheet.data(app, catalog).ereader_undo, nil, "menu is account scoped")
+    sheet.on_action(sheet, action)
+    equal(#messages, nmessages, "stale sheet never targets another account")
+    app.settings.username = username
+    sheet.on_action(sheet, action)
+    assert(sheet.closed and messages[#messages].ok_callback, "sheet closes into ordinary undo confirmation")
+    equal(row.phase, phase, "tapping row alone cannot reset data")
+    -- Normal menu actions still run through the real upstream dispatcher.
+    local searched = false
+    catalog.onSearchButtonTap = function() searched = true end
+    local ordinary = app:openMenuSheet(catalog)
+    ordinary.on_action(ordinary, { kind = "search" })
+    assert(ordinary.closed)
+    tasks[#tasks].fn()
+    assert(searched, "stock search action preserved")
+end
 app:matchOpenBookForAutoSync() -- callback is optional in the stock API.
 equal(requests[1].path, "/koreader/plugin/openings")
 equal(row.phase, "active")
@@ -215,6 +312,9 @@ assert(client:request("GET", "/koreader/syncs/progress/" .. row.digest))
 assert(client:request("PUT", "/koreader/syncs/progress", { document = "another-book" }))
 assert(client:request("POST", "/koreader/plugin/match-check", { books = {{ hash = row.digest }} }))
 equal(#requests, 4, "reads, identity matching, and other books continue normally")
+if source_by_file.bookorbit_menu_sheet then
+    assert(client:annotationPendingBooks({ row.digest }), "2.0 pending-annotation query is read-only and remains available")
+end
 equal(BookSync.capture(app), nil)
 app:onSuspend()
 equal(outbox_enqueues, 0, "suspend cannot queue a provisional reading")
@@ -238,7 +338,7 @@ assert(not app:getSyncCoordinator():isBusy())
 assert(BookSync.capture(app), "ordinary snapshot capture resumes after commit")
 Sweep.running = true
 equal(Sweep.run({ api = app:apiOpts(), interactive = true }), false)
-equal(messages[#messages].text, "BookOrbit sync is already running.", "unheld sweeps reach stock code")
+equal(messages[#messages].text, source_by_file.bookorbit_menu_sheet and "A sync is already running" or "BookOrbit sync is already running.", "unheld sweeps reach stock code")
 Sweep.running = false
 
 -- The actual menu confirmation uses the stock coordinator, closes before restore,
@@ -287,6 +387,52 @@ app, row = open()
 app:onCloseDocument()
 assert(row.after_close and row.closed_at)
 equal(outbox_enqueues, 0, "close cannot queue a provisional reading")
+
+if source_by_file.bookorbit_menu_sheet then
+    -- 2.0 file-manager instances register their network handler during init.
+    -- An offline opening closed in the reader must still recover there.
+    row.phase = "committing"
+    local old_ui = app.ui
+    old_ui.document = nil
+    local manager = newInstance(loadPlugin(), { menu = { registerToMainMenu = noop } })
+    assert(not manager.in_reader and manager.onNetworkConnected, "file manager reconnect hook installed before init")
+    manager:onNetworkConnected()
+    equal(row.phase, "done", "file manager reconnect commits a persisted opening")
+    assert(not manager:getSyncCoordinator():isBusy())
+
+    -- The redesigned This book sheet asks for a quiet manual sync. It must
+    -- commit the opening before book data runs, then reconcile progress AFTER
+    -- book sync. Only the book-sync completion is stubbed in this scenario.
+    app, row = open()
+    local run = BookSync.run
+    local synced, finished = 0, 0
+    BookSync.run = function(opts)
+        equal(row.phase, "done", "explicit manual sync commits first")
+        equal(opts.skip_progress, true, "2.0 synchronizes book data before progress")
+        equal(opts.quiet, true, "sheet quiet option preserved")
+        equal(opts.snap.digest, row.digest)
+        synced = synced + 1
+        opts.on_finish()
+        return true
+    end
+    app:onBookOrbitSyncBook({ quiet = true, on_done = function(err)
+        equal(err, nil); finished = finished + 1
+    end })
+    BookSync.run = run
+    equal(synced, 1); equal(finished, 1)
+    equal(#errors, 0, dump(errors))
+    equal(requests[1].path, "/koreader/plugin/openings")
+    equal(requests[2].path, "/koreader/plugin/openings/commit")
+    reply = function(method, path)
+        if method == "GET" then return { percentage = 0.01, progress = "1" } end
+        return {}
+    end
+    tasks[#tasks].fn()
+    equal(requests[#requests].path, "/koreader/syncs/progress", "progress upload follows manual book sync")
+    equal(app.progress_compared_digest, row.digest)
+    assert(not app:getSyncCoordinator():isBusy())
+    assert(not Opening.available(app))
+end
 
 -- Excluded intervals survive restart and are isolated by book AND account.
 row.phase = "undone"

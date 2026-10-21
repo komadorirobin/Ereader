@@ -29,7 +29,7 @@ Bookshelf or SimpleUI because it observes KOReader's reader lifecycle.
 3. Sync patches in Patch Manager, enable this patch if necessary, and restart
    KOReader. Alternatively, install this file in `koreader/patches/` manually.
 4. Use **Tools > BookOrbit > Undo accidental opening** while eligible. It is also
-   in BookOrbit's dashboard menu and available as the gesture action
+   in BookOrbit's menu sheet (2.0) or dashboard menu (1.5.5), and available as the gesture action
    **BookOrbit: undo accidental opening**. It does not add a Bookshelf-only menu.
 
 The client holds automatic uploads for the provisional opening until you turn a
@@ -49,13 +49,23 @@ a provisional opening; normal sync can do that after reading continues.
 
 ### Updates and safety
 
-Tested against stock BookOrbit plugin **1.5.5**, repository commit
-`2855dbb8a39d20bf711f01772e2678ef0625dd63`. Compatibility checks fingerprint the
-nine source files involved in lifecycle, queues and API acknowledgement. The
-version literal is ignored: a version-only bump or changes outside those files
-need no patch update. Changes inside them require review and regression tests;
-even a harmless edit may conservatively trigger the guard. Never just regenerate
-the fingerprints to silence the warning.
+Tested against these stock BookOrbit plugin source sets:
+
+- **1.5.5**: `2855dbb8a39d20bf711f01772e2678ef0625dd63`.
+- **2.0.0** (BookOrbit 3.5.0): `c59dd0118fd0d5d0ecbd716d1d7fde2c97f8e2ea`.
+
+Compatibility checks fingerprint the nine source files involved in lifecycle,
+queues and API acknowledgement, plus the new menu sheet in 2.0. Each version
+must match a complete tested source set; mixing files from supported releases
+is not accepted. The version literal is ignored: a version-only bump or changes
+outside those files need no patch update. Changes inside them require review and
+regression tests; even a harmless edit may conservatively trigger the guard.
+Never just regenerate the fingerprints to silence the warning.
+
+The 2.0 adapter adds an undo row to the stock menu sheet without replacing its
+layout or other actions. A stale menu cannot undo a different opening or account.
+The new quiet manual-sync flow and file-manager reconnect handler retain the
+same opening protections. No saved-state migration is required.
 
 The guard runs **before plugin initialization**, before startup uploads can run.
 For unknown code with no protected state, ordinary BookOrbit sync still works
@@ -78,6 +88,11 @@ queue completion, upload filtering, offline recovery and compatibility gating:
 luajit tests/bookorbit_undo_state_test.lua
 luajit tests/bookorbit_undo_patch_test.lua /path/to/bookorbit.koplugin
 ```
+
+Run the adapter test separately against each source set above. It also checks
+each protected file, mixed-version rejection, the 2.0 menu action and delayed
+confirmation, and manual-sync ordering. Storage, transport and drawing widgets
+are mocked; physical-device verification is still required after installation.
 
 ## [2-hardcover-bookorbit-sync.lua](https://github.com/komadorirobin/Ereader/blob/main/2-hardcover-bookorbit-sync.lua)
 
