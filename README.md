@@ -125,6 +125,19 @@ luajit tests/hardcover_bookorbit_sync_test.lua /path/to/hardcoverapp.koplugin
 
 Adds a custom header with "Author – Title" in left corner and "Battery % | Clock" in right corner. Needs localization if you're not Swedish. It also comes with a few folder rules which, again, is (likely) not useful for anybody else.
 
+Bookmarked pages use the manga header's notched ribbon, hanging directly from
+the screen's top edge instead of from a header band. It uses a dark fill on light
+pages and a light fill on dark pages, with a contrasting outline. KOReader's
+bookmark state and gestures are unchanged; its native corner icon is suppressed
+only while this header is drawn on the reading screen. Removing the bookmark
+refreshes the complete ribbon area. The header stays transparent, and its text
+leaves room for the ribbon even with larger fonts. This patch works on its own;
+the manga header is not required or modified.
+
+**Svenska:** Bokmärkta sidor får manga-headerns bokmärkesband, men hängande direkt
+från skärmens överkant. Headern förblir transparent och bandet får kontrast mot
+ljusa och mörka sidor. Bokmärkesdata och gester ändras inte.
+
 Both this patch and the manga header below draw only to KOReader's current screen
 buffer. Page Scrubber and KOReader's native Page browser use a separate buffer
 to generate page thumbnails, even when it has the same dimensions as the screen
@@ -154,10 +167,14 @@ background and bookmark ribbon are unchanged.
 Header regression tests (mocked KOReader APIs, no device required):
 
 ```sh
+luajit tests/prose_header_test.lua
 luajit tests/manga_header_test.lua
 luajit tests/header_thumbnail_test.lua
 ```
 
+The prose tests cover ribbon parity with the manga patch, top-edge positioning,
+light/dark contrast and fallback, bookmark removal, native-icon suppression,
+text spacing, folder rules and both patch load orders.
 The thumbnail tests cover each patch on its own and both load orders, cold and
 already-active readers, screen-buffer replacement and return to normal reading.
 They use mocked KOReader APIs; physical-device verification is still required.
