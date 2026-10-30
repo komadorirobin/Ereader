@@ -256,6 +256,11 @@ if menuActions then
         if item.kind == "ereader-undo-opening" then popover_undo = popover_undo + 1 end
     end
     equal(popover_undo, 1, "tablet and landscape popover also exposes undo")
+    local short_screen_undo = 0
+    for _, item in ipairs(menuActions(Sheet.body(sheet.sheet_data, 900, { popover = true, cols = 3, side_rows = true }))) do
+        if item.kind == "ereader-undo-opening" then short_screen_undo = short_screen_undo + 1 end
+    end
+    equal(short_screen_undo, 1, "short landscape side-row layout also exposes undo")
     local data_hook = Sheet.data
     local fresh = newInstance(loadPlugin(), app.ui)
     fresh:openMenuSheet(catalog)
@@ -432,6 +437,94 @@ if source_by_file.bookorbit_menu_sheet then
     equal(app.progress_compared_digest, row.digest)
     assert(not app:getSyncCoordinator():isBusy())
     assert(not Opening.available(app))
+end
+
+if type(app.isSamePlace) == "function" then
+    -- 2.1 carries copy-position compatibility through identity matching.
+    -- That flag must survive the opening wrapper without releasing its hold.
+    app, row = open()
+    local State, Manager = require("bookorbit_state"), require("bookorbit_state_manager")
+    local fresh, version, session, get_book = State.isMatchFresh, State.applyLibraryVersion, Manager.session, Manager.getBook
+    local matched_copy
+    State.isMatchFresh = function() return false end
+    State.applyLibraryVersion = noop
+    Manager.session = function() return {
+        getBook = function() return matched_copy end, flush = noop,
+        setMatched = function(_self, hash, file_id, book_id, file, library_version, position_compatible)
+            equal(hash, row.digest)
+            equal(position_compatible, false, "copy-position flag survives the matching wrapper")
+            matched_copy = { positionIncompatible = not position_compatible }
+        end,
+    } end
+    Manager.getBook = function() return matched_copy end
+    reply = function(_method, path)
+        if path == "/koreader/plugin/match-check" then
+            return { matches = {{ hash = row.digest, bookFileId = 2, bookId = 1, positionCompatible = false }} }
+        end
+        return { phase = "active" }
+    end
+    local matched = false
+    app:matchOpenBookForAutoSync(function(value) matched = value end)
+    assert(matched and app:isOpenBookPositionIncompatible(row.digest))
+    equal(row.phase, "active")
+    assert(Opening.held(app.settings, row.digest))
+    State.isMatchFresh, State.applyLibraryVersion, Manager.session, Manager.getBook = fresh, version, session, get_book
+
+    -- 2.1's percentage fallback rounds to a page. If that moves the reader,
+    -- the normal PageUpdate event must commit rather than leave undo enabled.
+    app, row = open()
+    app.ui.document.getPageCount = function() return 100 end
+    app.ui.document.info.number_of_pages = 100
+    app.ui.rolling = { view = { view_mode = "page" } }
+    assert(app:isSamePlace({ percentage = 0.50 }, 0.505, "different-copy"))
+    assert(not app:isSamePlace({ percentage = 0.50 }, 0.52, "different-copy"))
+    equal(row.phase, "candidate", "comparing places alone does not commit")
+    local event
+    app.ui.handleEvent = function(self, value)
+        event = value
+        self.page = value.payload
+        app:onPageUpdate(self.page)
+    end
+    app:syncToProgress(nil, 0.4249)
+    equal(event.name, "GotoPage"); equal(event.payload, 42)
+    equal(row.phase, "done", "moving to the remote page commits the opening")
+    assert(not Opening.available(app))
+    equal(requests[#requests].path, "/koreader/plugin/openings/commit")
+
+    -- The new unmatched-outbox cleanup may remove that queue entry only.
+    -- A different provisional opening must stay protected and undoable.
+    app, row = open()
+    app:matchOpenBookForAutoSync()
+    local entry = { id = "unmatched-entry", generation = 1,
+        snapshot = { digest = string.rep("b", 32), file = "/books/unknown.epub", title = "Unknown book" } }
+    local removed = 0
+    app.lifecycle_outbox = {
+        nextEntry = function() return entry end, readLatest = function() return entry end,
+        markStarted = function() return entry end, isComplete = function() return false end,
+        nextRetryAt = noop,
+        removeEntry = function(_self, id)
+            equal(id, "unmatched-entry"); removed = removed + 1; entry = nil
+        end,
+    }
+    app.settings.last_error = { event = "lifecycle_outbox", code = "outbox_blocked" }
+    local run = BookSync.run
+    Manager.getBook = noop
+    BookSync.run = function(opts)
+        equal(opts.snap.digest, string.rep("b", 32))
+        equal(row.phase, "active")
+        opts.on_finish("unmatched")
+        return true
+    end
+    tasks = {}
+    app:requestLifecycleOutboxDrain("recovery")
+    table.remove(tasks, 1).fn()
+    BookSync.run, Manager.getBook = run, get_book
+    equal(removed, 1)
+    equal(app.settings.last_error, nil)
+    equal(row.phase, "active", "unmatched cleanup cannot commit another opening")
+    assert(Opening.available(app) and Opening.held(app.settings, row.digest))
+    assert(not app:getSyncCoordinator():isBusy())
+    equal(#errors, 0, dump(errors))
 end
 
 -- Excluded intervals survive restart and are isolated by book AND account.
