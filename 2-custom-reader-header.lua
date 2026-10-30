@@ -24,20 +24,22 @@ local header_top_margin = 10
 local header_text_gap = 12
 local separator = "│"
 
--- Same ribbon shape and contrast treatment as 2-header-manga.lua. These patches
--- remain standalone, so either header can be installed without the other.
+-- Same ribbon width, notched tip and contrast treatment as 2-header-manga.lua,
+-- but the prose ribbon spans the complete header from the screen edge to the
+-- bottom of its text. Each header remains standalone.
 local function getBookmarkRibbonGeometry(right_edge, top, text_height)
     local width = math.max(20, math.floor(text_height * 0.75 + 0.5))
     local drop = math.max(12, math.floor(text_height * 0.55 + 0.5))
     local notch_depth = math.max(5, math.floor(drop * 0.5 + 0.5))
     local right_inset = math.max(8, math.floor(width * 0.4 + 0.5))
-    local ribbon_bottom = top + drop
+    local height = math.max(drop, header_top_margin + text_height)
+    local ribbon_bottom = top + height
 
     return {
         x = right_edge - right_inset - width,
         y = top,
         w = width,
-        h = drop,
+        h = height,
         notch_depth = notch_depth,
         notch_top = ribbon_bottom - notch_depth,
     }

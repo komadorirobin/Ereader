@@ -144,19 +144,40 @@ test("ribbon hangs directly from the top without a header band or line", functio
     end
 end)
 
-test("same shape and colors as manga, translated to the screen edge", function()
+test("prose extends manga's ribbon body, preserving its width, tip and colors", function()
     for _, dark in ipairs({ false, true }) do
         local regular, view = render({ bookmarked = true, dark = dark })
         -- Manga subtracts two points; compensate to compare identical text sizes.
         local illustrated, manga_view = render({ paths = { manga }, file = comic,
             bookmarked = true, dark = dark, font_size = 16 })
         local ribbon, source = view._header_bookmark_ribbon_region, manga_view._manga_bookmark_ribbon_region
-        assert(ribbon.w == source.w and ribbon.h == source.h and ribbon.notch_depth == source.notch_depth)
+        assert(ribbon.w == source.w and ribbon.h > source.h and ribbon.notch_depth == source.notch_depth)
+        local extension = ribbon.h - source.h
         assert(#regular.rects == #illustrated.rects - 1, "exclude manga's opaque band")
         for i, rect in ipairs(regular.rects) do
             local original = illustrated.rects[i + 1]
-            assert(rect.x == original.x and rect.y == original.y - source.y)
-            assert(rect.w == original.w and rect.h == original.h and rect.color == original.color)
+            assert(rect.x == original.x and rect.w == original.w and rect.color == original.color)
+            if rect.y == 0 then
+                assert(original.y == source.y and rect.h == original.h + extension)
+            else
+                assert(rect.y == original.y - source.y + extension and rect.h == original.h)
+            end
+        end
+    end
+end)
+
+test("ribbon reaches the header text bottom across fonts, scales and offsets", function()
+    for _, size in ipairs({ 10, 14, 24 }) do
+        for _, scale in ipairs({ 1, 2, 3, 4 }) do
+            local result, view = render({ bookmarked = true, font_size = size,
+                font_scale = scale, width = 1680, x = 11, y = 23 })
+            local status = result.text[#result.text]
+            local ribbon = assert(view._header_bookmark_ribbon_region)
+            assert(ribbon.y == 23)
+            assert(ribbon.y + ribbon.h == status.y + status.h)
+            assert(ribbon.notch_depth < ribbon.h / 2, "elongate body, not notch")
+            local region = assert(view.dogear:getRefreshRegion())
+            assert(region.y + region.h >= status.y + status.h)
         end
     end
 end)
