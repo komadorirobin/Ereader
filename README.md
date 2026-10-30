@@ -169,3 +169,36 @@ Makes the manga/comic fill the entire screen beneath the header. Meant to be com
 # [2-footer-info-progress.lua](https://github.com/komadorirobin/Ereader/blob/main/2-footer-info-progress.lua)
 
 Custom footer with "Chapter name" in left corner, "Current page/total pages", "Pages left in chapter", "Pages left in book", and "Percentage read" in right corner. Also a thin progress bar beneath.
+
+## [2-bigme-frontlight.lua](2-bigme-frontlight.lua)
+
+**Bigme frontlight compatibility — v0.1.0-beta.1.** Connects KOReader's ordinary
+light controls and PowerD-based interfaces such as OrbitUI quick controls to the
+verified Bigme `hibreak_eea` / `mt6877` / Android `arm64` profile. Other devices
+are left unchanged. Brightness controls cold LEDs and warmth controls warm LEDs,
+using Bigme's independent 0–36 channel scales. Toggle remembers/restores both.
+Reads existing levels without issuing light commands on load; syncs successful
+changes back to Bigme's settings. Requires existing Android permission to modify
+system settings; no root, permission grant or security-policy change.
+
+Patch Manager automatically discovers this new root-level numbered file on
+synchronization. Restart KOReader after installation. Disable the earlier
+access/cold/warm diagnostic patches first, if present, but keep their logs.
+The two channels and their restoration were physically verified separately;
+the integrated driver and full range still require device acceptance.
+
+Canonical source, releases, license, tests and full bilingual instructions:
+[koreader-bigme-frontlight](https://github.com/komadorirobin/koreader-bigme-frontlight)
+([svenska](https://github.com/komadorirobin/koreader-bigme-frontlight/blob/main/README.sv.md)).
+This catalogue copy is byte-identical to the standalone release and requires no
+new OrbitUI or Patch Manager version.
+
+**Svenska:** Kopplar KOReaders vanliga ljusreglage och OrbitUIs snabbkontroller
+till den testade Bigme-profilen ovan, utan att påverka andra enheter. Ljusstyrka
+styr kallt ljus och värme styr varmt ljus, med Bigmes separata nivåer 0–36.
+På/av återställer det föregående paret. Befintliga nivåer läses utan ljuskommando
+vid laddning, och lyckade ändringar synkas till Bigmes inställningar. KOReader
+behöver redan få ändra systeminställningar; ingen root eller behörighetsändring.
+Synkronisera i Patch Manager och starta om. Inaktivera gamla diagnostikpatchar
+för åtkomst/kallt/varmt ljus först och behåll loggarna. Separata hårdvaruprov har
+lyckats, men den integrerade betan och hela reglerområdet behöver testas på enheten.
