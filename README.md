@@ -172,7 +172,16 @@ Custom footer with "Chapter name" in left corner, "Current page/total pages", "P
 
 ## [2-bigme-frontlight.lua](2-bigme-frontlight.lua)
 
-**Bigme frontlight compatibility — v0.1.0-beta.1.** Connects KOReader's ordinary
+**Bigme frontlight compatibility — v0.1.0-beta.2.** Fixes Beta 1's confirmed
+startup abort caused by an obsolete Android permission helper. **Do not enable
+Beta 1.** The replacement checks public `Settings.System.canWrite(Context)`
+and validates its JNI method reference before invoking it. No permission is
+requested or granted. Sync the replacement before re-enabling; disabled files
+stay disabled. Do not rename the old failed backup back to `.lua`.
+If startup is blocked, force-stop KOReader and rename the old patch outside
+the `.lua` extension using Android's file manager. Do not clear app data/settings.
+
+Connects KOReader's ordinary
 light controls and PowerD-based interfaces such as OrbitUI quick controls to the
 verified Bigme `hibreak_eea` / `mt6877` / Android `arm64` profile. Other devices
 are left unchanged. Brightness controls cold LEDs and warmth controls warm LEDs,
@@ -202,3 +211,11 @@ behöver redan få ändra systeminställningar; ingen root eller behörighetsän
 Synkronisera i Patch Manager och starta om. Inaktivera gamla diagnostikpatchar
 för åtkomst/kallt/varmt ljus först och behåll loggarna. Separata hårdvaruprov har
 lyckats, men den integrerade betan och hela reglerområdet behöver testas på enheten.
+
+**Beta 2 rättar Beta 1:s startkrasch. Aktivera inte Beta 1.** Synkronisera först
+den rättade patchen; en avstängd kopia förblir avstängd. Återaktivera inte den
+gamla felaktiga filen. Vid startproblem: tvångsavsluta KOReader och byt i Androids
+filhanterare namn på ljuspatchen så att filnamnet inte slutar på `.lua`.
+Rensa inga appdata eller inställningar. Den nya behörighetskontrollen kontrollerar
+JNI-metodreferensen före anrop; ingen behörighet begärs eller ändras. Även den
+rättade integrerade patchen behöver fortfarande bekräftas på enheten.

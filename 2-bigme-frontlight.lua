@@ -22,7 +22,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
--- Bigme LM3630A frontlight compatibility, v0.1.0-beta.1.
+-- Bigme LM3630A frontlight compatibility, v0.1.0-beta.2.
 -- Standalone KOReader userpatch: no OrbitUI dependency, root or firmware changes.
 -- Only the verified hibreak_eea/mt6877/arm64 firmware profile is eligible.
 -- Loading performs no device open/ioctl or Android-settings write.
@@ -35,7 +35,7 @@ if normalized(prop.manufacturer) ~= "bigme" and normalized(prop.brand) ~= "bigme
 if normalized(prop.model) ~= "hibreak" or normalized(prop.hardware) ~= "mt6877"
     or normalized(prop.product) ~= "hibreak_eea" then return end
 
-local VERSION = "0.1.0-beta.1"
+local VERSION = "0.1.0-beta.2"
 local PROFILE = "hibreak_eea/mt6877/arm64/lm3630a-table80-v1"
 local PATH = "/dev/lm3630a"
 local LEVELS = { 0,2,20,30,40,50,60,70,80,90,102,108,114,120,126,132,138,144,150,
@@ -107,8 +107,6 @@ local installed, setup_error = pcall(function()
     assert(type(powerd.stateChanged) == "function" and type(powerd.updateResumeFrontlightState) == "function"
         and type(android.jni) == "table"
         and type(android.jni.context) == "function", "Missing KOReader API")
-    local can_write = type(android.canWriteSettings) == "function" and android.canWriteSettings()
-    assert(can_write, "WRITE_SETTINGS is required; no permission was requested or changed")
     local activity = assert(android.app and android.app.activity, "No Android activity")
     assert(activity.vm and activity.clazz, "Missing JNI activity handles")
 
@@ -130,10 +128,19 @@ local installed, setup_error = pcall(function()
                 return value
             end
             local inner_ok, values = pcall(function()
+                -- Do NOT call android.canWriteSettings(): its legacy Java target
+                -- hasWriteSettingsPermission is absent in current APKs. That
+                -- unchecked JNI helper can abort the process, beyond pcall.
+                -- Resolve public Android canWrite(Context) and check the ID
+                -- BEFORE invocation, both at startup and before later I/O.
+                local system = checked(api.FindClass(env, "android/provider/Settings$System"), true)
+                local can_write = checked(api.GetStaticMethodID(env, system, "canWrite", "(Landroid/content/Context;)Z"))
+                local allowed = api.CallStaticBooleanMethod(env, system, can_write, activity.clazz)
+                checked(allowed)
+                assert(tonumber(allowed) == 1, "WRITE_SETTINGS is required; no permission was requested or changed")
                 local cls = checked(api.GetObjectClass(env, activity.clazz), true)
                 local getter = checked(api.GetMethodID(env, cls, "getContentResolver", "()Landroid/content/ContentResolver;"))
                 local resolver = checked(api.CallObjectMethod(env, activity.clazz, getter), true)
-                local system = checked(api.FindClass(env, "android/provider/Settings$System"), true)
                 local get_int = checked(api.GetStaticMethodID(env, system, "getInt", "(Landroid/content/ContentResolver;Ljava/lang/String;I)I"))
                 local put_int
                 if writes then
