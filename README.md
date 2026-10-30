@@ -172,50 +172,50 @@ Custom footer with "Chapter name" in left corner, "Current page/total pages", "P
 
 ## [2-bigme-frontlight.lua](2-bigme-frontlight.lua)
 
-**Bigme frontlight compatibility — v0.1.0-beta.2.** Fixes Beta 1's confirmed
-startup abort caused by an obsolete Android permission helper. **Do not enable
-Beta 1.** The replacement checks public `Settings.System.canWrite(Context)`
-and validates its JNI method reference before invoking it. No permission is
-requested or granted. Sync the replacement before re-enabling; disabled files
-stay disabled. Do not rename the old failed backup back to `.lua`.
-If startup is blocked, force-stop KOReader and rename the old patch outside
-the `.lua` extension using Android's file manager. Do not clear app data/settings.
+**Bigme frontlight compatibility — v0.1.0-beta.3.** Replaces Android-rejected
+settings writes with Bigme's verified provider and avoids protected raw-key
+reads. The integrated implementation is now device-tested on the matching
+`bigme / hibreak / hibreak_eea / mt6877 / Android arm64` firmware profile.
+Other profiles remain untouched; marketing names alone do not establish support.
 
-Connects KOReader's ordinary
-light controls and PowerD-based interfaces such as OrbitUI quick controls to the
-verified Bigme `hibreak_eea` / `mt6877` / Android `arm64` profile. Other devices
-are left unchanged. Brightness controls cold LEDs and warmth controls warm LEDs,
-using Bigme's independent 0–36 channel scales. Toggle remembers/restores both.
-Reads existing levels without issuing light commands on load; syncs successful
-changes back to Bigme's settings. Requires existing Android permission to modify
-system settings; no root, permission grant or security-policy change.
+KOReader's ordinary light controls and PowerD callers such as OrbitUI quick
+controls use independent cold/warm scales 0–36. Off/on remembers/restores both
+levels. The owner confirmed physical operation, restart readback and
+bidirectional synchronization with Bigme's panel. This remains a beta:
+independent raw-storage readback and every value on every firmware are not
+verified. Provider responses alone are never treated as proof of raw persistence.
 
-Patch Manager automatically discovers this new root-level numbered file on
-synchronization. Restart KOReader after installation. Disable the earlier
-access/cold/warm diagnostic patches first, if present, but keep their logs.
-The two channels and their restoration were physically verified separately;
-the integrated driver and full range still require device acceptance.
+Loading performs no light command or Android settings write. Existing Android
+permission to modify system settings is required; no root, permission grant,
+APK/firmware replacement or security-policy change. Only six fixed light keys,
+the verified OEM provider and two known hardware commands are used.
 
-Canonical source, releases, license, tests and full bilingual instructions:
-[koreader-bigme-frontlight](https://github.com/komadorirobin/koreader-bigme-frontlight)
+Synchronize in Ereader Patch Manager and restart KOReader. Existing disabled
+copies remain disabled: verify the replacement is **0.1.0-beta.3** before
+re-enabling. Never re-enable old failed backups. Disable all earlier Bigme
+access/cold/warm, read-only settings, same-value provider and provider-roundtrip
+diagnostics first; keep their logs/recovery files.
+
+If KOReader cannot start, force-stop it and rename the failed patch so the
+filename no longer ends in `.lua`. **Do not clear app data.** On any runtime
+error, stop adjusting through KOReader, use Bigme's own panel to choose desired
+levels, disable the patch and restart. No automatic retry or blind rollback.
+
+Canonical source, release, license, tests and full bilingual instructions:
+[koreader-bigme-frontlight Beta 3](https://github.com/komadorirobin/koreader-bigme-frontlight/releases/tag/v0.1.0-beta.3)
 ([svenska](https://github.com/komadorirobin/koreader-bigme-frontlight/blob/main/README.sv.md)).
-This catalogue copy is byte-identical to the standalone release and requires no
-new OrbitUI or Patch Manager version.
+This catalogue file is byte-identical to the standalone release; no new OrbitUI
+or Patch Manager version is needed.
 
-**Svenska:** Kopplar KOReaders vanliga ljusreglage och OrbitUIs snabbkontroller
-till den testade Bigme-profilen ovan, utan att påverka andra enheter. Ljusstyrka
-styr kallt ljus och värme styr varmt ljus, med Bigmes separata nivåer 0–36.
-På/av återställer det föregående paret. Befintliga nivåer läses utan ljuskommando
-vid laddning, och lyckade ändringar synkas till Bigmes inställningar. KOReader
-behöver redan få ändra systeminställningar; ingen root eller behörighetsändring.
-Synkronisera i Patch Manager och starta om. Inaktivera gamla diagnostikpatchar
-för åtkomst/kallt/varmt ljus först och behåll loggarna. Separata hårdvaruprov har
-lyckats, men den integrerade betan och hela reglerområdet behöver testas på enheten.
+**Svenska:** Beta 3 ersätter nekade Android-skrivningar med Bigmes egen tjänst och
+undviker blockerad råvärdesläsning. Kallt/varmt ljus, av/på med återställning,
+återläsning efter omstart och synkning åt båda håll är bekräftade på den exakta
+profilen ovan. Inte generellt stöd för alla Bigme-enheter. Rålagringen är inte
+separat avläst och betastatus kvarstår.
 
-**Beta 2 rättar Beta 1:s startkrasch. Aktivera inte Beta 1.** Synkronisera först
-den rättade patchen; en avstängd kopia förblir avstängd. Återaktivera inte den
-gamla felaktiga filen. Vid startproblem: tvångsavsluta KOReader och byt i Androids
-filhanterare namn på ljuspatchen så att filnamnet inte slutar på `.lua`.
-Rensa inga appdata eller inställningar. Den nya behörighetskontrollen kontrollerar
-JNI-metodreferensen före anrop; ingen behörighet begärs eller ändras. Även den
-rättade integrerade patchen behöver fortfarande bekräftas på enheten.
+Synkronisera i Patch Manager och starta om. Kontrollera **0.1.0-beta.3** innan en
+tidigare avstängd kopia återaktiveras; återställ inga gamla felkopior. Inaktivera
+alla tidigare Bigme-diagnostikpatchar och behåll loggar/återställningsfiler.
+Ingen ny OrbitUI- eller Patch Manager-version krävs. Vid fel: använd Bigmes
+egen ljusmeny, inaktivera patchen och starta om. Vid startproblem: tvångsavsluta
+och byt filändelse i Androids filhanterare. Rensa inte appdata eller inställningar.
