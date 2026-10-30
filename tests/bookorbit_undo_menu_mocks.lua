@@ -12,6 +12,7 @@ preload("bookorbit_board_metrics", {
     px = function(n) return n end, INK = {},
 })
 local Board = {}
+function Board.fitSize(_text, opts) return opts.s end
 for _, name in ipairs({ "text", "runs", "icon", "space", "rect", "flex", "statusCluster" }) do
     Board[name] = function(value, opts) return node(name, nil, type(opts) == "table" and opts or { value = value }) end
 end
@@ -32,6 +33,7 @@ local MenuUI = {
     card = function(w, children) return node("card", children, { w = w }) end,
     section = function(w, title, widget) return node("section", { widget }, { w = w, title = title }) end,
     chip = function(label) return node("chip", nil, { label = label }) end,
+    label = function(w, title) return node("label", nil, { w = w, title = title }) end,
 }
 preload("bookorbit_menu_ui", MenuUI)
 preload("bookorbit_menu_page", {
