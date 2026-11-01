@@ -19,8 +19,10 @@ Bookshelf or SimpleUI because it observes KOReader's reader lifecycle.
 
 ### Requirements and use
 
-1. Deploy the [BookOrbit server support](server-support/bookorbit-undo-opening/README.md)
-   first: migration `0101_undo_reading_opening`
+1. Deploy the [version-specific BookOrbit server support](https://github.com/komadorirobin/bookorbit-extras#what-needs-what)
+   first. The current source package targets exact official 3.6.0 with migration
+   `0132_undo_reading_opening`; the old 3.2.0 overlay is separate and must not be
+   applied to newer servers. Both supply
    and the authenticated `/api/v1/koreader/plugin/openings`, `/commit` and `/undo`
    endpoints. This is separate server work, not something a device patch installs.
 2. Keep the official BookOrbit plugin enabled and configured for automatic sync.
@@ -38,6 +40,21 @@ is held; sync for other individual books is unaffected. After a successful undo,
 the book returns to its previous unread state/history position. KOReader's local
 statistics database is not erased, but the accidental time interval is excluded
 from future BookOrbit uploads, including full sweeps.
+
+Reloading the same unchanged cover (including KOReader closing/reopening it
+after a font/layout change) keeps the original opening and its Undo action.
+The original ID, unread snapshot and 24-hour deadline are retained, not renewed.
+A page turn, another book, changed annotations/progress or an expired opening
+still ends eligibility. Already committed openings are not made undoable again;
+this fix does not rewrite existing history. No server update or data migration
+is required for this device-side fix.
+
+**Svenska:** Omladdning av samma oförändrade omslag behåller ångramöjligheten,
+även om KOReader stänger och öppnar boken igen vid en layoutändring. Ursprunglig
+öppning och 24-timmarsgräns behålls. Sidvändning, bokbyte, ändrade anteckningar
+eller läsposition avslutar fortfarande ångrafönstret. Redan bekräftade öppningar
+återaktiveras inte och befintlig historik ändras inte. Ingen serveruppdatering
+eller datamigrering behövs för den här rättningen i enhetspatchen.
 
 An unsent offline opening can be undone locally. If a request may already have
 reached the server, it must be reconciled before local data is reset. A pending

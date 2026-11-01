@@ -346,6 +346,69 @@ equal(Sweep.run({ api = app:apiOpts(), interactive = true }), false)
 equal(messages[#messages].text, source_by_file.bookorbit_menu_sheet and "A sync is already running" or "BookOrbit sync is already running.", "unheld sweeps reach stock code")
 Sweep.running = false
 
+-- Real stock lifecycle handlers must retain the opening through duplicate
+-- readiness and a fresh reader/plugin after KOReader reloads the same cover.
+app, row = open()
+app:matchOpenBookForAutoSync()
+local opening_id, opened_at, before_reload = row.id, row.opened_at, dump(row.before)
+now = now + 10
+app:onReaderReady()
+equal(row.phase, "active", "duplicate stock ReaderReady does not commit")
+equal(app.opening_session_id, opening_id)
+equal(BookSync.capture(app), nil, "duplicate readiness retains the outbox hold")
+ds:saveSetting("percent_finished", 0.01)
+ds:saveSetting("last_page", 1)
+app:onCloseDocument()
+assert(row.closed_at and row.after_close)
+local old_ui, reloaded_ui = app.ui, {}
+for key, value in pairs(old_ui) do reloaded_ui[key] = value end
+reloaded_ui.document = {file = row.file, info = {has_pages = true, number_of_pages = 269}}
+old_ui.document = nil
+now = now + 10
+app = newInstance(loadPlugin(), reloaded_ui)
+app:onDocSettingsLoad(ds)
+ds:readSetting("summary").modified = "2026-11-02"
+app:onReaderReady()
+equal(Opening.record(app), row)
+equal(row.phase, "active", "same cover reloaded in a new stock instance is still undoable")
+equal(row.id, opening_id); equal(row.opened_at, opened_at)
+equal(dump(row.before), before_reload)
+equal(row.closed_at, nil); equal(row.after_close, nil)
+equal(app.opening_session_id, opening_id)
+app:matchOpenBookForAutoSync()
+equal(#requests, 1, "reload never sends another opening or a commit")
+equal(BookSync.capture(app), nil)
+app:onSuspend()
+equal(outbox_enqueues, 0, "reload cannot enqueue provisional progress")
+assert(Opening.available(app) and Opening.held(app.settings, row.digest))
+local reload_menu = {}
+app:addToMainMenu(reload_menu)
+equal(reload_menu.bookorbit.sub_item_table[1].id, "undo_opening")
+if menuActions then
+    local sheet = app:openMenuSheet({current_context = {}})
+    equal(sheet.sheet_data.ereader_undo.id, opening_id, "stock sheet retains the undo row after reload")
+end
+app.ui.page = 2
+app:onPageUpdate(2)
+equal(row.phase, "done", "real page turn after reload still commits exactly once")
+equal(#requests, 2); equal(requests[2].path, "/koreader/plugin/openings/commit")
+equal(requests[2].body.id, opening_id)
+equal(#errors, 0, dump(errors))
+
+app, row = open()
+local protected = row
+app.ui.document = {file = "/books/other.epub", info = {has_pages = true}}
+app:onDocSettingsLoad(ds)
+app:onReaderReady()
+equal(row.phase, "committing", "switching books still commits the previous opening")
+equal(Opening.record(app), protected, "book switch cannot discard the previous operation")
+equal(app.opening_session_id, nil)
+app:requestOpeningSync()
+equal(row.phase, "done")
+equal(requests[1].path, "/koreader/plugin/openings")
+equal(requests[2].path, "/koreader/plugin/openings/commit")
+equal(#errors, 0, dump(errors))
+
 -- The actual menu confirmation uses the stock coordinator, closes before restore,
 -- and must not leave a close/suspend snapshot that could recreate the reading.
 app, row = open()

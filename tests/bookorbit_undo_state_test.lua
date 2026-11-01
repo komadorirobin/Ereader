@@ -210,6 +210,130 @@ open()
 plugin.ui:onClose()
 assert(Opening.undo(plugin), "undo also works after closing the initial page")
 
+-- ReaderReady can repeat, or KOReader can close/reopen the same cover during
+-- layout/font changes. Neither event is evidence of actual reading.
+for _, registered in ipairs({false, true}) do
+    setup()
+    open()
+    row = Opening.record(plugin)
+    if registered then assert(Opening.ensure(plugin)) end
+    local original = dump(row)
+    now = now + 10
+    Opening.capture(plugin)
+    equal(dump(row), original, "duplicate ReaderReady preserves the entire opening")
+    equal(plugin.opening_session_id, row.id, "duplicate readiness retains snapshot ownership")
+    assert(Opening.available(plugin) and Opening.held(plugin.settings, row.digest))
+    assert(Opening.undo(plugin), "same-reader reload remains undoable")
+    equal(#calls, registered and 2 or 0, "no second registration is created")
+end
+
+setup()
+open()
+row = Opening.record(plugin)
+assert(Opening.ensure(plugin))
+local original_id, original_time, original_before = row.id, row.opened_at, dump(row.before)
+now = now + 10
+plugin.ui:onClose()
+-- New reader and plugin instance, but persistent account and sidecar state.
+local previous_plugin = plugin
+plugin = setmetatable({ui = {
+    document = {file = row.file, pages = 269}, doc_settings = ds,
+    annotation = {annotations = {}}, page = 1,
+    getCurrentPage = previous_plugin.ui.getCurrentPage,
+    onClose = previous_plugin.ui.onClose, showFileManager = previous_plugin.ui.showFileManager,
+}}, {__index = previous_plugin})
+now = now + 10
+Opening.beforeLoad(plugin, ds)
+ds:readSetting("summary").modified = "2026-10-02" -- normal reopen bookkeeping
+Opening.capture(plugin)
+equal(row.phase, "active", "closed cover reopened with a reflow stays provisional")
+equal(row.closed_at, nil, "old close marker cannot reject the new live reader")
+equal(row.after_close, nil)
+equal(row.id, original_id); equal(row.opened_at, original_time)
+equal(dump(row.before), original_before, "reload never replaces the unread snapshot")
+equal(plugin.opening_session_id, row.id)
+assert(Opening.ensure(plugin)); equal(#calls, 1, "registered opening is reused")
+assert(Opening.undo(plugin), "undo works after a fresh reader instance resumes the cover")
+equal(calls[2].body.id, original_id)
+equal(ds:readSetting("percent_finished"), nil)
+equal(ds:readSetting("summary").modified, nil)
+equal(#Opening.account(plugin.settings).ignored_stats[row.digest], 1)
+equal(Opening.account(plugin.settings).ignored_stats[row.digest][1][1], original_time)
+equal(Opening.account(plugin.settings).ignored_stats[row.digest][1][2], now,
+    "excluded accidental interval includes every reload, not only the first session")
+
+for _, change in ipairs({"page", "annotations", "digest", "file", "expired", "sidecar", "summary", "missing_preload", "after_preload"}) do
+    setup()
+    open()
+    row = Opening.record(plugin)
+    if change == "sidecar" or change == "summary" or change == "missing_preload" or change == "after_preload" then
+        plugin.ui:onClose()
+        plugin.ui.document = {file = row.file}
+        if change == "sidecar" then ds:saveSetting("last_page", 12) end
+        if change == "summary" then ds:readSetting("summary").status = "complete" end
+        if change ~= "missing_preload" then Opening.beforeLoad(plugin, ds) end
+        if change == "after_preload" then ds:saveSetting("last_xpointer", "another-position") end
+        -- A later reader may itself reset the visible page/status. That must
+        -- not hide a modification detected before KOReader loaded the book.
+        ds:readSetting("summary").status = "reading"
+    elseif change == "page" then plugin.ui.page = 2
+    elseif change == "annotations" then plugin.ui.annotation.annotations = {{text = "keep"}}
+    elseif change == "digest" then plugin.getDocumentDigest = function() return string.rep("b", 32) end
+    elseif change == "file" then plugin.ui.document.file = "/books/other.epub"
+    elseif change == "expired" then now = now + 86401 end
+    Opening.capture(plugin)
+    equal(Opening.record(plugin), row, change .. " never replaces the protected row")
+    equal(row.phase, "committing", change .. " cannot revive undo")
+    equal(plugin.opening_session_id, nil)
+end
+
+for _, phase in ipairs({"committing", "done", "undone"}) do
+    setup()
+    open()
+    row = Opening.record(plugin)
+    row.phase = phase
+    Opening.capture(plugin)
+    equal(row.phase, phase, "reload never reopens " .. phase .. " state")
+    equal(plugin.opening_session_id, nil)
+end
+
+setup()
+open()
+row = Opening.record(plugin)
+plugin.ui:onClose()
+row.phase = "undo_pending"
+plugin.ui.document = {file = row.file}
+Opening.beforeLoad(plugin, ds)
+Opening.capture(plugin)
+equal(row.phase, "undo_pending", "reload does not silently cancel a pending undo")
+equal(plugin.opening_session_id, row.id)
+assert(Opening.undo(plugin), "pending undo can still finish after a cover reload")
+equal(closed, 2)
+
+setup()
+open()
+row = Opening.record(plugin)
+Opening.beforeLoad(plugin, ds)
+plugin.settings.username = "other-account"
+Opening.capture(plugin)
+equal(Opening.record(plugin), nil, "a reload cannot transfer an opening between accounts")
+equal(row.phase, "candidate")
+
+setup()
+open()
+row = Opening.record(plugin)
+assert(Opening.ensure(plugin))
+row.phase = "undo_pending"
+response = function() return {phase="undone",hardcoverPending=true} end
+assert(Opening.undo(plugin))
+plugin.ui.document = {file = row.file}
+Opening.beforeLoad(plugin, ds)
+Opening.capture(plugin)
+equal(row.phase, "undo_pending", "reopening cannot revive a locally completed undo")
+equal(plugin.opening_session_id, nil)
+equal(row.local_restored, true)
+equal(#Opening.account(plugin.settings).ignored_stats[row.digest], 1)
+
 setup()
 open()
 row = Opening.record(plugin)

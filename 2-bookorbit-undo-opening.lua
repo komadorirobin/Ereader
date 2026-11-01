@@ -136,10 +136,41 @@ local function uuid()
     end)
 end
 
+local function savedPositionUnchanged(ds, snapshot)
+    if not snapshot then return false end
+    local dump = require("dump")
+    for _, key in ipairs(KEYS) do
+        if dump(ds:readSetting(key)) ~= dump(snapshot[key]) then return false end
+    end
+    return dump(ds:readSetting("annotations")) == dump(snapshot.annotations)
+end
+
+local function closedUnchanged(ds, row)
+    return savedPositionUnchanged(ds, row.after_close)
+        and require("dump")(ds:readSetting("summary")) == require("dump")(row.after_close.summary)
+end
+
+local function readerUnchanged(ui, row)
+    local summary = ui.doc_settings:readSetting("summary") or {}
+    local dump = require("dump")
+    return ui:getCurrentPage() == row.initial_page
+        and (summary.status == nil or summary.status == "new" or summary.status == "reading")
+        and dump(ui.annotation and ui.annotation.annotations or {}) == dump(row.annotations)
+end
+
 function Opening.beforeLoad(plugin, ds)
     plugin.opening_before = nil
+    plugin.opening_reopen = nil
     if not plugin:isLoggedIn() or not plugin.settings.auto_sync then return end
     if not ds or not plugin.ui or not plugin.ui.document then return end
+    -- Check the closed sidecar BEFORE KOReader updates its summary on reopen.
+    -- A new reader may legitimately change summary.modified, but must not hide
+    -- a manual status/progress/annotation change made while the book was closed.
+    local previous = Opening.record(plugin)
+    if previous and previous.closed_at and previous.file == plugin.ui.document.file
+            and not previous.local_restored and Opening.available(plugin) and closedUnchanged(ds, previous) then
+        plugin.opening_reopen = { row = previous, closed_at = previous.closed_at }
+    end
     local summary = ds:readSetting("summary") or {}
     if (summary.status and summary.status ~= "new") or (ds:readSetting("percent_finished") or 0) > 0 then return end
     local before = {}
@@ -154,16 +185,31 @@ end
 
 function Opening.capture(plugin)
     plugin.opening_session_id = nil
+    local before, reopen = plugin.opening_before, plugin.opening_reopen
+    plugin.opening_before, plugin.opening_reopen = nil, nil
     if not plugin:isLoggedIn() or not plugin.settings.auto_sync then return end
     local ui = plugin.ui
     if not ui or not ui.document or not ui.doc_settings then return end
     local previous = Opening.record(plugin)
     if previous and previous.phase ~= "done" and previous.phase ~= "undone" then
+        -- ReaderReady is not a page turn or a book switch. Reuse the original
+        -- operation after duplicate readiness or a same-cover close/reopen,
+        -- including an offline pending undo. Never renew its ID or 24h window.
+        if Opening.available(plugin) and not previous.local_restored
+                and previous.file == ui.document.file and previous.digest == plugin:getDocumentDigest()
+                and readerUnchanged(ui, previous)
+                and (not previous.closed_at or (reopen and reopen.row == previous
+                    and reopen.closed_at == previous.closed_at and savedPositionUnchanged(ui.doc_settings, previous.after_close))) then
+            plugin.opening_session_id = previous.id
+            if previous.closed_at then
+                previous.closed_at, previous.after_close = nil, nil
+                persist()
+            end
+            return
+        end
         if previous.phase ~= "undo_pending" then previous.phase = "committing"; persist() end
         return
     end
-    local before = plugin.opening_before
-    plugin.opening_before = nil
     if not before then return end
     local digest = plugin:getDocumentDigest()
     if not digest then return end
@@ -247,21 +293,13 @@ end
 
 function Opening.localUnchanged(plugin, row)
     if row.local_restored then return true end
-    local dump = require("dump")
     local ui = liveReader(plugin, row)
     if ui then
-        if row.closed_at or ui:getCurrentPage() ~= row.initial_page then return false end
-        local summary = ui.doc_settings:readSetting("summary") or {}
-        return (summary.status == nil or summary.status == "new" or summary.status == "reading")
-            and dump(ui.annotation and ui.annotation.annotations or {}) == dump(row.annotations)
+        return not row.closed_at and readerUnchanged(ui, row)
     end
     if not row.after_close then return false end
     local ds = require("docsettings"):open(row.file)
-    for _, key in ipairs(KEYS) do
-        if dump(ds:readSetting(key)) ~= dump(row.after_close[key]) then return false end
-    end
-    return dump(ds:readSetting("summary")) == dump(row.after_close.summary)
-        and dump(ds:readSetting("annotations")) == dump(row.after_close.annotations)
+    return closedUnchanged(ds, row)
 end
 
 function Opening.finishLocal(plugin, row)
