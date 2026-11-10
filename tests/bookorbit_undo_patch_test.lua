@@ -1,5 +1,7 @@
 -- Loads the unmodified BookOrbit plugin. Storage, transport and KOReader UI are fake.
 local plugin_dir = assert(arg[1], "usage: luajit tests/bookorbit_undo_patch_test.lua PLUGIN_DIR")
+local cwd_pipe = assert(io.popen("pwd"))
+local working_dir = assert(cwd_pipe:read("*l")); assert(cwd_pipe:close())
 package.path = plugin_dir .. "/?.lua;" .. package.path
 local function noop() end
 local function equal(actual, expected, label)
@@ -83,7 +85,7 @@ preload("dump", dump)
 preload("ffi/util", { template = function(s) return s end })
 preload("ui/time", { now = function() return now end, s = function(n) return n end })
 preload("optmath", { roundPercent = function(n) return n end })
-preload("libs/libkoreader-lfs", { attributes = function() return nil end })
+preload("libs/libkoreader-lfs", { attributes = function() return nil end, currentdir = function() return working_dir end })
 preload("datastorage", { getSettingsDir = function() return "/mock" end })
 preload("util", { trim = function(s) return s end, fixUtf8 = function(s) return s end })
 preload("ui/event", { new = function(self, name, payload) return { name = name, payload = payload } end })
