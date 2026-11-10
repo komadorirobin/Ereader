@@ -31,7 +31,7 @@ Bookshelf or SimpleUI because it observes KOReader's reader lifecycle.
 3. Sync patches in Patch Manager, enable this patch if necessary, and restart
    KOReader. Alternatively, install this file in `koreader/patches/` manually.
 4. Use **Tools > BookOrbit > Undo accidental opening** while eligible. It is also
-   in BookOrbit's menu sheet (2.0/2.1) or dashboard menu (1.5.5), and available as the gesture action
+   in BookOrbit's menu sheet (2.0/2.1/2.2) or dashboard menu (1.5.5), and available as the gesture action
    **BookOrbit: undo accidental opening**. It does not add a Bookshelf-only menu.
 
 The client holds automatic uploads for the provisional opening until you turn a
@@ -71,9 +71,10 @@ Tested against these stock BookOrbit plugin source sets:
 - **1.5.5**: `2855dbb8a39d20bf711f01772e2678ef0625dd63`.
 - **2.0.0** (BookOrbit 3.5.0): `c59dd0118fd0d5d0ecbd716d1d7fde2c97f8e2ea`.
 - **2.1.0** (BookOrbit 3.6.0): `a96ff0c85a4c25e9126dfa4c71ea87537a3baf7a`.
+- **2.2.0** (BookOrbit 3.7.0): `6f8f5f4818eb737dc4d78fc5b5294fc3adb26860`.
 
 Compatibility checks fingerprint the nine source files involved in lifecycle,
-queues and API acknowledgement, plus the menu sheet in 2.0/2.1. Each version
+queues and API acknowledgement, plus the menu sheet in 2.0/2.1/2.2. Each version
 must match a complete tested source set; mixing files from supported releases
 is not accepted. The version literal is ignored: a version-only bump or changes
 outside those files need no patch update. Changes inside them require review and
@@ -91,11 +92,28 @@ percentage-to-page jumps and unmatched lifecycle-queue cleanup. A page jump
 commits the provisional opening; cleanup of another unmatched book cannot
 release its hold. Neither the server nor the reader's saved data needs changing.
 
+The 2.2 profile preserves the same protections. Its new File browser action
+defers the native Home event and suppresses the usual BookOrbit return-home
+preference for that exit. Regression tests cover menu-close/event ordering,
+the protected opening surviving document close, Undo from the file manager,
+and unchanged ordinary return-home behavior. The protected sync/API/queue files
+are byte-identical to 2.1; only main and the two menu files require new pins.
+No server update, permission change or saved-state migration is needed for this
+device compatibility update. Server extensions remain separately version-pinned.
+
 The guard runs **before plugin initialization**, before startup uploads can run.
 For unknown code with no protected state, ordinary BookOrbit sync still works
 but undo is unavailable. If a pending opening or excluded statistics exist,
 BookOrbit is paused instead; KOReader and other plugins remain usable. Update
 the patch with Patch Manager and restart once compatibility has been verified.
+Because the paused plugin is not initialized, its BookOrbit menu may disappear
+until the compatible patch is installed and KOReader restarted. This does not
+delete the plugin's files, credentials or opening state.
+
+**Svenska:** När BookOrbit pausas av kompatibilitetsspärren kan även dess meny
+försvinna. Pluginet stoppas före start för att skydda väntande ångringar och
+undantagen lässtatistik. Behåll patchen och dess sparade tillstånd; installera
+den granskade kompatibilitetsuppdateringen och starta sedan om KOReader.
 
 **Do not delete the `bookorbit_openings` setting or disable/remove this patch
 without reconciling its state.** Its per-account excluded intervals must survive

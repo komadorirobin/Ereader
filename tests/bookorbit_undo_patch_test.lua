@@ -141,6 +141,7 @@ local function loadPlugin()
     return cls
 end
 local cls = loadPlugin()
+local stock_version = cls.PLUGIN_VERSION
 local Api, BookSync, Sweep = require("bookorbit_api"), require("bookorbit_book_sync"), require("bookorbit_sweep")
 Api.canForkSubprocess = function() return false end
 local requests, reply = {}, nil
@@ -206,7 +207,7 @@ io.open = io_open
 assert(version_only_ok, "version literal alone must not affect source fingerprints")
 cls.PLUGIN_VERSION = "1.5.6"
 assert(Opening.checkCompatibility(cls), "a release number alone must not disable a compatible plugin")
-cls.PLUGIN_VERSION = "1.5.5"
+cls.PLUGIN_VERSION = stock_version
 tampered = true
 assert(not Opening.checkCompatibility(cls), "same version with modified source must not be accepted")
 tampered = false
@@ -588,6 +589,67 @@ if type(app.isSamePlace) == "function" then
     assert(Opening.available(app) and Opening.held(app.settings, row.digest))
     assert(not app:getSyncCoordinator():isBusy())
     equal(#errors, 0, dump(errors))
+end
+
+if source_by_file.bookorbit_main_menu:find('kind == "files"', 1, true) then
+    -- The 2.2 Files route closes the menu first, then sends native Home. Neither
+    -- the deferred close nor its return-home bypass may release the undo hold.
+    app, row = open()
+    app:matchOpenBookForAutoSync()
+    local original_id, original_before = row.id, dump(row.before)
+    local Share, Sheet = require("pluginshare"), require("bookorbit_menu_sheet")
+    app.settings.catalog_auto_open = "home"
+    Share.bookorbit_return_home = nil
+    local closed_catalog, sent_home = 0, 0
+    local catalog = { current_context = {}, onCloseAllMenus = function() closed_catalog = closed_catalog + 1 end }
+    local sheet = app:openMenuSheet(catalog)
+    local files
+    for _, action in ipairs(menuActions(Sheet.body(sheet.sheet_data, 600))) do
+        if action.kind == "files" then assert(not files); files = action end
+    end
+    assert(files, "2.2 reader sheet keeps its native File browser action beside Undo")
+    local send = UIManager.sendEvent
+    UIManager.sendEvent = function(_self, event)
+        equal(event.name, "Home"); sent_home = sent_home + 1
+        app:onCloseDocument()
+        app:onCloseWidget()
+        app.ui.document = nil
+    end
+    tasks = {}
+    sheet.on_action(sheet, files)
+    assert(sheet.closed and app.skip_return_home_once)
+    equal(closed_catalog, 0); equal(sent_home, 0); equal(row.phase, "active")
+    table.remove(tasks, 1).fn()
+    equal(closed_catalog, 1); equal(sent_home, 0); equal(row.phase, "active")
+    table.remove(tasks, 1).fn()
+    UIManager.sendEvent = send
+    equal(sent_home, 1); equal(Share.bookorbit_return_home, nil)
+    equal(row.id, original_id); equal(dump(row.before), original_before)
+    equal(row.phase, "active"); assert(row.closed_at and row.after_close)
+    assert(Opening.available(app) and Opening.held(app.settings, row.digest))
+    equal(#requests, 1); equal(outbox_enqueues, 0)
+    local manager = newInstance(loadPlugin(), { menu = { registerToMainMenu = noop } })
+    equal(Opening.record(manager), row)
+    for _, action in ipairs(menuActions(Sheet.body(Sheet.data(manager, catalog), 600))) do
+        assert(action.kind ~= "files", "file-manager sheet must not show reader-only File browser")
+    end
+    reply = function(_method, path, body)
+        equal(path, "/koreader/plugin/openings/undo"); equal(body.id, original_id)
+        return { phase = "undone", hardcoverPending = false }
+    end
+    manager:onBookOrbitUndoOpening()
+    assert(messages[#messages].ok_callback)
+    messages[#messages].ok_callback()
+    equal(row.phase, "undone"); equal(ds:readSetting("summary").status, "new")
+    equal(#requests, 2); equal(outbox_enqueues, 0); equal(#errors, 0, dump(errors))
+
+    app, row = open()
+    app.settings.catalog_auto_open = "home"
+    Share.bookorbit_return_home = nil
+    app:onCloseWidget()
+    equal(Share.bookorbit_return_home, now, "ordinary return-home preference stays intact")
+    equal(row.phase, "candidate"); assert(Opening.held(app.settings, row.digest))
+    Share.bookorbit_return_home = nil
 end
 
 -- Excluded intervals survive restart and are isolated by book AND account.

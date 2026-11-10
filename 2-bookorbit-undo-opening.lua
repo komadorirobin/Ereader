@@ -60,6 +60,21 @@ local TESTED_PROFILES = {
             ["bookorbit_menu_sheet.lua"] = "28bc5a291483f8178e09a2e97926da98",
         },
     },
+    { -- 6f8f5f4818eb737dc4d78fc5b5294fc3adb26860 (plugin 2.2.0)
+        menu_sheet = true,
+        files = {
+            ["main.lua"] = "0eacdea5bc7d975ba2f963b89ab689e8",
+            ["bookorbit_api.lua"] = "f6177967c71277b6467148cf567c0694",
+            ["bookorbit_book_sync.lua"] = "e58f479b65314bef049fb8d0a2ea4052",
+            ["bookorbit_sweep.lua"] = "7a0fb83cda1034ea2827ef1dc8886c19",
+            ["bookorbit_main_menu.lua"] = "44584e1d6b59868d897ce816e0a829ff",
+            ["bookorbit_sync_coordinator.lua"] = "2494dc3c629a693957597c98ca3457cd",
+            ["bookorbit_sync_job_runner.lua"] = "c6b54c96b1c1514f85ae74cb42bcb7b9",
+            ["bookorbit_lifecycle_outbox.lua"] = "0e08df00d6271be1736660e00fcbf6cc",
+            ["bookorbit_progress_sync.lua"] = "e3f6748e92ac7e2ec875836246be9532",
+            ["bookorbit_menu_sheet.lua"] = "24667ce247739dfff65e40cb3f4b3866",
+        },
+    },
 }
 
 function Opening.account(client, create)
