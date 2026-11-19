@@ -183,6 +183,16 @@ local function open()
 end
 
 assert(Opening.checkCompatibility(cls))
+if stock_version == "2.3.0" then
+    -- 2.2 and 2.3 have the same normalized main but different progress modules.
+    -- Both complete profiles must remain usable, not just the first main match.
+    local source = source_by_file.bookorbit_progress_sync
+    local current_hash = digests[source]
+    digests[source] = "e3f6748e92ac7e2ec875836246be9532"
+    assert(Opening.checkCompatibility(cls), "complete 2.2 profile still accepted")
+    digests[source] = current_hash
+    assert(Opening.checkCompatibility(cls), "complete 2.3 profile selected after 2.2")
+end
 -- Every pinned file is checked, not only the version string or main module.
 for filename, source in pairs(source_by_file) do
     local hash = digests[source]
@@ -218,6 +228,15 @@ cls._onPageUpdate = nil
 assert(not Opening.checkCompatibility(cls))
 cls._onPageUpdate = orig_method
 local app, row = open()
+if stock_version == "2.3.0" then
+    app:rememberRemoteProgress(row.digest, {
+        percentage = 0.25, progress = "25", device = "Kobo_monza",
+        device_name = "Reading room", timestamp = now,
+    })
+    equal(app.last_remote_progress.device_name, "Reading room", "custom device name survives the adapter")
+    equal(app.last_remote_progress.device, "Kobo_monza", "device identity is not replaced by its label")
+    assert(Opening.held(app.settings, row.digest), "remembering remote progress must not release the opening")
+end
 equal(actions.bookorbit_undo_opening.event, "BookOrbitUndoOpening", "action installed before init")
 assert(actions.bookorbit_sync_now, "stock actions preserved")
 equal(app.onPageUpdate, cls._onPageUpdate, "bound handler uses patched function")

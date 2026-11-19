@@ -75,6 +75,21 @@ local TESTED_PROFILES = {
             ["bookorbit_menu_sheet.lua"] = "24667ce247739dfff65e40cb3f4b3866",
         },
     },
+    { -- c1dd6b4f1947ff50843a155e12e70f1e7d15f0c7 (plugin 2.3.0)
+        menu_sheet = true,
+        files = {
+            ["main.lua"] = "0eacdea5bc7d975ba2f963b89ab689e8",
+            ["bookorbit_api.lua"] = "f6177967c71277b6467148cf567c0694",
+            ["bookorbit_book_sync.lua"] = "e58f479b65314bef049fb8d0a2ea4052",
+            ["bookorbit_sweep.lua"] = "7a0fb83cda1034ea2827ef1dc8886c19",
+            ["bookorbit_main_menu.lua"] = "44584e1d6b59868d897ce816e0a829ff",
+            ["bookorbit_sync_coordinator.lua"] = "2494dc3c629a693957597c98ca3457cd",
+            ["bookorbit_sync_job_runner.lua"] = "c6b54c96b1c1514f85ae74cb42bcb7b9",
+            ["bookorbit_lifecycle_outbox.lua"] = "0e08df00d6271be1736660e00fcbf6cc",
+            ["bookorbit_progress_sync.lua"] = "44bfb29004c986258fe9d5c804b1e6a1",
+            ["bookorbit_menu_sheet.lua"] = "24667ce247739dfff65e40cb3f4b3866",
+        },
+    },
 }
 
 function Opening.account(client, create)
@@ -447,7 +462,9 @@ end
 function Opening.checkCompatibility(plugin)
     if type(plugin.path) ~= "string" then return false, "missing plugin path" end
     local md5 = require("ffi/sha2").md5
+    local fingerprints = {}
     local function fingerprint(filename)
+        if fingerprints[filename] then return fingerprints[filename] end
         local file = io.open(plugin.path .. "/" .. filename, "rb")
         if not file then return nil end
         local source = file:read("*a")
@@ -455,17 +472,25 @@ function Opening.checkCompatibility(plugin)
         if source and filename == "main.lua" then
             source = source:gsub('(local PLUGIN_VERSION = )"[^"\n]+"', '%1"<release>"', 1)
         end
-        return source and md5(source)
+        fingerprints[filename] = source and md5(source)
+        return fingerprints[filename]
     end
     local main_hash = fingerprint("main.lua")
     local profile
+    local closest_count, closest_reason = math.huge, "untested main.lua"
     for _, candidate in ipairs(TESTED_PROFILES) do
-        if candidate.files["main.lua"] == main_hash then profile = candidate; break end
+        if candidate.files["main.lua"] == main_hash then
+            local count, reason = 0, nil
+            for filename, expected in pairs(candidate.files) do
+                if fingerprint(filename) ~= expected then
+                    count, reason = count + 1, "untested " .. filename
+                end
+            end
+            if count == 0 then profile = candidate; break end
+            if count < closest_count then closest_count, closest_reason = count, reason end
+        end
     end
-    if not profile then return false, "untested main.lua" end
-    for filename, expected in pairs(profile.files) do
-        if filename ~= "main.lua" and fingerprint(filename) ~= expected then return false, "untested " .. filename end
-    end
+    if not profile then return false, closest_reason end
     for _, name in ipairs({
         "onReaderReady", "onBookOrbitSyncBook", "onBookOrbitPushProgress", "onDispatcherRegisterActions",
         "_onCloseDocument", "_onPageUpdate", "_onResume", "_onNetworkConnected", "submitSyncJob",

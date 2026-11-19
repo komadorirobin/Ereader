@@ -72,9 +72,10 @@ Tested against these stock BookOrbit plugin source sets:
 - **2.0.0** (BookOrbit 3.5.0): `c59dd0118fd0d5d0ecbd716d1d7fde2c97f8e2ea`.
 - **2.1.0** (BookOrbit 3.6.0): `a96ff0c85a4c25e9126dfa4c71ea87537a3baf7a`.
 - **2.2.0** (BookOrbit 3.7.0): `6f8f5f4818eb737dc4d78fc5b5294fc3adb26860`.
+- **2.3.0** (BookOrbit 3.9.0): `c1dd6b4f1947ff50843a155e12e70f1e7d15f0c7`.
 
 Compatibility checks fingerprint the nine source files involved in lifecycle,
-queues and API acknowledgement, plus the menu sheet in 2.0/2.1/2.2. Each version
+queues and API acknowledgement, plus the menu sheet in 2.0/2.1/2.2/2.3. Each version
 must match a complete tested source set; mixing files from supported releases
 is not accepted. The version literal is ignored: a version-only bump or changes
 outside those files need no patch update. Changes inside them require review and
@@ -100,6 +101,15 @@ and unchanged ordinary return-home behavior. The protected sync/API/queue files
 are byte-identical to 2.1; only main and the two menu files require new pins.
 No server update, permission change or saved-state migration is needed for this
 device compatibility update. Server extensions remain separately version-pinned.
+
+The 2.3 profile retains the same adapter. Upstream adds the reader's custom
+device name to progress prompts and remembered remote progress; opening,
+upload and undo semantics are unchanged. Its normalized main module is
+identical to 2.2, so the guard now considers every complete profile sharing
+that main fingerprint. It never combines individual files from profiles.
+Unknown files and pending-state protections remain fail-closed. No saved-state
+migration is required. Automated tests use the unmodified upstream plugin;
+a physical reader is not part of the test harness.
 
 The guard runs **before plugin initialization**, before startup uploads can run.
 For unknown code with no protected state, ordinary BookOrbit sync still works
