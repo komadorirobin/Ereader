@@ -228,7 +228,7 @@ cls._onPageUpdate = nil
 assert(not Opening.checkCompatibility(cls))
 cls._onPageUpdate = orig_method
 local app, row = open()
-if stock_version == "2.3.0" then
+if stock_version == "2.3.0" or stock_version == "2.4.2" then
     app:rememberRemoteProgress(row.digest, {
         percentage = 0.25, progress = "25", device = "Kobo_monza",
         device_name = "Reading room", timestamp = now,
@@ -671,6 +671,40 @@ if source_by_file.bookorbit_main_menu:find('kind == "files"', 1, true) then
     equal(Share.bookorbit_return_home, now, "ordinary return-home preference stays intact")
     equal(row.phase, "candidate"); assert(Opening.held(app.settings, row.digest))
     Share.bookorbit_return_home = nil
+end
+
+if source_by_file.main:find("skip_progress_pull", 1, true) then
+    app, row = open()
+    app:matchOpenBookForAutoSync()
+    local original_id = row.id
+    app:noteProgressCompared(row.digest)
+    app.ui.reloading = true
+    local pulls = 0
+    app.requestProgressPull = function() pulls = pulls + 1 end
+    tasks = {}
+    app:onReaderReady()
+    app.ui.reloading = false
+    local queued = tasks
+    tasks = {}
+    for _, task in ipairs(queued) do task.fn() end
+    equal(pulls, 0, "layout reload keeps upstream's no-extra-pull guard")
+    equal(row.id, original_id); equal(row.phase, "active")
+    assert(Opening.held(app.settings, row.digest))
+    app:requestOpenBookMatch("normal-open", {})
+    equal(pulls, 1, "ordinary open still requests remote progress")
+
+    local transport_before = #requests
+    local catalog_client = app:newClient()
+    catalog_client:catalogBooks({ excludeIds = "1,2", not_on_device_filter = true })
+    equal(#requests, transport_before + 1)
+    equal(requests[#requests].method, "POST")
+    equal(requests[#requests].path, "/koreader/plugin/catalog/books/query")
+    equal(requests[#requests].body.excludeIds, "1,2")
+    equal(requests[#requests].body.not_on_device_filter, nil)
+    local blocked, reason = catalog_client:request("PUT", "/koreader/syncs/progress", { document = row.digest })
+    equal(blocked, nil); equal(reason, "opening_held")
+    equal(#requests, transport_before + 1, "catalog POST cannot release a progress write")
+    equal(row.phase, "active"); equal(row.id, original_id)
 end
 
 -- Excluded intervals survive restart and are isolated by book AND account.

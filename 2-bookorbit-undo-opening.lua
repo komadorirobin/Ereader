@@ -17,6 +17,21 @@ end
 -- Each profile is a complete tested source set, never a mix of releases.
 -- Ignore only the release literal; unrelated updates need no new fingerprint.
 local TESTED_PROFILES = {
+    { -- cf04f93832a0a89323da16fd82f32ffbc8f59fde (plugin 2.4.2)
+        menu_sheet = true,
+        files = {
+            ["main.lua"] = "270002536a861471e265abcd3d37192d",
+            ["bookorbit_api.lua"] = "faae10e3026d2f52fe168c63dc4b07b7",
+            ["bookorbit_book_sync.lua"] = "e58f479b65314bef049fb8d0a2ea4052",
+            ["bookorbit_sweep.lua"] = "7a0fb83cda1034ea2827ef1dc8886c19",
+            ["bookorbit_main_menu.lua"] = "44584e1d6b59868d897ce816e0a829ff",
+            ["bookorbit_sync_coordinator.lua"] = "2494dc3c629a693957597c98ca3457cd",
+            ["bookorbit_sync_job_runner.lua"] = "c6b54c96b1c1514f85ae74cb42bcb7b9",
+            ["bookorbit_lifecycle_outbox.lua"] = "0e08df00d6271be1736660e00fcbf6cc",
+            ["bookorbit_progress_sync.lua"] = "797531af521b9da014c595ce64e0be4d",
+            ["bookorbit_menu_sheet.lua"] = "24667ce247739dfff65e40cb3f4b3866",
+        },
+    },
     { -- 2855dbb8a39d20bf711f01772e2678ef0625dd63 (plugin 1.5.5)
         files = {
             ["main.lua"] = "0fb0dcfe30ce494812c8d692498649a2",

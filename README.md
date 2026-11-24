@@ -73,9 +73,10 @@ Tested against these stock BookOrbit plugin source sets:
 - **2.1.0** (BookOrbit 3.6.0): `a96ff0c85a4c25e9126dfa4c71ea87537a3baf7a`.
 - **2.2.0** (BookOrbit 3.7.0): `6f8f5f4818eb737dc4d78fc5b5294fc3adb26860`.
 - **2.3.0** (BookOrbit 3.9.0): `c1dd6b4f1947ff50843a155e12e70f1e7d15f0c7`.
+- **2.4.2** (BookOrbit 3.10.0): `cf04f93832a0a89323da16fd82f32ffbc8f59fde`.
 
 Compatibility checks fingerprint the nine source files involved in lifecycle,
-queues and API acknowledgement, plus the menu sheet in 2.0/2.1/2.2/2.3. Each version
+queues and API acknowledgement, plus the menu sheet in 2.x. Each version
 must match a complete tested source set; mixing files from supported releases
 is not accepted. The version literal is ignored: a version-only bump or changes
 outside those files need no patch update. Changes inside them require review and
@@ -110,6 +111,13 @@ that main fingerprint. It never combines individual files from profiles.
 Unknown files and pending-state protections remain fail-closed. No saved-state
 migration is required. Automated tests use the unmodified upstream plugin;
 a physical reader is not part of the test harness.
+
+The 2.4.2 profile retains the adapter after reviewing upstream's layout-reload
+progress guard and POST catalog searches. Tests verify that a layout reload
+does not trigger an extra progress pull or release a provisional opening, and
+that catalog searches do not bypass the write hold. No saved-state migration
+is required. Update this patch in Patch Manager and restart KOReader when
+installing plugin 2.4.2; a physical device has not been tested here.
 
 The guard runs **before plugin initialization**, before startup uploads can run.
 For unknown code with no protected state, ordinary BookOrbit sync still works
